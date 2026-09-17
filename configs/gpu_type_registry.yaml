@@ -7,4 +7,13 @@ mappings:
   A100-80GB: H100_80GB
   L40: H100_80GB
   L40S: H100_80GB
+  # Apple Silicon (simulator profiles — unified memory, no MIG)
+  M4Max: M4_MAX_128GB
+  M4-Max: M4_MAX_128GB
+  M4_MAX: M4_MAX_128GB
+  Apple-M4-Max: M4_MAX_128GB
+  M3Ultra: M3_ULTRA_192GB
+  M3-Ultra: M3_ULTRA_192GB
+  M3_ULTRA: M3_ULTRA_192GB
+  Apple-M3-Ultra: M3_ULTRA_192GB
   any: H100_80GB

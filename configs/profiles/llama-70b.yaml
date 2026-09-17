@@ -12,3 +12,16 @@ profiles:
     prefill_ms_per_token: 0.18
     decode_tps: 72.0
     max_batch: 16
+  # Order-of-magnitude MLX-on-Apple twin curves (not live Metal timings).
+  M4Max:
+    runtime_seconds: 9600
+    gpu_memory_gb: 48
+    prefill_ms_per_token: 0.55
+    decode_tps: 28.0
+    max_batch: 4
+  M3Ultra:
+    runtime_seconds: 7200
+    gpu_memory_gb: 64
+    prefill_ms_per_token: 0.42
+    decode_tps: 36.0
+    max_batch: 6

@@ -1,0 +1,41 @@
+# Jobs that must place on Apple Silicon profiles (gpu_type = hardware profile name).
+jobs:
+  - id: mlx-llama-7b
+    name: mlx-llama-7b-infer
+    arrival_time: 0
+    runtime: 120
+    gpu_count: 1
+    gpu_memory_gb: 16
+    gpu_type: M4_MAX_128GB
+    priority: 20
+    tenant: apple-lab
+
+  - id: mlx-fine-tune
+    name: mlx-lora-fine-tune
+    arrival_time: 5
+    runtime: 900
+    gpu_count: 1
+    gpu_memory_gb: 48
+    gpu_type: M4_MAX_128GB
+    priority: 10
+    tenant: apple-lab
+
+  - id: nvidia-only-reject
+    name: cuda-job-should-wait
+    arrival_time: 2
+    runtime: 60
+    gpu_count: 1
+    gpu_memory_gb: 40
+    gpu_type: H100_80GB
+    priority: 5
+    tenant: cuda
+
+  - id: ultra-batch
+    name: m3-ultra-batch
+    arrival_time: 10
+    runtime: 300
+    gpu_count: 1
+    gpu_memory_gb: 64
+    gpu_type: M3_ULTRA_192GB
+    priority: 15
+    tenant: apple-lab

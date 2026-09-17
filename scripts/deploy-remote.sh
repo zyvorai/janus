@@ -23,7 +23,7 @@
 #   ZYVOR_JANUS_CHECKOUT          default: zyvor-janus
 #   ZYVOR_JANUS_IMAGE_TAG         default: 0.1.0
 #   ZYVOR_JANUS_UI_NODE_PORT      default: 30300
-#   ZYVOR_JANUS_API_NODE_PORT     default: 30808
+#   ZYVOR_JANUS_API_NODE_PORT     default: 30818  (30808 is Zyvor Relay on lab)
 #   ZYVOR_JANUS_DASHBOARD_USER    default: Admin
 #   ZYVOR_JANUS_DASHBOARD_PASSWORD default: Admin@321
 #   ZYVOR_JANUS_AUTH_SECRET       default: zyvor-janus-dev-secret
@@ -67,7 +67,7 @@ DEPLOYMENTS_SUBDIR="${DEPLOYMENTS_SUBDIR:-.deployment}"
 ZYVOR_JANUS_CHECKOUT="${ZYVOR_JANUS_CHECKOUT:-zyvor-janus}"
 ZYVOR_JANUS_IMAGE_TAG="${ZYVOR_JANUS_IMAGE_TAG:-0.1.0}"
 UI_NODE_PORT="${ZYVOR_JANUS_UI_NODE_PORT:-30300}"
-API_NODE_PORT="${ZYVOR_JANUS_API_NODE_PORT:-30808}"
+API_NODE_PORT="${ZYVOR_JANUS_API_NODE_PORT:-30818}"
 DASH_USER="${ZYVOR_JANUS_DASHBOARD_USER:-Admin}"
 DASH_PASS="${ZYVOR_JANUS_DASHBOARD_PASSWORD:-Admin@321}"
 AUTH_SECRET="${ZYVOR_JANUS_AUTH_SECRET:-zyvor-janus-dev-secret}"
@@ -107,8 +107,9 @@ _ssh() {
 _rsync() {
   local ssh_cmd="ssh -o StrictHostKeyChecking=accept-new ${_SSH_KEEPALIVE_OPTS}"
   if [ -n "$PASS" ]; then
-    SSHPASS="$PASS" sshpass -e rsync -az --delete \
-      -e "sshpass -e $ssh_cmd" \
+    ssh_cmd="sshpass -e $ssh_cmd"
+    SSHPASS="$PASS" rsync -az --delete \
+      -e "$ssh_cmd" \
       --exclude '.git/' \
       --exclude 'node_modules/' \
       --exclude 'web/node_modules/' \
@@ -277,10 +278,11 @@ if curl -fsS --connect-timeout 8 "${UI_URL}/login" >/dev/null; then
 else
   warn "UI not reachable yet at ${UI_URL}/login — check: kubectl -n zyvor-janus get pods,svc"
 fi
-if curl -fsS --connect-timeout 8 "${API_URL}/api/health" >/dev/null; then
+if body="$(curl -fsS --connect-timeout 8 "${API_URL}/api/health" 2>/dev/null)" \
+  && printf '%s' "$body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"'; then
   info "API healthy: ${API_URL}/api/health"
 else
-  warn "API health check failed at ${API_URL}/api/health"
+  warn "API health check failed at ${API_URL}/api/health (need JSON status=ok; is the NodePort free?)"
 fi
 
 zyvor_janus_ui_success "$HOST" "$USER"

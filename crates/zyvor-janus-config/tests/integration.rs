@@ -555,3 +555,32 @@ fn integration_serving_trace_import_roundtrip() {
     assert_eq!(jobs.len(), 1);
     assert_eq!(jobs[0].model_id.as_deref(), Some("llama-70b"));
 }
+
+#[test]
+fn integration_apple_silicon_cluster_places_and_rejects_cuda() {
+    let cluster_config = repo_root().join("configs/clusters/apple_m4.yaml");
+    assert!(
+        cluster_config.exists(),
+        "apple_m4 cluster config missing"
+    );
+    let report = zyvor_janus_config::run_simulation_report(&cluster_config)
+        .expect("apple silicon simulation");
+    // Three Apple-typed jobs complete; H100-typed job cannot place on M-series GPUs.
+    assert_eq!(report.metrics.jobs_completed, 3);
+    assert_eq!(report.metrics.jobs_unschedulable, 1);
+    assert_eq!(report.metrics.jobs_total, 4);
+    assert!(report.metrics.makespan > 0.0);
+
+    let registry = zyvor_janus_config::load_gpu_type_registry(
+        &repo_root().join("configs/gpu_type_registry.yaml"),
+    )
+    .expect("gpu type registry");
+    assert_eq!(
+        registry.mappings.get("M4Max").map(String::as_str),
+        Some("M4_MAX_128GB")
+    );
+    assert_eq!(
+        registry.mappings.get("M3Ultra").map(String::as_str),
+        Some("M3_ULTRA_192GB")
+    );
+}
