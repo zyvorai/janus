@@ -1,0 +1,32 @@
+# One GPU of every shipped hardware profile. Unknown gpu_type must stay queued.
+cluster:
+  topology_template: pcie_only
+  nodes:
+    - id: nvidia
+      gpus:
+        - { id: h100, profile: H100_80GB }
+        - { id: h200, profile: H200_141GB }
+        - { id: b200, profile: B200_192GB }
+        - { id: a100-40, profile: A100_40GB }
+        - { id: a10g, profile: A10G_24GB }
+        - { id: l4, profile: L4_24GB }
+        - { id: rtx, profile: RTX4090_24GB }
+    - id: amd-intel
+      gpus:
+        - { id: mi300x, profile: MI300X_192GB }
+        - { id: mi250, profile: MI250_128GB }
+        - { id: gaudi3, profile: GAUDI3_128GB }
+    - id: apple
+      gpus:
+        - { id: m4max, profile: M4_MAX_128GB }
+        - { id: m4pro, profile: M4_PRO_64GB }
+        - { id: m3ultra, profile: M3_ULTRA_192GB }
+        - { id: m2ultra, profile: M2_ULTRA_192GB }
+
+scheduler:
+  type: fifo
+
+workload:
+  path: ../workloads/gpu_kinds.yaml
+
+hardware_profiles_dir: ../hardware

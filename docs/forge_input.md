@@ -228,7 +228,13 @@ Missing profiles cause an explicit error (no silent default runtime).
 mappings:
   H100: H100_80GB
   H200: H200_141GB
+  B200: B200_192GB
+  MI300X: MI300X_192GB
+  Gaudi3: GAUDI3_128GB
+  M4Max: M4_MAX_128GB
 ```
+
+The full map is the YAML file. `configs/clusters/gpu_kinds.yaml` places one job on every shipped profile (NVIDIA, AMD, Intel Gaudi, Apple Silicon) and leaves an unknown `gpu_type` queued.
 
 ## FabricGpuNode → cluster
 

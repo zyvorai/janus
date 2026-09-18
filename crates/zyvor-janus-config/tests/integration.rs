@@ -559,10 +559,7 @@ fn integration_serving_trace_import_roundtrip() {
 #[test]
 fn integration_apple_silicon_cluster_places_and_rejects_cuda() {
     let cluster_config = repo_root().join("configs/clusters/apple_m4.yaml");
-    assert!(
-        cluster_config.exists(),
-        "apple_m4 cluster config missing"
-    );
+    assert!(cluster_config.exists(), "apple_m4 cluster config missing");
     let report = zyvor_janus_config::run_simulation_report(&cluster_config)
         .expect("apple silicon simulation");
     // Three Apple-typed jobs complete; H100-typed job cannot place on M-series GPUs.
@@ -583,4 +580,28 @@ fn integration_apple_silicon_cluster_places_and_rejects_cuda() {
         registry.mappings.get("M3Ultra").map(String::as_str),
         Some("M3_ULTRA_192GB")
     );
+    assert_eq!(
+        registry.mappings.get("B200").map(String::as_str),
+        Some("B200_192GB")
+    );
+    assert_eq!(
+        registry.mappings.get("MI300X").map(String::as_str),
+        Some("MI300X_192GB")
+    );
+    assert_eq!(
+        registry.mappings.get("Gaudi3").map(String::as_str),
+        Some("GAUDI3_128GB")
+    );
+}
+
+#[test]
+fn integration_gpu_kinds_places_every_profile() {
+    let cluster_config = repo_root().join("configs/clusters/gpu_kinds.yaml");
+    assert!(cluster_config.exists(), "gpu_kinds cluster config missing");
+    let report =
+        zyvor_janus_config::run_simulation_report(&cluster_config).expect("gpu kinds simulation");
+    // One job per shipped profile completes; the unknown kind stays queued.
+    assert_eq!(report.metrics.jobs_completed, 14);
+    assert_eq!(report.metrics.jobs_unschedulable, 1);
+    assert_eq!(report.metrics.jobs_total, 15);
 }

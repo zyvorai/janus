@@ -1,0 +1,5 @@
+name: MI250_128GB
+memory_gb: 128
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

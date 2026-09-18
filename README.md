@@ -22,7 +22,7 @@
 
 ---
 
-Zyvor Janus is a discrete-event simulator for Kubernetes-native GPU scheduling inspired by [Zyvor Forge](https://zyvor.dev/forge). It models clusters, MIG, topology, tenants, quotas, gang scheduling, and AI workloads, enabling scheduler development, RL research, and performance evaluation without requiring physical NVIDIA GPUs.
+Zyvor Janus is a discrete-event simulator for Kubernetes-native GPU scheduling inspired by [Zyvor Forge](https://zyvor.dev/forge). It models clusters, MIG, topology, tenants, quotas, gang scheduling, and AI workloads, enabling scheduler development, RL research, and performance evaluation without physical GPUs. Shipped profiles cover NVIDIA (H100 through B200, L4, A10G, RTX 4090), AMD MI300X/MI250, Intel Gaudi 3, and Apple M-series.
 
 [![Watch the Forge + Zyvor Janus demo](https://img.youtube.com/vi/p0GQVaZ_X1A/maxresdefault.jpg)](https://youtu.be/p0GQVaZ_X1A "Watch the Forge + Zyvor Janus demo on YouTube")
 

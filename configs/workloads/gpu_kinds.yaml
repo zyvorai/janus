@@ -1,0 +1,17 @@
+# One short job per hardware profile. gpu_type must match Gpu.profile exactly.
+jobs:
+  - { id: h100, name: h100, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: H100_80GB, priority: 1, tenant: kinds }
+  - { id: h200, name: h200, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: H200_141GB, priority: 1, tenant: kinds }
+  - { id: b200, name: b200, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: B200_192GB, priority: 1, tenant: kinds }
+  - { id: a100-40, name: a100-40, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: A100_40GB, priority: 1, tenant: kinds }
+  - { id: a10g, name: a10g, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: A10G_24GB, priority: 1, tenant: kinds }
+  - { id: l4, name: l4, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: L4_24GB, priority: 1, tenant: kinds }
+  - { id: rtx, name: rtx4090, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: RTX4090_24GB, priority: 1, tenant: kinds }
+  - { id: mi300x, name: mi300x, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: MI300X_192GB, priority: 1, tenant: kinds }
+  - { id: mi250, name: mi250, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: MI250_128GB, priority: 1, tenant: kinds }
+  - { id: gaudi3, name: gaudi3, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: GAUDI3_128GB, priority: 1, tenant: kinds }
+  - { id: m4max, name: m4max, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: M4_MAX_128GB, priority: 1, tenant: kinds }
+  - { id: m4pro, name: m4pro, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: M4_PRO_64GB, priority: 1, tenant: kinds }
+  - { id: m3ultra, name: m3ultra, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: M3_ULTRA_192GB, priority: 1, tenant: kinds }
+  - { id: m2ultra, name: m2ultra, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: M2_ULTRA_192GB, priority: 1, tenant: kinds }
+  - { id: reject, name: unknown-kind, arrival_time: 0, runtime: 10, gpu_count: 1, gpu_memory_gb: 16, gpu_type: NOT_A_GPU, priority: 1, tenant: kinds }

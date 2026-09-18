@@ -1,0 +1,7 @@
+name: A100_40GB
+memory_gb: 40
+sm: 108
+mig_profiles: [1g, 2g, 3g]
+nvlink_bw_gbs: 600
+pcie_bw_gbs: 64
+mig: true

@@ -1,0 +1,7 @@
+name: B200_192GB
+memory_gb: 192
+sm: 148
+mig_profiles: []
+nvlink_bw_gbs: 1800
+pcie_bw_gbs: 128
+mig: false

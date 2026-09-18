@@ -1,0 +1,6 @@
+# Intel Gaudi 3 — HBM, no MIG.
+name: GAUDI3_128GB
+memory_gb: 128
+mig_profiles: []
+pcie_bw_gbs: 128
+mig: false
