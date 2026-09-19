@@ -8,7 +8,7 @@
 | Learn the console shell | [Using the Dashboard](using-the-dashboard.md) |
 | Screen-by-screen UX | [Page-by-page guides](pages/README.md) |
 | Look up any route | [Complete page index](PAGE_INDEX.md) |
-| Cluster YAML / Forge bundles | [Configuration](configuration.md) |
+| Cluster YAML / Zynera bundles | [Configuration](configuration.md) |
 | Ports, auth, systemd | [Admin basics](admin-basics.md) |
 | Multi-step jobs | [Common workflows](workflows.md) |
 

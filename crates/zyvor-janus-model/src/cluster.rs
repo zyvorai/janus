@@ -24,7 +24,7 @@ pub struct Cluster {
     /// Max GPUs a tenant may hold across running jobs, keyed by tenant name.
     /// Tenants with no entry are unrestricted.
     pub tenant_quotas: HashMap<String, u32>,
-    /// Federation site tag per node id (Forge `forge.ai/federated-training-site`
+    /// Federation site tag per node id (Zynera `zynera.ai/federated-training-site`
     /// label). Nodes with no entry are unpartitioned — eligible for jobs of
     /// any site (or no site).
     pub node_sites: HashMap<String, String>,

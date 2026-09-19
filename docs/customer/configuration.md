@@ -1,6 +1,6 @@
 # Configuration
 
-Cluster simulations are driven by YAML under `configs/clusters/` (or a Forge export bundle).
+Cluster simulations are driven by YAML under `configs/clusters/` (or a Zynera export bundle).
 
 ## Typical layout
 
@@ -18,9 +18,9 @@ cargo run -p zyvor-janus-cli -- run --config configs/clusters/small_h100.yaml
 
 In the web UI, the same config names appear in Dashboard **Launch simulation** and What-if / Benchmark pickers — the API must see the configs directory.
 
-## Forge bundles
+## Zynera bundles
 
-Import/export paths follow the product Forge integration docs. After import, treat the result like any other `--config` file for CLI and UI runs.
+Import/export paths follow the product Zynera integration docs. After import, treat the result like any other `--config` file for CLI and UI runs.
 
 ## Operate tip
 

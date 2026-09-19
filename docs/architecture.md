@@ -2,7 +2,7 @@
 
 ## Overview
 
-Zyvor Janus is a discrete-event GPU cluster scheduler simulator inspired by Zyvor Forge. It separates a high-performance **Rust simulation core** from a thin **Python research API**, with optional FastAPI + Next.js dashboards and a benchmark/analytics layer for LLM serving metrics.
+Zyvor Janus is a discrete-event GPU cluster scheduler simulator inspired by Zynera. It separates a high-performance **Rust simulation core** from a thin **Python research API**, with optional FastAPI + Next.js dashboards and a benchmark/analytics layer for LLM serving metrics.
 
 ## Layers
 
@@ -15,12 +15,12 @@ Rust workspace
   ├── zyvor-janus-core      Foundational primitives: error, events, decision log, stats
   ├── zyvor-janus-topology  Synthetic NVLink/PCIe bandwidth-penalty topology model
   ├── zyvor-janus-model     Cluster state, node/GPU/job types, MIG partitioning
-  ├── zyvor-janus-scheduler Scheduling policies (fifo, priority, preemptive, forge,
+  ├── zyvor-janus-scheduler Scheduling policies (fifo, priority, preemptive, zynera,
   │                         bestfit) + ResourceManager + the Scheduler trait
   ├── zyvor-janus-simulator Discrete-event engine, RL stepping session, inference model
   ├── zyvor-janus-cost      GPU cost model (seed for future multi-provider pricing)
   ├── zyvor-janus-metrics   Makespan, wait, utilization, timeline, benchmark score
-  ├── zyvor-janus-config    YAML / Forge bundle / scheduler + serving trace loaders
+  ├── zyvor-janus-config    YAML / Zynera bundle / scheduler + serving trace loaders
   ├── zyvor-janus-cli       zyvor-janus binary
   └── zyvor-janus-py        Python bindings (SimResult, SimSession)
 ```
@@ -124,7 +124,7 @@ Docker images and Kubernetes manifests live under `deploy/`. See [deploy/kuberne
 
 - The Rust core never depends on Python or Gymnasium
 - Schedulers share a common `Scheduler` trait (defined in `zyvor-janus-scheduler`) for benchmarking
-- Forge CRDs and traces convert to internal models via adapters before entering the engine
+- Zynera CRDs and traces convert to internal models via adapters before entering the engine
 - Hardware is described by capability profiles (H100, H200, B200), not hardcoded logic
 
 ## Milestone scope (M1–M8)
@@ -132,11 +132,11 @@ Docker images and Kubernetes manifests live under `deploy/`. See [deploy/kuberne
 | Milestone | Scope |
 |-----------|-------|
 | M1 | Whole-GPU placement, FIFO scheduler, YAML configs, metrics JSON |
-| M2 | Forge CRD bundle ingest |
+| M2 | Zynera CRD bundle ingest |
 | M3 | Scheduler trace replay + diff |
 | M4 | MIG slice partition/reconfig delay |
 | M5 | NVLink-domain placement, `topology_penalties`, runtime inflation |
-| M6 | Quotas, priority, preemption, gang spread + timeout, `ForgeScheduler`, `BestFitScheduler` |
+| M6 | Quotas, priority, preemption, gang spread + timeout, `ZyneraScheduler`, `BestFitScheduler` |
 | M7 | Stepped RL session + Gymnasium env + PPO baseline |
 | M8 | Jobs timeline export + Gantt/heatmap viz |
 | **P0–P10** | **Benchmark platform MVP** — inference model, AIPerf, shim, twin API, CI ([benchmark_platform.md](benchmark_platform.md)) |

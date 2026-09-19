@@ -11,7 +11,7 @@ grouping with scatter fallback, `topology_penalties`, and
 Implemented in `zyvor-janus-core`:
 
 - `Gpu.nvlink_group: Option<u32>` — set from cluster `topology_template`
-  (`nvlink_pairs`, `full_mesh`, `pcie_only`) or explicit GPU spec; Forge
+  (`nvlink_pairs`, `full_mesh`, `pcie_only`) or explicit GPU spec; Zynera
   bundle still defaults to `i / 2` pairing when no template is set.
 - `HardwareProfile.nvlink_bw_gbs` / `pcie_bw_gbs` — feed `TopologyGraph` for
   runtime inflation when jobs span NVLink domains or nodes.
@@ -31,7 +31,7 @@ well-connected GPUs, and does that matter for runtime?*
 ## Resolved decisions
 
 1. **Topology source**: synthetic templates via `ClusterConfig.topology_template`
-   until Forge exports per-GPU adjacency from CRDs.
+   until Zynera exports per-GPU adjacency from CRDs.
 2. **Graph granularity**: domain-level `nvlink_group` (implemented); per-GPU
    adjacency is a future refinement.
 3. **Scoring vs. hard constraint**: prefer same domain, fall back with
@@ -41,7 +41,7 @@ well-connected GPUs, and does that matter for runtime?*
 
 ## Future refinements
 
-- Real adjacency from Forge CRDs when available.
+- Real adjacency from Zynera CRDs when available.
 - Per-GPU topology graph for NVSwitch mesh modeling.
 - Optional hard constraint mode (reject cross-domain placement).
 
@@ -57,8 +57,8 @@ Future work is under **Future refinements** above.
 
 ## Non-goals for M5
 
-- Real NVLink/PCIe topology *export* from a live Forge cluster (depends on
-  what Forge's CRDs actually expose — a prerequisite question, not part of
+- Real NVLink/PCIe topology *export* from a live Zynera cluster (depends on
+  what Zynera's CRDs actually expose — a prerequisite question, not part of
   Zyvor Janus itself).
 - Multi-rack / multi-datacenter network modeling — single-cluster only, per
   the existing `Cluster` model.

@@ -6,7 +6,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 use zyvor_janus_config::{
-    load_cluster_from_config, load_forge_bundle, run_forge_bundle_report, run_simulation_report,
+    load_cluster_from_config, load_zynera_bundle, run_zynera_bundle_report, run_simulation_report,
     run_trace_file, trace_diff_to_json, SimulationReport,
 };
 
@@ -25,11 +25,11 @@ enum Commands {
     /// Run a simulation
     Run {
         /// Path to simulation config YAML (internal format)
-        #[arg(short, long, conflicts_with = "forge_bundle")]
+        #[arg(short, long, conflicts_with = "zynera_bundle")]
         config: Option<PathBuf>,
-        /// Path to Forge export bundle directory
+        /// Path to Zynera export bundle directory
         #[arg(long)]
-        forge_bundle: Option<PathBuf>,
+        zynera_bundle: Option<PathBuf>,
         /// Calibrated model profiles directory
         #[arg(long, default_value = "configs/profiles")]
         profiles_dir: PathBuf,
@@ -42,8 +42,8 @@ enum Commands {
         /// MIG partition profiles directory
         #[arg(long, default_value = "configs/mig")]
         mig_profiles_dir: PathBuf,
-        /// Scheduler policy to simulate (with --forge-bundle; --config uses its own scheduler.type)
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "forge", "bestfit"])]
+        /// Scheduler policy to simulate (with --zynera-bundle; --config uses its own scheduler.type)
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
         scheduler: String,
         /// Write metrics JSON to this path
         #[arg(short, long)]
@@ -58,22 +58,22 @@ enum Commands {
         #[arg(long)]
         trace: PathBuf,
         /// Cluster config YAML (internal format)
-        #[arg(short, long, conflicts_with = "forge_bundle")]
+        #[arg(short, long, conflicts_with = "zynera_bundle")]
         config: Option<PathBuf>,
-        /// Forge export bundle directory (cluster loaded from cluster/)
+        /// Zynera export bundle directory (cluster loaded from cluster/)
         #[arg(long)]
-        forge_bundle: Option<PathBuf>,
-        /// GPU type to hardware profile registry (with --forge-bundle)
+        zynera_bundle: Option<PathBuf>,
+        /// GPU type to hardware profile registry (with --zynera-bundle)
         #[arg(long, default_value = "configs/gpu_type_registry.yaml")]
         gpu_type_registry: PathBuf,
-        /// Hardware profiles for cluster GPU memory (with --forge-bundle)
+        /// Hardware profiles for cluster GPU memory (with --zynera-bundle)
         #[arg(long, default_value = "configs/hardware")]
         hardware_profiles_dir: PathBuf,
-        /// Calibrated model profiles directory (with --forge-bundle, unused for trace replay)
+        /// Calibrated model profiles directory (with --zynera-bundle, unused for trace replay)
         #[arg(long, default_value = "configs/profiles")]
         profiles_dir: PathBuf,
         /// Scheduler policy to simulate
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "forge", "bestfit"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
         scheduler: String,
         /// Write diff report JSON to this path
         #[arg(short, long)]
@@ -185,7 +185,7 @@ fn main() {
     match cli.command {
         Commands::Run {
             config,
-            forge_bundle,
+            zynera_bundle,
             profiles_dir,
             gpu_type_registry,
             hardware_profiles_dir,
@@ -194,8 +194,8 @@ fn main() {
             output,
             jobs_output,
         } => {
-            let report = if let Some(bundle) = forge_bundle {
-                run_forge_bundle_report(
+            let report = if let Some(bundle) = zynera_bundle {
+                run_zynera_bundle_report(
                     &bundle,
                     &profiles_dir,
                     &gpu_type_registry,
@@ -206,7 +206,7 @@ fn main() {
             } else if let Some(config) = config {
                 run_simulation_report(&config)
             } else {
-                eprintln!("error: provide --config or --forge-bundle");
+                eprintln!("error: provide --config or --zynera-bundle");
                 std::process::exit(1);
             }
             .unwrap_or_else(|e| {
@@ -219,15 +219,15 @@ fn main() {
         Commands::Replay {
             trace,
             config,
-            forge_bundle,
+            zynera_bundle,
             gpu_type_registry,
             hardware_profiles_dir,
             profiles_dir,
             scheduler,
             output,
         } => {
-            let cluster = if let Some(bundle) = forge_bundle {
-                load_forge_bundle(
+            let cluster = if let Some(bundle) = zynera_bundle {
+                load_zynera_bundle(
                     &bundle,
                     &profiles_dir,
                     &gpu_type_registry,
@@ -237,7 +237,7 @@ fn main() {
             } else if let Some(config) = config {
                 load_cluster_from_config(&config)
             } else {
-                eprintln!("error: provide --config or --forge-bundle for cluster topology");
+                eprintln!("error: provide --config or --zynera-bundle for cluster topology");
                 std::process::exit(1);
             }
             .unwrap_or_else(|e| {

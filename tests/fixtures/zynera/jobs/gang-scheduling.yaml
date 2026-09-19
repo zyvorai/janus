@@ -1,12 +1,12 @@
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricAIJob
 metadata:
   name: gpt-distributed-training
   namespace: ml-training
   annotations:
-    forge.ai/gang-schedule: "true"
-    forge.ai/gang-size: "4"
-    forge.ai/gang-timeout: "10m"
+    zynera.ai/gang-schedule: "true"
+    zynera.ai/gang-size: "4"
+    zynera.ai/gang-timeout: "10m"
 spec:
   type: training
   model: gpt-13b

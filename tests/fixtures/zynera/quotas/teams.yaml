@@ -1,4 +1,4 @@
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricQuota
 metadata:
   name: ml-infra-quota
@@ -11,7 +11,7 @@ spec:
     maxGPUs: 32
     maxRunningJobs: 10
 ---
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricQuota
 metadata:
   name: ml-training-quota

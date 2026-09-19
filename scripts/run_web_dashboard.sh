@@ -18,7 +18,7 @@ fix_homebrew_pyexpat
 require_venv "$ROOT"
 
 PY="$ROOT/.venv/bin/python"
-ensure_forge_extension "$PY" "$ROOT"
+ensure_zynera_extension "$PY" "$ROOT"
 ensure_server_deps "$PY"
 ensure_web_deps "$ROOT/web"
 

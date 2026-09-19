@@ -1,4 +1,4 @@
-# Maps Forge FabricAIJob spec.gpuType to Zyvor Janus hardware profile names
+# Maps Zynera FabricAIJob spec.gpuType to Zyvor Janus hardware profile names
 mappings:
   H100: H100_80GB
   H200: H200_141GB

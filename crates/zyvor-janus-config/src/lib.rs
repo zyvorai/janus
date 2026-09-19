@@ -1,14 +1,14 @@
 // Copyright 2026 ZyvorAI Labs Private Limited
 // SPDX-License-Identifier: Apache-2.0
 
-mod forge_bundle;
+mod zynera_bundle;
 mod mig;
 mod serving_trace;
 mod trace;
 
-pub use forge_bundle::{
-    load_forge_bundle, load_gpu_type_registry, load_model_profiles, parse_fabric_ai_job,
-    run_forge_bundle, run_forge_bundle_report, FederationRunMeta, ForgeBundle, GpuTypeRegistry,
+pub use zynera_bundle::{
+    load_zynera_bundle, load_gpu_type_registry, load_model_profiles, parse_fabric_ai_job,
+    run_zynera_bundle, run_zynera_bundle_report, FederationRunMeta, ZyneraBundle, GpuTypeRegistry,
     ModelProfile,
 };
 pub use mig::{
@@ -37,7 +37,7 @@ use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Gpu, Job, Node};
 use zyvor_janus_scheduler::resource::{GpuSelectionPolicy, ResourceManager};
 use zyvor_janus_scheduler::Scheduler;
-use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ForgeScheduler, PriorityScheduler};
+use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ZyneraScheduler, PriorityScheduler};
 use zyvor_janus_simulator::inference::{estimate_inference, InferenceProfile, InferenceRequest};
 use zyvor_janus_simulator::rl::RlSession;
 use zyvor_janus_simulator::snapshot::ClusterSnapshot;
@@ -59,9 +59,9 @@ pub struct SimulationReport {
     #[serde(default)]
     pub benchmark: Option<SchedulerBenchmarkReport>,
     /// Federation metadata from the bundle's `federation/` dir, if a
-    /// `FabricFederatedTrainingRun` was present (Forge-bundle path only).
+    /// `FabricFederatedTrainingRun` was present (Zynera-bundle path only).
     #[serde(default)]
-    pub federation: Option<forge_bundle::FederationRunMeta>,
+    pub federation: Option<zynera_bundle::FederationRunMeta>,
     /// Per-job serving trace derived from the finished `Cluster`, captured
     /// here because `Cluster` does not otherwise survive past this function.
     #[serde(default = "default_serving_trace")]
@@ -246,7 +246,7 @@ pub fn load_workload(path: &Path) -> ConfigResult<Vec<Job>> {
 
 pub fn load_workload_with_profiles(
     path: &Path,
-    model_profiles: &HashMap<String, forge_bundle::ModelProfile>,
+    model_profiles: &HashMap<String, zynera_bundle::ModelProfile>,
     default_gpu_types: &[String],
 ) -> ConfigResult<Vec<Job>> {
     let content = fs::read_to_string(path)?;
@@ -297,7 +297,7 @@ pub fn load_workload_with_profiles(
 
 fn apply_inference_runtime(
     job: &mut Job,
-    model_profiles: &HashMap<String, forge_bundle::ModelProfile>,
+    model_profiles: &HashMap<String, zynera_bundle::ModelProfile>,
     default_gpu: &str,
 ) -> ConfigResult<()> {
     let Some(model_id) = job.model_id.clone() else {
@@ -329,7 +329,7 @@ fn apply_inference_runtime(
 }
 
 fn resolve_inference_profile(
-    model_profiles: &HashMap<String, forge_bundle::ModelProfile>,
+    model_profiles: &HashMap<String, zynera_bundle::ModelProfile>,
     model_id: &str,
     gpu_type: &str,
 ) -> ConfigResult<InferenceProfile> {
@@ -646,7 +646,7 @@ fn build_steppable_engine(
     Ok(match scheduler {
         "fifo" => seed(cluster, FifoScheduler, resource_manager, jobs),
         "priority" => seed(cluster, PriorityScheduler, resource_manager, jobs),
-        "preemptive" | "forge" => seed(cluster, ForgeScheduler::default(), resource_manager, jobs),
+        "preemptive" | "zynera" => seed(cluster, ZyneraScheduler::default(), resource_manager, jobs),
         "bestfit" => seed(cluster, BestFitScheduler, resource_manager, jobs),
         other => {
             return Err(ConfigError::Invalid(format!(
@@ -785,9 +785,9 @@ fn run_to_completion_with_policy_snapshots(
             jobs,
             jobs_total,
         ),
-        "preemptive" | "forge" => run_to_completion_snapshots(
+        "preemptive" | "zynera" => run_to_completion_snapshots(
             cluster,
-            ForgeScheduler::default(),
+            ZyneraScheduler::default(),
             resource_manager,
             jobs,
             jobs_total,

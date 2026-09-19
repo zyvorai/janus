@@ -1,7 +1,7 @@
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricAIJob
 metadata:
-  name: quota-job-a
+  name: quota-job-b
   namespace: quota-test
 spec:
   type: training

@@ -1,7 +1,7 @@
 # Copyright 2026 ZyvorAI Labs Private Limited
 # SPDX-License-Identifier: Apache-2.0
 
-"""Forge CRD → internal job mapping (FabricAIJob, FabricQuota)."""
+"""Zynera CRD → internal job mapping (FabricAIJob, FabricQuota)."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ from typing import Any
 # Real label the ai-operator's federated-training-run controller sets on
 # every per-site FabricAIJob it creates (fabricfederatedtrainingrun_controller.go).
 # Reused here on FabricGpuNode fixtures too, to tag which federation site a
-# node belongs to. Mirrors zyvor-janus-config/src/forge_bundle.rs.
-FEDERATION_SITE_LABEL = "forge.ai/federated-training-site"
+# node belongs to. Mirrors zyvor-janus-config/src/zynera_bundle.rs.
+FEDERATION_SITE_LABEL = "zynera.ai/federated-training-site"
 
 
 def gpu_count_from_spec(spec: dict[str, Any]) -> int:
@@ -64,10 +64,10 @@ def fabric_ai_job_to_job(
     name = meta.get("name", "unknown")
     site = labels.get(FEDERATION_SITE_LABEL)
 
-    gang_enabled = annotations.get("forge.ai/gang-schedule") == "true"
-    gang_size_raw = annotations.get("forge.ai/gang-size")
+    gang_enabled = annotations.get("zynera.ai/gang-schedule") == "true"
+    gang_size_raw = annotations.get("zynera.ai/gang-size")
     gang_size_nodes = int(gang_size_raw) if gang_size_raw is not None else None
-    gang_timeout_raw = annotations.get("forge.ai/gang-timeout")
+    gang_timeout_raw = annotations.get("zynera.ai/gang-timeout")
     gang_timeout_secs = _parse_duration_secs(gang_timeout_raw) if gang_timeout_raw else None
 
     mig = spec.get("mig") or {}

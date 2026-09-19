@@ -1,4 +1,4 @@
-# NodePort exposure for lab hosts (same pattern as forge-ui / forge-api-gateway).
+# NodePort exposure for lab hosts (same pattern as zynera-ui / zynera-api-gateway).
 # Must keep selectors — a partial Service apply without them clears endpoints.
 apiVersion: v1
 kind: Service

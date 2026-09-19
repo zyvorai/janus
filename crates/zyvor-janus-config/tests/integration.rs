@@ -6,13 +6,13 @@
 use std::path::PathBuf;
 
 use zyvor_janus_config::{
-    build_shadow_run, load_forge_bundle, run_forge_bundle, run_simulation, run_trace_file,
+    build_shadow_run, load_zynera_bundle, run_zynera_bundle, run_simulation, run_trace_file,
     trace_diff_to_json, TraceDiffReport,
 };
 use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Gpu, Job, JobState, Node};
 use zyvor_janus_scheduler::resource::ResourceManager;
-use zyvor_janus_scheduler::ForgeScheduler;
+use zyvor_janus_scheduler::ZyneraScheduler;
 use zyvor_janus_simulator::ShadowSide;
 use zyvor_janus_simulator::SimulationEngine;
 
@@ -193,12 +193,12 @@ fn integration_dual_node_preempt_migrates_mover_to_other_machine() {
 }
 
 #[test]
-fn integration_forge_bundle_fifo_simulation() {
-    let bundle = repo_root().join("tests/fixtures/forge");
+fn integration_zynera_bundle_fifo_simulation() {
+    let bundle = repo_root().join("tests/fixtures/zynera");
     if !bundle.exists() {
         return;
     }
-    let metrics = run_forge_bundle(
+    let metrics = run_zynera_bundle(
         &bundle,
         &repo_root().join("configs/profiles"),
         &repo_root().join("configs/gpu_type_registry.yaml"),
@@ -206,24 +206,24 @@ fn integration_forge_bundle_fifo_simulation() {
         &repo_root().join("configs/mig"),
         "fifo",
     )
-    .expect("forge bundle simulation");
+    .expect("zynera bundle simulation");
     assert_eq!(metrics.jobs_completed, metrics.jobs_total);
     assert!(metrics.jobs_total >= 3);
 }
 
 #[test]
-fn integration_forge_bundle_gang_and_mig_fields() {
-    let bundle = repo_root().join("tests/fixtures/forge");
+fn integration_zynera_bundle_gang_and_mig_fields() {
+    let bundle = repo_root().join("tests/fixtures/zynera");
     if !bundle.exists() {
         return;
     }
-    let loaded = load_forge_bundle(
+    let loaded = load_zynera_bundle(
         &bundle,
         &repo_root().join("configs/profiles"),
         &repo_root().join("configs/gpu_type_registry.yaml"),
         &repo_root().join("configs/hardware"),
     )
-    .expect("load forge bundle");
+    .expect("load zynera bundle");
 
     let gang = loaded
         .jobs
@@ -245,15 +245,15 @@ fn integration_forge_bundle_gang_and_mig_fields() {
 }
 
 #[test]
-fn integration_forge_bundle_quota_delays_second_job() {
-    let bundle = repo_root().join("tests/fixtures/forge_quota");
+fn integration_zynera_bundle_quota_delays_second_job() {
+    let bundle = repo_root().join("tests/fixtures/zynera_quota");
     if !bundle.exists() {
         return;
     }
     // Cluster has 4 GPUs and both 2-GPU jobs could run concurrently, but
     // the tenant's FabricQuota caps it at 2 GPUs — job B must wait for
     // job A to finish and free the quota before it can start.
-    let metrics = run_forge_bundle(
+    let metrics = run_zynera_bundle(
         &bundle,
         &repo_root().join("configs/profiles"),
         &repo_root().join("configs/gpu_type_registry.yaml"),
@@ -261,7 +261,7 @@ fn integration_forge_bundle_quota_delays_second_job() {
         &repo_root().join("configs/mig"),
         "fifo",
     )
-    .expect("forge bundle simulation");
+    .expect("zynera bundle simulation");
     assert_eq!(metrics.jobs_completed, 2);
     // Without quota enforcement both jobs run in parallel and makespan
     // equals one job's runtime (604800s); quota enforcement serializes
@@ -367,7 +367,7 @@ fn integration_gang_timeout_rearms_after_preemption() {
         id: "n0".into(),
         gpus: vec![Gpu::new("g0", "n0", "H100_80GB", 80.0)],
     }]);
-    let mut engine = SimulationEngine::new(cluster, ForgeScheduler::default());
+    let mut engine = SimulationEngine::new(cluster, ZyneraScheduler::default());
     let mut gang = Job::new("gang", "gang", 0.0, 100.0, 1);
     gang.gang_enabled = true;
     gang.gang_size_nodes = Some(1);
@@ -472,7 +472,7 @@ fn integration_preemption_restart_penalty_delays_resumed_job() {
     let cluster = zyvor_janus_config::build_cluster(&config.cluster, &profiles).unwrap();
     let rm = zyvor_janus_config::build_resource_manager(None, "preemptive");
     let mut engine =
-        SimulationEngine::with_resource_manager(cluster, ForgeScheduler::default(), rm)
+        SimulationEngine::with_resource_manager(cluster, ZyneraScheduler::default(), rm)
             .with_preemption_restart_penalty(5.0);
     engine.submit_jobs(jobs);
     engine.run();

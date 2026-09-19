@@ -4,14 +4,14 @@
 mod bestfit;
 mod common;
 mod fifo;
-mod forge;
+mod zynera;
 mod preemptive;
 mod priority;
 pub mod resource;
 
 pub use bestfit::BestFitScheduler;
 pub use fifo::FifoScheduler;
-pub use forge::ForgeScheduler;
+pub use zynera::ZyneraScheduler;
 pub use preemptive::PreemptivePriorityScheduler;
 pub use priority::PriorityScheduler;
 pub use resource::{GpuSelectionPolicy, ResourceManager};

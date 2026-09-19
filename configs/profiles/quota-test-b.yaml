@@ -1,5 +1,5 @@
-# Test-only profile for the forge quota-enforcement lab scenario
-# (../forge/scripts/test-lab-quota-enforcement.sh) — not real calibration
+# Test-only profile for the zynera quota-enforcement lab scenario
+# (../zynera/scripts/test-lab-quota-enforcement.sh) — not real calibration
 # data, just enough to let Zyvor Janus simulate the exported job.
 model: quota-test-b
 profiles:

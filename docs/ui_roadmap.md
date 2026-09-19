@@ -41,13 +41,13 @@ Rich CLI dashboard    FastAPI (REST + WebSocket)
 - **Frontend:** `web/` — `./scripts/run_web_ui.sh` or `./scripts/run_web_dashboard.sh`
 - **Views:** home (run + compare), login, `/runs/:id` (overview, cluster, queue, MIG, replay, shadow-race tabs; live WS streaming with polling fallback)
 
-## Phase 3 — Zyvor Forge integration (future)
+## Phase 3 — Zynera integration (future)
 
 | Mode | Source |
 |------|--------|
-| Simulation | YAML / forge bundle → `zyvor-janus-api` |
+| Simulation | YAML / zynera bundle → `zyvor-janus-api` |
 | Replay | M3 trace JSONL → event stream |
-| Live | Forge export → `ClusterSnapshot` mapping |
+| Live | Zynera export → `ClusterSnapshot` mapping |
 
 Long-term vision: **Grafana meets Kubernetes Dashboard meets DCGM — focused on AI scheduling**.
 

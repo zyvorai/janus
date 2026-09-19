@@ -54,11 +54,11 @@ class TestZyvorJanusCliIntegration(unittest.TestCase):
         self.assertEqual(metrics["jobs_completed"], metrics["jobs_total"])
         self.assertGreater(metrics["makespan"], 0)
 
-    def test_run_forge_bundle(self) -> None:
+    def test_run_zynera_bundle(self) -> None:
         result = _zyvor_janus(
             "run",
-            "--forge-bundle",
-            "tests/fixtures/forge",
+            "--zynera-bundle",
+            "tests/fixtures/zynera",
             "--profiles-dir",
             "configs/profiles",
         )

@@ -17,7 +17,7 @@ class TraceRecord:
 
 
 class TraceAdapter:
-    """Load Forge scheduler event exports for replay and oracle comparison."""
+    """Load Zynera scheduler event exports for replay and oracle comparison."""
 
     def from_file(self, path: str | Path) -> TraceRecord:
         record = TraceRecord()

@@ -1,7 +1,7 @@
 # Copyright 2026 ZyvorAI Labs Private Limited
 # SPDX-License-Identifier: Apache-2.0
 
-"""Tests for Zyvor Janus Python bindings, adapters, and Forge bundle ingest."""
+"""Tests for Zyvor Janus Python bindings, adapters, and Zynera bundle ingest."""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "configs" / "clusters" / "small_h100.yaml"
-FIXTURES = ROOT / "tests" / "fixtures" / "forge"
+FIXTURES = ROOT / "tests" / "fixtures" / "zynera"
 TRACE_FIXTURES = ROOT / "tests" / "fixtures" / "traces"
 PROFILES = ROOT / "configs" / "profiles"
 
 
-class TestForgeCRDAdapter(unittest.TestCase):
+class TestZyneraCRDAdapter(unittest.TestCase):
     def test_gang_gpu_count_is_32(self) -> None:
         from zyvor_janus.adapters.crd import fabric_ai_job_to_job, gpu_count_from_spec
 
@@ -30,8 +30,8 @@ class TestForgeCRDAdapter(unittest.TestCase):
                 "name": "gpt-distributed-training",
                 "namespace": "ml-training",
                 "annotations": {
-                    "forge.ai/gang-schedule": "true",
-                    "forge.ai/gang-size": "4",
+                    "zynera.ai/gang-schedule": "true",
+                    "zynera.ai/gang-size": "4",
                 },
             },
             "spec": {
@@ -70,9 +70,9 @@ class TestForgeCRDAdapter(unittest.TestCase):
                 "name": "gang-job",
                 "namespace": "default",
                 "annotations": {
-                    "forge.ai/gang-schedule": "true",
-                    "forge.ai/gang-size": "2",
-                    "forge.ai/gang-timeout": "10m",
+                    "zynera.ai/gang-schedule": "true",
+                    "zynera.ai/gang-size": "2",
+                    "zynera.ai/gang-timeout": "10m",
                 },
             },
             "spec": {"gpus": 4, "model": "gpt-13b", "gpuType": "H100"},
@@ -110,11 +110,11 @@ class TestProfileRegistry(unittest.TestCase):
             registry.lookup("unknown-model", "H100")
 
 
-class TestForgeBundleAdapter(unittest.TestCase):
+class TestZyneraBundleAdapter(unittest.TestCase):
     def test_load_fixture_bundle(self) -> None:
-        from zyvor_janus.adapters.bundle import ForgeBundleAdapter
+        from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
 
-        adapter = ForgeBundleAdapter(PROFILES)
+        adapter = ZyneraBundleAdapter(PROFILES)
         bundle = adapter.from_directory(FIXTURES)
         self.assertEqual(len(bundle.jobs), 3)
         gang = next(j for j in bundle.jobs if j["name"] == "gpt-distributed-training")
@@ -122,10 +122,10 @@ class TestForgeBundleAdapter(unittest.TestCase):
         self.assertEqual(gang["tenant"], "ml-training")
 
     def test_missing_profile_raises(self) -> None:
-        from zyvor_janus.adapters.bundle import ForgeBundleAdapter
+        from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
         from zyvor_janus.adapters.profiles import ProfileLookupError
 
-        adapter = ForgeBundleAdapter(Path("/nonexistent/profiles"))
+        adapter = ZyneraBundleAdapter(Path("/nonexistent/profiles"))
         with self.assertRaises(ProfileLookupError):
             adapter.from_directory(FIXTURES)
 

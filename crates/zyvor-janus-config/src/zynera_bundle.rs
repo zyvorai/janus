@@ -1,7 +1,7 @@
 // Copyright 2026 ZyvorAI Labs Private Limited
 // SPDX-License-Identifier: Apache-2.0
 
-//! Load normalized Forge export bundles (FabricAIJob, FabricGpuNode, FabricQuota).
+//! Load normalized Zynera export bundles (FabricAIJob, FabricGpuNode, FabricQuota).
 
 use std::collections::HashMap;
 use std::fs;
@@ -19,13 +19,13 @@ use crate::{
     HardwareProfile, SimulationReport,
 };
 
-const FORGE_API_GROUP: &str = "forge.ai/v1";
+const ZYNERA_API_GROUP: &str = "zynera.ai/v1";
 /// Real label the ai-operator's federated-training-run controller sets on
 /// every per-site `FabricAIJob` it creates (see
 /// `fabricfederatedtrainingrun_controller.go`'s per-site job labels). Reused
 /// here on hand-authored `FabricGpuNode` fixtures too, tagging which
 /// federation site a node belongs to.
-const FEDERATION_SITE_LABEL: &str = "forge.ai/federated-training-site";
+const FEDERATION_SITE_LABEL: &str = "zynera.ai/federated-training-site";
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct GpuTypeRegistry {
@@ -78,7 +78,7 @@ pub struct FederationRunMeta {
 }
 
 #[derive(Debug, Clone)]
-pub struct ForgeBundle {
+pub struct ZyneraBundle {
     pub jobs: Vec<Job>,
     pub cluster: Cluster,
     pub federation: Option<FederationRunMeta>,
@@ -129,7 +129,7 @@ fn yaml_documents(content: &str) -> ConfigResult<Vec<Value>> {
         // `kubectl get <resource> -A -o yaml` wraps multiple resources in a
         // single `kind: List` document with an `items:` array, rather than
         // `---`-separating them — exactly the export command documented in
-        // docs/forge_input.md. Unwrap it so downstream kind/apiVersion
+        // docs/zynera_input.md. Unwrap it so downstream kind/apiVersion
         // checks see the actual FabricAIJob/FabricGpuNode/FabricQuota docs.
         if kind_of(&doc) == Some("List") {
             if let Some(items) = doc.get("items").and_then(|i| i.as_sequence()) {
@@ -159,9 +159,9 @@ fn site_label_of(meta: &Value) -> Option<String> {
 
 fn validate_forge_doc(doc: &Value) -> ConfigResult<()> {
     match api_version_of(doc) {
-        Some(v) if v == FORGE_API_GROUP => Ok(()),
+        Some(v) if v == ZYNERA_API_GROUP => Ok(()),
         Some(v) => Err(ConfigError::Invalid(format!(
-            "unsupported apiVersion '{v}', expected '{FORGE_API_GROUP}'"
+            "unsupported apiVersion '{v}', expected '{ZYNERA_API_GROUP}'"
         ))),
         None => Err(ConfigError::Invalid("missing apiVersion".into())),
     }
@@ -238,7 +238,7 @@ fn parse_federated_training_runs(dir: &Path) -> ConfigResult<Vec<Value>> {
 }
 
 /// Only one federated-training-run's worth of jobs is expected per bundle
-/// (the export command in `docs/forge_input.md` scopes to a single run's
+/// (the export command in `docs/zynera_input.md` scopes to a single run's
 /// namespace); the first document wins if more than one is present.
 fn federation_meta_from(runs: &[Value]) -> Option<FederationRunMeta> {
     let doc = runs.first()?;
@@ -381,16 +381,16 @@ pub fn parse_fabric_ai_job(
 
     let annotations = meta.get("annotations").and_then(|a| a.as_mapping());
     let gang_enabled = annotations
-        .and_then(|a| a.get(Value::from("forge.ai/gang-schedule")))
+        .and_then(|a| a.get(Value::from("zynera.ai/gang-schedule")))
         .and_then(|v| v.as_str())
         .map(|s| s == "true")
         .unwrap_or(false);
     let gang_size_nodes = annotations
-        .and_then(|a| a.get(Value::from("forge.ai/gang-size")))
+        .and_then(|a| a.get(Value::from("zynera.ai/gang-size")))
         .and_then(|v| v.as_str())
         .and_then(|s| s.parse().ok());
     let gang_timeout_secs = annotations
-        .and_then(|a| a.get(Value::from("forge.ai/gang-timeout")))
+        .and_then(|a| a.get(Value::from("zynera.ai/gang-timeout")))
         .and_then(|v| v.as_str())
         .and_then(parse_duration_secs);
 
@@ -543,12 +543,12 @@ pub fn parse_fabric_gpu_nodes(
     Ok(cluster)
 }
 
-pub fn load_forge_bundle(
+pub fn load_zynera_bundle(
     bundle_dir: &Path,
     profiles_dir: &Path,
     gpu_registry_path: &Path,
     hardware_profiles_dir: &Path,
-) -> ConfigResult<ForgeBundle> {
+) -> ConfigResult<ZyneraBundle> {
     let quotas_dir = bundle_dir.join("quotas");
     let jobs_dir = bundle_dir.join("jobs");
     let cluster_dir = bundle_dir.join("cluster");
@@ -584,14 +584,14 @@ pub fn load_forge_bundle(
     let mut cluster = parse_fabric_gpu_nodes(&cluster_dir, &gpu_registry, &hw_profiles)?;
     cluster.tenant_quotas = parse_tenant_quotas(&quotas);
 
-    Ok(ForgeBundle {
+    Ok(ZyneraBundle {
         jobs,
         cluster,
         federation,
     })
 }
 
-pub fn run_forge_bundle_report(
+pub fn run_zynera_bundle_report(
     bundle_dir: &Path,
     profiles_dir: &Path,
     gpu_registry_path: &Path,
@@ -599,7 +599,7 @@ pub fn run_forge_bundle_report(
     mig_profiles_dir: &Path,
     scheduler: &str,
 ) -> ConfigResult<SimulationReport> {
-    let bundle = load_forge_bundle(
+    let bundle = load_zynera_bundle(
         bundle_dir,
         profiles_dir,
         gpu_registry_path,
@@ -621,7 +621,7 @@ pub fn run_forge_bundle_report(
     };
     if any_mig_job && mig_registry.is_none() {
         return Err(ConfigError::Invalid(
-            "forge bundle contains MIG jobs but no MIG profile registry is configured".into(),
+            "zynera bundle contains MIG jobs but no MIG profile registry is configured".into(),
         ));
     }
     let resource_manager = crate::build_resource_manager(mig_registry, scheduler);
@@ -646,7 +646,7 @@ pub fn run_forge_bundle_report(
     })
 }
 
-pub fn run_forge_bundle(
+pub fn run_zynera_bundle(
     bundle_dir: &Path,
     profiles_dir: &Path,
     gpu_registry_path: &Path,
@@ -654,7 +654,7 @@ pub fn run_forge_bundle(
     mig_profiles_dir: &Path,
     scheduler: &str,
 ) -> ConfigResult<SimulationMetrics> {
-    Ok(run_forge_bundle_report(
+    Ok(run_zynera_bundle_report(
         bundle_dir,
         profiles_dir,
         gpu_registry_path,
@@ -694,13 +694,13 @@ mod tests {
     #[test]
     fn yaml_documents_unwraps_kubectl_list_output() {
         // `kubectl get fabricaijobs -A -o yaml` (the exact command
-        // docs/forge_input.md tells users to run) wraps every matching
+        // docs/zynera_input.md tells users to run) wraps every matching
         // resource in a single `kind: List` document instead of
         // `---`-separating them.
         let content = r#"
 apiVersion: v1
 items:
-- apiVersion: forge.ai/v1
+- apiVersion: zynera.ai/v1
   kind: FabricAIJob
   metadata:
     name: job-a
@@ -709,7 +709,7 @@ items:
     model: llama-7b
     gpus: 4
     gpuType: A100
-- apiVersion: forge.ai/v1
+- apiVersion: zynera.ai/v1
   kind: FabricAIJob
   metadata:
     name: job-b
@@ -732,12 +732,12 @@ metadata:
                 .and_then(|n| n.as_str()),
             Some("job-a")
         );
-        assert_eq!(api_version_of(&docs[1]), Some("forge.ai/v1"));
+        assert_eq!(api_version_of(&docs[1]), Some("zynera.ai/v1"));
     }
 
     #[test]
     fn yaml_documents_still_handles_dash_separated_docs() {
-        let content = "apiVersion: forge.ai/v1\nkind: FabricAIJob\nmetadata:\n  name: a\n---\napiVersion: forge.ai/v1\nkind: FabricAIJob\nmetadata:\n  name: b\n";
+        let content = "apiVersion: zynera.ai/v1\nkind: FabricAIJob\nmetadata:\n  name: a\n---\napiVersion: zynera.ai/v1\nkind: FabricAIJob\nmetadata:\n  name: b\n";
         let docs = yaml_documents(content).expect("parse multi-doc yaml");
         assert_eq!(docs.len(), 2);
     }
@@ -752,7 +752,7 @@ metadata:
     #[test]
     fn site_label_of_reads_the_federation_site_label() {
         let meta: Value =
-            serde_yaml::from_str("labels:\n  forge.ai/federated-training-site: site-a\n").unwrap();
+            serde_yaml::from_str("labels:\n  zynera.ai/federated-training-site: site-a\n").unwrap();
         assert_eq!(site_label_of(&meta).as_deref(), Some("site-a"));
     }
 
@@ -766,13 +766,13 @@ metadata:
     fn parse_fabric_ai_job_carries_the_site_label_onto_the_job() {
         let doc: Value = serde_yaml::from_str(
             r#"
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricAIJob
 metadata:
   name: job-a
   namespace: default
   labels:
-    forge.ai/federated-training-site: site-a
+    zynera.ai/federated-training-site: site-a
 spec:
   model: llama-7b
   gpus: 1
@@ -808,7 +808,7 @@ spec:
     fn parse_fabric_ai_job_without_the_label_has_no_site() {
         let doc: Value = serde_yaml::from_str(
             r#"
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricAIJob
 metadata:
   name: job-a
@@ -848,7 +848,7 @@ spec:
     fn federation_meta_from_parses_target_clusters_and_flags() {
         let doc: Value = serde_yaml::from_str(
             r#"
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricFederatedTrainingRun
 metadata:
   name: run-a
@@ -879,8 +879,8 @@ spec:
     }
 
     #[test]
-    fn loads_fixture_forge_bundle() {
-        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/forge");
+    fn loads_fixture_zynera_bundle() {
+        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/zynera");
         if !root.exists() {
             return;
         }
@@ -889,7 +889,7 @@ spec:
             PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../configs/gpu_type_registry.yaml");
         let hw = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../configs/hardware");
 
-        let bundle = load_forge_bundle(&root, &profiles, &registry, &hw).unwrap();
+        let bundle = load_zynera_bundle(&root, &profiles, &registry, &hw).unwrap();
         let gang = bundle
             .jobs
             .iter()
@@ -908,8 +908,8 @@ spec:
     }
 
     #[test]
-    fn forge_bundle_e2e_simulation() {
-        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/forge");
+    fn zynera_bundle_e2e_simulation() {
+        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/zynera");
         if !root.exists() {
             return;
         }
@@ -919,7 +919,7 @@ spec:
         let hw = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../configs/hardware");
         let mig = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../configs/mig");
 
-        let metrics = run_forge_bundle(&root, &profiles, &registry, &hw, &mig, "fifo").unwrap();
+        let metrics = run_zynera_bundle(&root, &profiles, &registry, &hw, &mig, "fifo").unwrap();
         assert_eq!(metrics.jobs_completed, metrics.jobs_total);
         assert!(metrics.jobs_total >= 2);
     }

@@ -13,7 +13,7 @@ PY="$ROOT/.venv/bin/python"
 PORT="${PORT:-8080}"
 HOST="${HOST:-0.0.0.0}"
 
-ensure_forge_extension "$PY" "$ROOT"
+ensure_zynera_extension "$PY" "$ROOT"
 ensure_server_deps "$PY"
 
 export PYTHONPATH="$ROOT/python${PYTHONPATH:+:$PYTHONPATH}"

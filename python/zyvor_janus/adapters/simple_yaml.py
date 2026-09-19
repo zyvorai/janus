@@ -1,7 +1,7 @@
 # Copyright 2026 ZyvorAI Labs Private Limited
 # SPDX-License-Identifier: Apache-2.0
 
-"""Minimal YAML loader for Forge CRD and profile files (no PyYAML required)."""
+"""Minimal YAML loader for Zynera CRD and profile files (no PyYAML required)."""
 
 from __future__ import annotations
 

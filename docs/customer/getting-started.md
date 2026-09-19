@@ -7,7 +7,7 @@ Zyvor Janus replays GPU schedulers against a cluster config — no physical GPUs
 | Requirement | Notes |
 |-------------|--------|
 | Rust toolchain | `cargo` to build `zyvor-janus-cli` |
-| Cluster config YAML | `configs/clusters/` or a Forge CRD export bundle |
+| Cluster config YAML | `configs/clusters/` or a Zynera CRD export bundle |
 | Node.js (optional) | Only for the Next.js web dashboard |
 
 ## 1. Clone and build

@@ -12,7 +12,7 @@ use zyvor_janus_metrics::SimulationMetrics;
 use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Job, JobState};
 use zyvor_janus_scheduler::Scheduler;
-use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ForgeScheduler, PriorityScheduler};
+use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ZyneraScheduler, PriorityScheduler};
 use zyvor_janus_simulator::SimulationEngine;
 
 use crate::{
@@ -386,9 +386,9 @@ pub fn run_trace_replay(
     let (metrics, cluster) = match scheduler {
         "fifo" => run_and_finish(cluster, FifoScheduler, scheduler, jobs, jobs_total),
         "priority" => run_and_finish(cluster, PriorityScheduler, scheduler, jobs, jobs_total),
-        "preemptive" | "forge" => run_and_finish(
+        "preemptive" | "zynera" => run_and_finish(
             cluster,
-            ForgeScheduler::default(),
+            ZyneraScheduler::default(),
             scheduler,
             jobs,
             jobs_total,

@@ -42,7 +42,7 @@ pub struct Job {
     pub gpu_type: Option<String>,
     #[serde(default)]
     pub namespace: Option<String>,
-    /// Federation site tag (Forge `forge.ai/federated-training-site` label).
+    /// Federation site tag (Zynera `zynera.ai/federated-training-site` label).
     /// `None` means unpartitioned — matches any node regardless of site.
     #[serde(default)]
     pub site: Option<String>,

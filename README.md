@@ -22,17 +22,17 @@
 
 ---
 
-Zyvor Janus is a discrete-event simulator for Kubernetes-native GPU scheduling inspired by [Zyvor Forge](https://zyvor.dev/forge). It models clusters, MIG, topology, tenants, quotas, gang scheduling, and AI workloads, enabling scheduler development, RL research, and performance evaluation without physical GPUs. Shipped profiles cover NVIDIA (H100 through B200, L4, A10G, RTX 4090), AMD MI300X/MI250, Intel Gaudi 3, and Apple M-series.
+Zyvor Janus is a discrete-event simulator for Kubernetes-native GPU scheduling inspired by [Zynera](https://zyvor.dev/zynera). It models clusters, MIG, topology, tenants, quotas, gang scheduling, and AI workloads, enabling scheduler development, RL research, and performance evaluation without physical GPUs. Shipped profiles cover NVIDIA (H100 through B200, L4, A10G, RTX 4090), AMD MI300X/MI250, Intel Gaudi 3, and Apple M-series.
 
-[![Watch the Forge + Zyvor Janus demo](https://img.youtube.com/vi/p0GQVaZ_X1A/maxresdefault.jpg)](https://youtu.be/p0GQVaZ_X1A "Watch the Forge + Zyvor Janus demo on YouTube")
+[![Watch the Zynera + Zyvor Janus demo](https://img.youtube.com/vi/p0GQVaZ_X1A/maxresdefault.jpg)](https://youtu.be/p0GQVaZ_X1A "Watch the Zynera + Zyvor Janus demo on YouTube")
 
-**▶ [Watch the demo](https://youtu.be/p0GQVaZ_X1A)** — Forge (production GPU/Kubernetes control plane) and Zyvor Janus (its simulator) running side by side, ~3 min.
+**▶ [Watch the demo](https://youtu.be/p0GQVaZ_X1A)** — Zynera (production GPU/Kubernetes control plane) and Zyvor Janus (its simulator) running side by side, ~3 min.
 
 ## Why Zyvor Janus
 
 - **No GPUs required** — full discrete-event simulation of cluster placement, MIG slicing, NVLink/PCIe topology penalties, and gang scheduling
-- **Forge-native** — imports real `FabricAIJob` / `FabricGPUNode` / `FabricQuota` CRDs and replays production scheduler traces for oracle-vs-live diffing
-- **Pluggable schedulers** — `fifo`, `priority`, `preemptive`, `bestfit`, and Forge's own policy, swappable with one CLI flag
+- **Zynera-native** — imports real `FabricAIJob` / `FabricGpuNode` / `FabricQuota` CRDs and replays production scheduler traces for oracle-vs-live diffing
+- **Pluggable schedulers** — `fifo`, `priority`, `preemptive`, `bestfit`, and Zynera's own policy, swappable with one CLI flag
 - **RL-ready** — Gymnasium environment + PPO baseline for scheduler policy research
 - **Full observability stack** — Rich terminal dashboard, Next.js web UI (runs, benchmark, what-if), and an OpenAI-compatible inference shim for calibrated LLM serving metrics
 
@@ -44,14 +44,14 @@ Zyvor Janus is a discrete-event simulator for Kubernetes-native GPU scheduling i
 - [Project layout](#project-layout)
 - [Milestones](#milestones)
 - [Dual-node "migrate" demo](#dual-node-migrate-demo-placement-not-live-cuda)
-- [Forge input](#forge-input)
+- [Zynera input](#zynera-input)
 - [Enterprise & support](#enterprise--support)
 - [License](#license)
 
 ## Architecture
 
-- **Rust core** — event engine, cluster model, schedulers, metrics, Forge bundle loader, inference timing model
-- **Python API** — PyO3 bindings, Forge CRD adapters, Gymnasium env, visualization, FastAPI server, AIPerf adapters
+- **Rust core** — event engine, cluster model, schedulers, metrics, Zynera bundle loader, inference timing model
+- **Python API** — PyO3 bindings, Zynera CRD adapters, Gymnasium env, visualization, FastAPI server, AIPerf adapters
 - **Web UI** — Next.js dashboard (runs, benchmark, what-if) + Rich CLI live dashboard
 
 ## Installation
@@ -116,15 +116,15 @@ cargo run -p zyvor-janus-cli -- run --config configs/clusters/small_h100.yaml
 That's it — a full cluster simulation with no GPU, no Kubernetes, no config beyond the one YAML file. Everything below is one `cargo run` (or script) away; click a row to expand it.
 
 <details>
-<summary><b>▸ Forge export bundle</b> — test Forge without GPUs (M2)</summary>
+<summary><b>▸ Zynera export bundle</b> — test Zynera without GPUs (M2)</summary>
 
-1. Export from a Forge cluster:
+1. Export from a Zynera cluster:
 
 ```bash
-mkdir -p forge-export/{jobs,cluster,quotas}
-kubectl get fabricaijobs -A -o yaml > forge-export/jobs/all.yaml
-kubectl get fabricgpunodes -o yaml > forge-export/cluster/nodes.yaml
-kubectl get fabricquotas -A -o yaml > forge-export/quotas/all.yaml
+mkdir -p zynera-export/{jobs,cluster,quotas}
+kubectl get fabricaijobs -A -o yaml > zynera-export/jobs/all.yaml
+kubectl get fabricgpunodes -o yaml > zynera-export/cluster/nodes.yaml
+kubectl get fabricquotas -A -o yaml > zynera-export/quotas/all.yaml
 ```
 
 2. Add calibrated runtime profiles in `configs/profiles/` (see `configs/profiles/gpt-13b.yaml`).
@@ -133,7 +133,7 @@ kubectl get fabricquotas -A -o yaml > forge-export/quotas/all.yaml
 
 ```bash
 cargo run -p zyvor-janus-cli -- run \
-  --forge-bundle forge-export \
+  --zynera-bundle zynera-export \
   --profiles-dir configs/profiles
 ```
 
@@ -141,14 +141,14 @@ Or use the included fixture:
 
 ```bash
 cargo run -p zyvor-janus-cli -- run \
-  --forge-bundle tests/fixtures/forge \
+  --zynera-bundle tests/fixtures/zynera \
   --profiles-dir configs/profiles
 ```
 
 </details>
 
 <details>
-<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · forge (M6)</summary>
+<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · zynera (M6)</summary>
 
 ```bash
 # Priority: highest priority first, no preemption
@@ -157,16 +157,16 @@ cargo run -p zyvor-janus-cli -- run --config configs/clusters/priority_scheduler
 # Preemptive: evict lower-priority running jobs for higher-priority arrivals
 cargo run -p zyvor-janus-cli -- run --config configs/clusters/preemption_preemptive.yaml
 
-# Forge bundle with scheduler flag (fifo | priority | preemptive | forge | bestfit)
+# Zynera bundle with scheduler flag (fifo | priority | preemptive | zynera | bestfit)
 cargo run -p zyvor-janus-cli -- run \
-  --forge-bundle tests/fixtures/forge \
-  --scheduler forge
+  --zynera-bundle tests/fixtures/zynera \
+  --scheduler zynera
 ```
 
 </details>
 
 <details>
-<summary><b>▸ Scheduler trace replay</b> — compare vs production Forge (M3)</summary>
+<summary><b>▸ Scheduler trace replay</b> — compare vs production Zynera (M3)</summary>
 
 ```bash
 cargo run -p zyvor-janus-cli -- replay \
@@ -185,7 +185,7 @@ Writes `outputs/trace_diff.json` with oracle vs FIFO placement diffs.
 cargo run -p zyvor-janus-cli -- run --config configs/clusters/mig_single.yaml
 ```
 
-MIG jobs use `mig_profile` and `mig_count` (Forge `spec.mig`) to allocate fractional GPU slices with a simulated reconfiguration delay.
+MIG jobs use `mig_profile` and `mig_count` (Zynera `spec.mig`) to allocate fractional GPU slices with a simulated reconfiguration delay.
 
 </details>
 
@@ -318,7 +318,7 @@ See [docs/openai_shim.md](docs/openai_shim.md).
 | Layer | Location | What it covers |
 |-------|----------|----------------|
 | Rust unit | `crates/*/src/` (`#[test]` modules) | Models, MIG, resource manager, FIFO, trace parsing |
-| Rust integration | `crates/zyvor-janus-config/tests/integration.rs` | Full sim pipelines (YAML, Forge bundle, trace, MIG, RL, topology) |
+| Rust integration | `crates/zyvor-janus-config/tests/integration.rs` | Full sim pipelines (YAML, Zynera bundle, trace, MIG, RL, topology) |
 | CLI integration | `crates/zyvor-janus-cli/tests/cli_integration.rs` | `zyvor-janus run` / `replay` binary |
 | Python unit | `python/tests/test_unit_adapters.py` | CRD mapping, profiles, bundle, trace adapters |
 | Python integration | `python/tests/test_integration_cli.py` | CLI via `cargo run -p zyvor-janus-cli` |
@@ -347,7 +347,7 @@ configs/
   profiles/          Calibrated model runtimes (v1 + inference v2)
   clusters/          Cluster + workload YAML examples
   analytics/         Cost model (score weights optional)
-tests/fixtures/      Forge, traces, AIPerf, benchmark goldens
+tests/fixtures/      Zynera, traces, AIPerf, benchmark goldens
 docs/                Architecture, milestones, UI, benchmark platform, deploy
 ```
 
@@ -357,7 +357,7 @@ See [docs/milestones.md](docs/milestones.md). **M1–M8 complete**, including to
 
 **Benchmark platform (MVP shipped):** [docs/benchmark_platform.md](docs/benchmark_platform.md) — inference model, serving traces, score vector, `/benchmark` + `/what-if` UI, OpenAI shim, AIPerf adapter, twin store API, CI golden script. Remaining gaps (full sim-vs-measured UI, CLI `--serving-trace`, twin library page) are listed in that doc and the [manual test guide](docs/manual_test_benchmark_platform.md).
 
-Schedulers: `fifo`, `priority`, `preemptive`, `forge` (alias for preemptive), `bestfit`.
+Schedulers: `fifo`, `priority`, `preemptive`, `zynera` (alias for preemptive), `bestfit`.
 
 ## Dual-node "migrate" demo (placement, not live CUDA)
 
@@ -371,25 +371,25 @@ ZYVOR_JANUS_DEMO_CONFIG=dual_node_preempt.yaml \
   node scripts/demo-videos/record-zyvor-janus-2gpu-migrate-wow-reel.mjs
 ```
 
-This is a **digital-twin placement migrate**. Forge's production live migrate is KubeVirt VMs (Path A); pod checkpoint/restore is experimental Path B — see Forge [`docs/product/POD_VS_VM_MIGRATION.md`](https://github.com/ssahani/forge/blob/main/docs/product/POD_VS_VM_MIGRATION.md).
+This is a **digital-twin placement migrate**. Zynera's production live migrate is KubeVirt VMs (Path A); pod checkpoint/restore is experimental Path B — see Zynera [`docs/product/POD_VS_VM_MIGRATION.md`](https://github.com/ssahani/zynera/blob/main/docs/product/POD_VS_VM_MIGRATION.md).
 
-## Forge input
+## Zynera input
 
-See [docs/forge_input.md](docs/forge_input.md) for CRD mapping rules, export workflow, and adapter levels.
+See [docs/zynera_input.md](docs/zynera_input.md) for CRD mapping rules, export workflow, and adapter levels.
 
 ## Enterprise & support
 
-Zyvor Janus is the free digital-twin simulator for [Zyvor Forge](https://zyvor.dev/forge), the production GPU/Kubernetes control plane. Janus lets you develop and validate scheduling policy entirely offline; Forge is what runs it against real GPUs.
+Zyvor Janus is the free digital-twin simulator for [Zynera](https://zyvor.dev/zynera), the production GPU/Kubernetes control plane. Janus lets you develop and validate scheduling policy entirely offline; Zynera is what runs it against real GPUs.
 
-| | Zyvor Janus (this repo) | Zyvor Forge ([zyvor.dev/forge](https://zyvor.dev/forge)) |
+| | Zyvor Janus (this repo) | Zynera ([zyvor.dev/zynera](https://zyvor.dev/zynera)) |
 |---|---|---|
 | **What it is** | Discrete-event simulator / digital twin | Production GPU/Kubernetes control plane |
 | **GPUs required** | None — fully simulated | Real GPU fleet |
 | **Use case** | Scheduler R&D, RL research, capacity planning, CI regression gates | Live cluster scheduling, MIG/topology-aware placement, gang scheduling in production |
-| **Input** | Forge CRD export bundles, YAML configs, trace replay | Live cluster via `FabricAIJob` / `FabricGPUNode` / `FabricQuota` CRDs |
+| **Input** | Zynera CRD export bundles, YAML configs, trace replay | Live cluster via `FabricAIJob` / `FabricGpuNode` / `FabricQuota` CRDs |
 | **Support** | [GitHub Issues](https://github.com/hypersdk/zyvor-janus/issues) | SLA, onboarding, migration support — [zyvor.dev/contact](https://zyvor.dev/contact?utm_source=github&utm_medium=zyvor-janus) |
 
-Looking for enterprise support, managed deployments, or the full Forge platform? Visit **[zyvor.dev](https://zyvor.dev)**.
+Looking for enterprise support, managed deployments, or the full Zynera platform? Visit **[zyvor.dev](https://zyvor.dev)**.
 
 ## License
 

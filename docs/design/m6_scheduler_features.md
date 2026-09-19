@@ -1,8 +1,8 @@
-# M6 — Forge scheduler features (scoping)
+# M6 — Zynera scheduler features (scoping)
 
 Status: quotas, priority, preemption, and node-aware gang placement done.
 Gang is scoped to atomic multi-node spread (`gang_size_nodes` distinct nodes)
-rather than full ForgeGang plugin parity — see
+rather than full ZyneraGang plugin parity — see
 [`resource.rs`](../../crates/zyvor-janus-core/src/resource.rs).
 
 M6 bundles four mostly-independent features from `docs/milestones.md`:
@@ -16,19 +16,19 @@ together — recommend separate PRs in the order below.
   tenant's running jobs; `ResourceManager::can_place` rejects placement
   (holding the job in the waiting queue, not erroring) when placing it
   would push the tenant over quota. `FabricQuota.spec.gpuQuota.maxGPUs` is
-  parsed into that map in `forge_bundle::load_forge_bundle`
+  parsed into that map in `zynera_bundle::load_zynera_bundle`
   (`parse_tenant_quotas`); the internal YAML path accepts the same limits
-  via `ClusterConfig.tenant_quotas`. See `docs/forge_input.md`'s "Tenant
+  via `ClusterConfig.tenant_quotas`. See `docs/zynera_input.md`'s "Tenant
   GPU quotas" section. Chose the "hold in queue" semantics from open
   question 1 below — `FifoScheduler` already skips jobs `can_place`
   rejects and keeps trying the rest of the queue, so no engine change was
   needed. Covered by unit tests in `resource.rs`/`cluster.rs` and
-  `integration_forge_bundle_quota_delays_second_job`
+  `integration_zynera_bundle_quota_delays_second_job`
   (`crates/zyvor-janus-config/tests/integration.rs`), which proves two
   same-tenant jobs that *could* run concurrently on the raw GPU count
   instead serialize under a tight quota. Live-cluster testing later found
-  that real Forge's own quota enforcement doesn't actually match this
-  model — see `docs/forge_input.md`'s "Known divergence from real Forge"
+  that real Zynera's own quota enforcement doesn't actually match this
+  model — see `docs/zynera_input.md`'s "Known divergence from real Zynera"
   note under "Tenant GPU quotas" for what was found (async, best-effort,
   doesn't block placement).
 - **Priority — done.** `PriorityScheduler` (`crates/zyvor-janus-scheduler/src/priority.rs`)
@@ -41,20 +41,20 @@ together — recommend separate PRs in the order below.
   new job only wins the *next* scheduling decision, which is exactly the
   gap preemption (below) is meant to close. Selectable via
   `scheduler.type: priority` in internal YAML configs and
-  `--scheduler priority` on `zyvor-janus run --forge-bundle` /
+  `--scheduler priority` on `zyvor-janus run --zynera-bundle` /
   `zyvor-janus replay`. Covered by unit tests in `priority.rs`/`cluster.rs`
   and `integration_priority_scheduler_prefers_high_priority_job`
   (`crates/zyvor-janus-config/tests/integration.rs`), which runs the same
   workload under both policies and shows priority achieves a lower mean
   wait time for identical total makespan.
 - **Gang scheduling — done (scoped).** `gang_enabled` / `gang_size_nodes`
-  are parsed from Forge annotations. `ResourceManager` requires gang jobs
+  are parsed from Zynera annotations. `ResourceManager` requires gang jobs
   to spread `gpu_count / gang_size_nodes` GPUs across each of
   `gang_size_nodes` distinct nodes (all-or-nothing). This matches a
-  buildable subset of Forge gang semantics without the full ForgeGang plugin
-  spec. `ForgeScheduler` aliases the preemptive priority policy; quotas,
+  buildable subset of Zynera gang semantics without the full ZyneraGang plugin
+  spec. `ZyneraScheduler` aliases the preemptive priority policy; quotas,
   gang spread, and topology are enforced by `ResourceManager`.
-- **Gang timeout — done.** `forge.ai/gang-timeout` / `gang_timeout_secs`
+- **Gang timeout — done.** `zynera.ai/gang-timeout` / `gang_timeout_secs`
   schedules a `GangTimeout` DES event at `arrival + timeout`. If the job is
   still waiting (could not be placed as a gang), it transitions to
   `JobState::Failed` and increments `SimulationMetrics.jobs_failed`. Covered
@@ -125,8 +125,8 @@ together — recommend separate PRs in the order below.
 
 ## Open questions
 
-1. ~~**What does "ForgeGang plugin parity" actually require?**~~ Scoped down
-   to node-aware all-or-nothing gang placement (implemented). Full ForgeGang
+1. ~~**What does "ZyneraGang plugin parity" actually require?**~~ Scoped down
+   to node-aware all-or-nothing gang placement (implemented). Full ZyneraGang
    plugin scoring/policy can be added later if a spec becomes available.
 
 ## Suggested order

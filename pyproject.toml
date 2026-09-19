@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "zyvor_janus"
 version = "0.2.0"
-description = "Discrete-event GPU cluster scheduler simulator inspired by Zyvor Forge"
+description = "Discrete-event GPU cluster scheduler simulator inspired by Zynera"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"

@@ -55,7 +55,7 @@ CI (`.github/workflows/rust.yml`, `python.yml`, `benchmark.yml`) runs checks on 
 
 ## Project layout
 
-See [docs/architecture.md](docs/architecture.md) for the crate layout and simulation loop, [docs/forge_input.md](docs/forge_input.md) for Forge CRD mapping, [docs/ui_dashboard.md](docs/ui_dashboard.md) for dashboards, and [docs/benchmark_platform.md](docs/benchmark_platform.md) for the benchmark MVP.
+See [docs/architecture.md](docs/architecture.md) for the crate layout and simulation loop, [docs/zynera_input.md](docs/zynera_input.md) for Zynera CRD mapping, [docs/ui_dashboard.md](docs/ui_dashboard.md) for dashboards, and [docs/benchmark_platform.md](docs/benchmark_platform.md) for the benchmark MVP.
 
 Kubernetes deploy notes live in [deploy/kubernetes/README.md](deploy/kubernetes/README.md).
 
@@ -63,7 +63,7 @@ Kubernetes deploy notes live in [deploy/kubernetes/README.md](deploy/kubernetes/
 
 - Rust: standard `rustfmt` formatting, no `clippy` warnings.
 - Prefer small, focused PRs tied to one milestone, phase, or fix — see [docs/milestones.md](docs/milestones.md).
-- New Forge field mappings must be documented in `docs/forge_input.md`'s field mapping table.
+- New Zynera field mappings must be documented in `docs/zynera_input.md`'s field mapping table.
 - New HTTP APIs should be listed in `docs/ui_dashboard.md`.
 
 ## Reporting issues

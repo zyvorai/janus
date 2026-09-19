@@ -2,7 +2,7 @@
 # ============================================================================
 # deploy-remote.sh — Deploy Zyvor Janus (API + Web) to a remote k3s host
 # ============================================================================
-# Pattern copied from ../forge/scripts/deploy-remote.sh and slimmed for Zyvor Janus:
+# Pattern copied from ../zynera/scripts/deploy-remote.sh and slimmed for Zyvor Janus:
 #   1. Rsync repo to remote ~/.deployment/zyvor-janus
 #   2. Build zyvor-janus-api + zyvor-janus-web with podman
 #   3. Import images into k3s

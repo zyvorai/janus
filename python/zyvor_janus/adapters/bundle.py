@@ -1,7 +1,7 @@
 # Copyright 2026 ZyvorAI Labs Private Limited
 # SPDX-License-Identifier: Apache-2.0
 
-"""Load Forge export bundles (jobs/, cluster/, quotas/)."""
+"""Load Zynera export bundles (jobs/, cluster/, quotas/)."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover - fallback when PyYAML is unavailable
 from zyvor_janus.adapters.crd import fabric_ai_job_to_job, site_of
 from zyvor_janus.adapters.profiles import ProfileLookupError, ProfileRegistry
 
-FORGE_API_VERSION = "forge.ai/v1"
+ZYNERA_API_VERSION = "zynera.ai/v1"
 
 
 def _yaml_documents(content: str) -> list[dict[str, Any]]:
@@ -39,12 +39,12 @@ def _collect_yaml_files(directory: Path) -> list[Path]:
 
 def _validate_api_version(doc: dict[str, Any]) -> None:
     api = doc.get("apiVersion")
-    if api != FORGE_API_VERSION:
-        raise ValueError(f"unsupported apiVersion '{api}', expected '{FORGE_API_VERSION}'")
+    if api != ZYNERA_API_VERSION:
+        raise ValueError(f"unsupported apiVersion '{api}', expected '{ZYNERA_API_VERSION}'")
 
 
 @dataclass
-class ForgeBundle:
+class ZyneraBundle:
     jobs: list[dict[str, Any]] = field(default_factory=list)
     quotas: list[dict[str, Any]] = field(default_factory=list)
     gpu_nodes: list[dict[str, Any]] = field(default_factory=list)
@@ -52,18 +52,18 @@ class ForgeBundle:
     # zyvor-janus-config's Cluster.node_sites. Nodes with no entry are unpartitioned.
     node_sites: dict[str, str] = field(default_factory=dict)
     # FabricFederatedTrainingRun docs found under federation/, if any —
-    # informational only (mirrors zyvor-janus-config's ForgeBundle.federation),
+    # informational only (mirrors zyvor-janus-config's ZyneraBundle.federation),
     # recognized rather than silently dropped like any other unknown kind.
     federation: list[dict[str, Any]] = field(default_factory=list)
 
 
-class ForgeBundleAdapter:
+class ZyneraBundleAdapter:
     def __init__(self, profiles_dir: Path | None = None) -> None:
         self.profiles = ProfileRegistry(profiles_dir) if profiles_dir else None
 
-    def from_directory(self, path: str | Path) -> ForgeBundle:
+    def from_directory(self, path: str | Path) -> ZyneraBundle:
         root = Path(path)
-        bundle = ForgeBundle()
+        bundle = ZyneraBundle()
 
         for file in _collect_yaml_files(root / "quotas"):
             for doc in _yaml_documents(file.read_text()):

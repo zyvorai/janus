@@ -441,7 +441,7 @@ export function ProgressBar({
 
 /* ── Scheduler pills ── */
 
-export const SCHEDULERS = ["fifo", "priority", "preemptive", "forge", "bestfit"] as const;
+export const SCHEDULERS = ["fifo", "priority", "preemptive", "zynera", "bestfit"] as const;
 export type SchedulerId = (typeof SCHEDULERS)[number];
 
 export function SchedulerPillGroup({

@@ -133,7 +133,7 @@ ensure_server_deps() {
   fi
 }
 
-ensure_forge_extension() {
+ensure_zynera_extension() {
   local py="$1"
   export PYTHONPATH="${2}/python${PYTHONPATH:+:$PYTHONPATH}"
   if ! "$py" -c "import zyvor_janus._zyvor_janus" >/dev/null 2>&1; then

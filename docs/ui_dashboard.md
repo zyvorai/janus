@@ -108,7 +108,7 @@ Options (passed through to the Python entry point):
 source .venv/bin/activate
 python python/examples/live_dashboard.py --config configs/clusters/small_h100.yaml
 python -m zyvor_janus.dashboard --config configs/clusters/small_h100.yaml
-forge-sim-dashboard --config configs/clusters/small_h100.yaml   # after pip install -e .
+zynera-sim-dashboard --config configs/clusters/small_h100.yaml   # after pip install -e .
 ```
 
 ### How it works

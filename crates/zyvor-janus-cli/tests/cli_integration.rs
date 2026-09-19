@@ -43,15 +43,15 @@ fn cli_run_internal_config_emits_metrics() {
 }
 
 #[test]
-fn cli_run_forge_bundle_completes() {
-    let bundle = repo_root().join("tests/fixtures/forge");
+fn cli_run_zynera_bundle_completes() {
+    let bundle = repo_root().join("tests/fixtures/zynera");
     if !bundle.exists() {
         return;
     }
     let output = zyvor_janus()
         .args([
             "run",
-            "--forge-bundle",
+            "--zynera-bundle",
             bundle.to_str().expect("utf8 path"),
             "--profiles-dir",
             "configs/profiles",
@@ -97,15 +97,15 @@ fn cli_replay_trace_reports_zero_diffs() {
 }
 
 #[test]
-fn cli_run_forge_bundle_with_priority_scheduler_completes() {
-    let bundle = repo_root().join("tests/fixtures/forge");
+fn cli_run_zynera_bundle_with_priority_scheduler_completes() {
+    let bundle = repo_root().join("tests/fixtures/zynera");
     if !bundle.exists() {
         return;
     }
     let output = zyvor_janus()
         .args([
             "run",
-            "--forge-bundle",
+            "--zynera-bundle",
             bundle.to_str().expect("utf8 path"),
             "--profiles-dir",
             "configs/profiles",
@@ -144,15 +144,15 @@ fn cli_run_internal_config_with_preemptive_scheduler_reports_preemptions() {
 }
 
 #[test]
-fn cli_run_forge_bundle_with_unknown_scheduler_fails() {
-    let bundle = repo_root().join("tests/fixtures/forge");
+fn cli_run_zynera_bundle_with_unknown_scheduler_fails() {
+    let bundle = repo_root().join("tests/fixtures/zynera");
     if !bundle.exists() {
         return;
     }
     let output = zyvor_janus()
         .args([
             "run",
-            "--forge-bundle",
+            "--zynera-bundle",
             bundle.to_str().expect("utf8 path"),
             "--profiles-dir",
             "configs/profiles",
@@ -193,5 +193,5 @@ fn cli_run_requires_config_or_bundle() {
         .expect("spawn zyvor-janus");
     assert!(!output.status.success());
     let stderr = String::from_utf8_lossy(&output.stderr);
-    assert!(stderr.contains("--config") || stderr.contains("--forge-bundle"));
+    assert!(stderr.contains("--config") || stderr.contains("--zynera-bundle"));
 }

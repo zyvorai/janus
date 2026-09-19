@@ -133,7 +133,7 @@ export function LoginForm() {
             <div className="brand-sub">ZYVOR</div>
           </div>
           <h2 className="hero-headline login-fade-in d1">
-            GPU scheduler simulation for the <span className="login-text-gradient">Forge platform</span>
+            GPU scheduler simulation for the <span className="login-text-gradient">Zynera platform</span>
           </h2>
           <p className="hero-sub login-fade-in d2">
             Launch clusters, replay scheduler decisions, benchmark policies, and run what-if sweeps —
@@ -152,7 +152,7 @@ export function LoginForm() {
             <div className="feature-icon">▶</div>
             <div>
               <div className="feature-title">Run &amp; compare</div>
-              <p className="feature-desc">FIFO, priority, preemptive, Forge, and best-fit side by side.</p>
+              <p className="feature-desc">FIFO, priority, preemptive, Zynera, and best-fit side by side.</p>
             </div>
           </div>
           <div className="login-feature-card login-feature-card-highlight login-fade-in" style={{ animationDelay: "0.42s", opacity: 0 }}>

@@ -4,8 +4,8 @@
 """Input adapters for Zyvor Janus."""
 
 __all__ = [
-    "ForgeBundle",
-    "ForgeBundleAdapter",
+    "ZyneraBundle",
+    "ZyneraBundleAdapter",
     "ProfileLookupError",
     "ProfileRegistry",
     "TraceAdapter",
@@ -17,10 +17,10 @@ __all__ = [
 
 
 def __getattr__(name: str):
-    if name in ("ForgeBundle", "ForgeBundleAdapter"):
-        from zyvor_janus.adapters.bundle import ForgeBundle, ForgeBundleAdapter
+    if name in ("ZyneraBundle", "ZyneraBundleAdapter"):
+        from zyvor_janus.adapters.bundle import ZyneraBundle, ZyneraBundleAdapter
 
-        return {"ForgeBundle": ForgeBundle, "ForgeBundleAdapter": ForgeBundleAdapter}[name]
+        return {"ZyneraBundle": ZyneraBundle, "ZyneraBundleAdapter": ZyneraBundleAdapter}[name]
     if name in ("TraceAdapter", "TraceRecord"):
         from zyvor_janus.adapters.trace import TraceAdapter, TraceRecord
 

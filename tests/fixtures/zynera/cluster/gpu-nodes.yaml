@@ -1,4 +1,4 @@
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricGpuNode
 metadata:
   name: gpu-node-0
@@ -10,7 +10,7 @@ spec:
   rdma: true
   interconnect: NVLink
 ---
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricGpuNode
 metadata:
   name: gpu-node-1
@@ -22,7 +22,7 @@ spec:
   rdma: true
   interconnect: NVLink
 ---
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricGpuNode
 metadata:
   name: gpu-node-2
@@ -34,7 +34,7 @@ spec:
   rdma: true
   interconnect: NVLink
 ---
-apiVersion: forge.ai/v1
+apiVersion: zynera.ai/v1
 kind: FabricGpuNode
 metadata:
   name: gpu-node-3

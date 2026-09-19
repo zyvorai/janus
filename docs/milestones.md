@@ -3,29 +3,29 @@
 | Milestone | Status | Deliverable |
 |-----------|--------|-------------|
 | **M1 — Simulation core** | Done | DES, FIFO, internal YAML, CLI, Python bindings |
-| **M2 — Forge Compatibility** | Done | Multi-CRD ingest, corrected mappings, profiles, `--forge-bundle` CLI |
+| **M2 — Zynera Compatibility** | Done | Multi-CRD ingest, corrected mappings, profiles, `--zynera-bundle` CLI |
 | **M3 — Trace replay** | Done | Scheduler event JSONL replay + oracle vs FIFO diff report |
 | **M4 — MIG simulation** | Done | MIG slice partition/reconfig with simulated delay |
 | **M5 — Topology** | Done | NVLink-domain placement, `topology_penalties`, runtime inflation via `TopologyGraph` |
-| **M6 — Forge scheduler features** | Done | Quotas, priority, preemption, gang spread + timeout, `forge`/`bestfit` schedulers |
+| **M6 — Zynera scheduler features** | Done | Quotas, priority, preemption, gang spread + timeout, `zynera`/`bestfit` schedulers |
 | **M7 — RL** | Done | Gymnasium wrapper, PPO baseline, stepped `RlSession` |
 | **M8 — Visualization** | Done | Gantt, heatmaps, `--jobs-output` timeline JSON |
 
 ## M2 success criteria
 
-- [x] `ForgeBundleAdapter` loads `FabricAIJob`, `FabricGpuNode`, `FabricQuota`
+- [x] `ZyneraBundleAdapter` loads `FabricAIJob`, `FabricGpuNode`, `FabricQuota`
 - [x] Correct GPU count for distributed/gang jobs (32 not 8)
 - [x] Tenant resolved from `FabricQuota`, not job spec
 - [x] Calibrated profiles with fail-on-missing runtime
-- [x] `zyvor-janus run --forge-bundle` CLI
-- [x] Golden fixtures in `tests/fixtures/forge/`
-- [x] Export workflow documented in `docs/forge_input.md`
+- [x] `zyvor-janus run --zynera-bundle` CLI
+- [x] Golden fixtures in `tests/fixtures/zynera/`
+- [x] Export workflow documented in `docs/zynera_input.md`
 
 ## M3 success criteria
 
 - [x] JSONL trace format with `JobSubmitted` / `JobScheduled` events
 - [x] `TraceAdapter` (Python) + `zyvor-janus-config::trace` (Rust)
-- [x] `zyvor-janus replay --trace` CLI with cluster from config or forge bundle
+- [x] `zyvor-janus replay --trace` CLI with cluster from config or zynera bundle
 - [x] Oracle vs simulated placement diff report JSON
 - [x] Golden fixture `tests/fixtures/traces/fifo_match.jsonl`
 
@@ -35,8 +35,8 @@
 # Internal synthetic workload (M1)
 cargo run -p zyvor-janus-cli -- run --config configs/clusters/small_h100.yaml
 
-# Forge export bundle (M2)
-cargo run -p zyvor-janus-cli -- run --forge-bundle tests/fixtures/forge --profiles-dir configs/profiles
+# Zynera export bundle (M2)
+cargo run -p zyvor-janus-cli -- run --zynera-bundle tests/fixtures/zynera --profiles-dir configs/profiles
 
 # Trace replay + decision diff (M3)
 cargo run -p zyvor-janus-cli -- replay \
@@ -93,7 +93,7 @@ cargo run -p zyvor-janus-cli -- run --config configs/clusters/mig_single.yaml
 - [x] Jobs with `mig_profile` + `mig_count` allocate slices, not whole GPUs
 - [x] Reconfiguration delay simulated (`reconfig_seconds: 30`)
 - [x] `mig_reconfigs` tracked in metrics output
-- [x] Forge `spec.mig.profile/count` mapped at ingest (M2) and simulated (M4)
+- [x] Zynera `spec.mig.profile/count` mapped at ingest (M2) and simulated (M4)
 
 ## M5 success criteria
 
@@ -109,10 +109,10 @@ cargo run -p zyvor-janus-cli -- run --config configs/clusters/mig_single.yaml
 - [x] Quotas: `FabricQuota.spec.gpuQuota.maxGPUs` enforced per tenant at placement time
 - [x] Priority scheduler: `scheduler.type: priority` / `--scheduler priority`
 - [x] Preemption: `scheduler.type: preemptive` / `--scheduler preemptive`
-- [x] Forge scheduler: `scheduler.type: forge` / `--scheduler forge` (alias for preemptive priority)
+- [x] Zynera scheduler: `scheduler.type: zynera` / `--scheduler zynera` (alias for preemptive priority)
 - [x] Best-fit: `scheduler.type: bestfit` / `--scheduler bestfit` (tightest-node GPU packing)
 - [x] Gang: `gang_enabled` + `gang_size_nodes` require GPUs across N distinct nodes (all-or-nothing)
-- [x] Gang timeout: `gang_timeout_secs` / `forge.ai/gang-timeout` fails waiting gang jobs (`jobs_failed` metric)
+- [x] Gang timeout: `gang_timeout_secs` / `zynera.ai/gang-timeout` fails waiting gang jobs (`jobs_failed` metric)
 - [x] Integration tests for priority, preemption, gang
 
 ## M7 success criteria

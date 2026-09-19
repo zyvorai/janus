@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-FIXTURES = ROOT / "tests" / "fixtures" / "forge"
+FIXTURES = ROOT / "tests" / "fixtures" / "zynera"
 PROFILES = ROOT / "configs" / "profiles"
 
 
@@ -91,7 +91,7 @@ class TestFabricAIJobMapping(unittest.TestCase):
             "metadata": {
                 "name": "j",
                 "namespace": "default",
-                "labels": {"forge.ai/federated-training-site": "site-a"},
+                "labels": {"zynera.ai/federated-training-site": "site-a"},
             },
             "spec": {"gpus": 1},
         }
@@ -129,25 +129,25 @@ class TestSimpleYaml(unittest.TestCase):
         self.assertIn("H100", data["profiles"])
 
 
-class TestForgeBundleAdapterUnit(unittest.TestCase):
+class TestZyneraBundleAdapterUnit(unittest.TestCase):
     def test_rejects_empty_jobs_dir(self) -> None:
-        from zyvor_janus.adapters.bundle import ForgeBundleAdapter
+        from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
 
-        adapter = ForgeBundleAdapter(PROFILES)
+        adapter = ZyneraBundleAdapter(PROFILES)
         empty = ROOT / "tests" / "fixtures" / "traces"
         with self.assertRaises(ValueError):
             adapter.from_directory(empty)
 
     def test_mig_job_in_fixture(self) -> None:
-        from zyvor_janus.adapters.bundle import ForgeBundleAdapter
+        from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
 
-        adapter = ForgeBundleAdapter(PROFILES)
+        adapter = ZyneraBundleAdapter(PROFILES)
         bundle = adapter.from_directory(FIXTURES)
         mig = next(j for j in bundle.jobs if j["name"] == "mig-inference")
         self.assertEqual(mig["gpu_count"], 2)
 
     def test_node_sites_and_federation_run_are_recognized(self) -> None:
-        from zyvor_janus.adapters.bundle import ForgeBundleAdapter
+        from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -156,30 +156,30 @@ class TestForgeBundleAdapterUnit(unittest.TestCase):
             (root / "federation").mkdir()
 
             (root / "jobs" / "job.yaml").write_text(
-                "apiVersion: forge.ai/v1\n"
+                "apiVersion: zynera.ai/v1\n"
                 "kind: FabricAIJob\n"
                 "metadata:\n"
                 "  name: j\n"
                 "  namespace: default\n"
                 "  labels:\n"
-                "    forge.ai/federated-training-site: site-a\n"
+                "    zynera.ai/federated-training-site: site-a\n"
                 "spec:\n"
                 "  gpus: 1\n"
             )
             (root / "cluster" / "nodes.yaml").write_text(
-                "apiVersion: forge.ai/v1\n"
+                "apiVersion: zynera.ai/v1\n"
                 "kind: FabricGpuNode\n"
                 "metadata:\n"
                 "  name: n0\n"
                 "  labels:\n"
-                "    forge.ai/federated-training-site: site-a\n"
+                "    zynera.ai/federated-training-site: site-a\n"
                 "spec:\n"
                 "  nodeName: n0\n"
                 "  gpuType: any\n"
                 "  gpuCount: 1\n"
             )
             (root / "federation" / "run.yaml").write_text(
-                "apiVersion: forge.ai/v1\n"
+                "apiVersion: zynera.ai/v1\n"
                 "kind: FabricFederatedTrainingRun\n"
                 "metadata:\n"
                 "  name: run-a\n"
@@ -189,7 +189,7 @@ class TestForgeBundleAdapterUnit(unittest.TestCase):
                 "  dropoutRecovery: true\n"
             )
 
-            adapter = ForgeBundleAdapter()
+            adapter = ZyneraBundleAdapter()
             bundle = adapter.from_directory(root)
 
             self.assertEqual(bundle.jobs[0]["site"], "site-a")

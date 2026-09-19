@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
 # Remote image build + k3s import helpers (sourced by deploy-remote.sh on the build host).
-# Pattern copied from ../forge/scripts/lib/deploy-remote-images.sh (slimmed for API + Web).
+# Pattern copied from ../zynera/scripts/lib/deploy-remote-images.sh (slimmed for API + Web).
 
 set -euo pipefail
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH:-}"
