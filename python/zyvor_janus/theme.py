@@ -24,6 +24,8 @@ TEXT_BODY = "#cbd5e1"
 TEXT_MUTED = "#aeb9c8"
 TEXT_DIM = "#8a8a8a"
 BORDER = "rgba(255,255,255,0.06)"
+# matplotlib does not parse CSS rgba(); #RRGGBBAA is the equivalent (alpha 0.06 ~ 0x0f).
+BORDER_MPL = "#ffffff0f"
 
 
 def matplotlib_rcparams() -> dict[str, Any]:
@@ -31,12 +33,12 @@ def matplotlib_rcparams() -> dict[str, Any]:
     return {
         "figure.facecolor": BG,
         "axes.facecolor": SURFACE,
-        "axes.edgecolor": BORDER,
+        "axes.edgecolor": BORDER_MPL,
         "axes.labelcolor": TEXT_MUTED,
         "xtick.color": TEXT_MUTED,
         "ytick.color": TEXT_MUTED,
         "text.color": TEXT_BODY,
-        "grid.color": "rgba(255,255,255,0.06)",
+        "grid.color": BORDER_MPL,
         "grid.alpha": 1.0,
     }
 

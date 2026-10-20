@@ -25,6 +25,17 @@ class TestViz(unittest.TestCase):
         self.assertEqual(len(data["jobs"]), 2)
         self.assertEqual(data["gpu_count"], 2)
 
+    def test_theme_rcparams_accepted_by_matplotlib(self) -> None:
+        try:
+            import matplotlib
+        except ImportError:
+            self.skipTest("matplotlib not installed")
+
+        from zyvor_janus.theme import matplotlib_rcparams
+
+        with matplotlib.rc_context(matplotlib_rcparams()):
+            pass
+
     def test_gantt_theme_colors(self) -> None:
         try:
             __import__("matplotlib")
