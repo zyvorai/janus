@@ -9,8 +9,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from typing import Any
-
 try:
     import yaml
 except ImportError:  # pragma: no cover - fallback when PyYAML is unavailable
@@ -27,7 +25,16 @@ def _yaml_documents(content: str) -> list[dict[str, Any]]:
         docs = list(yaml.safe_load_all(content))
     else:
         docs = yaml.safe_load_all(content)
-    return [d for d in docs if isinstance(d, dict)]
+    out: list[dict[str, Any]] = []
+    for d in docs:
+        if not isinstance(d, dict):
+            continue
+        # `kubectl get ... -o yaml` wraps resources in a `kind: List` document.
+        if d.get("kind") == "List":
+            out.extend(i for i in (d.get("items") or []) if isinstance(i, dict))
+        else:
+            out.append(d)
+    return out
 
 
 def _collect_yaml_files(directory: Path) -> list[Path]:
