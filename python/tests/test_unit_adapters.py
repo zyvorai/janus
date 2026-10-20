@@ -146,6 +146,19 @@ class TestZyneraBundleAdapterUnit(unittest.TestCase):
         mig = next(j for j in bundle.jobs if j["name"] == "mig-inference")
         self.assertEqual(mig["gpu_count"], 2)
 
+    def test_kubectl_list_export_is_unwrapped(self) -> None:
+        from zyvor_janus.adapters.bundle import _yaml_documents
+
+        content = (
+            "apiVersion: v1\nkind: List\nitems:\n"
+            "- apiVersion: zynera.ai/v1\n  kind: FabricAIJob\n"
+            "  metadata:\n    name: a\n"
+            "- apiVersion: zynera.ai/v1\n  kind: FabricAIJob\n"
+            "  metadata:\n    name: b\n"
+        )
+        docs = _yaml_documents(content)
+        self.assertEqual([d["metadata"]["name"] for d in docs], ["a", "b"])
+
     def test_node_sites_and_federation_run_are_recognized(self) -> None:
         from zyvor_janus.adapters.bundle import ZyneraBundleAdapter
 

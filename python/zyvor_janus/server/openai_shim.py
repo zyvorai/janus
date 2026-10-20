@@ -10,6 +10,7 @@ note at the top of server/app.py.
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import os
 import time
@@ -54,7 +55,7 @@ def _require_api_key(authorization: str | None = Header(default=None)) -> str:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="missing bearer token")
     token = authorization.removeprefix("Bearer ").strip()
-    if token != DEFAULT_API_KEY:
+    if not hmac.compare_digest(token.encode(), DEFAULT_API_KEY.encode()):
         raise HTTPException(status_code=401, detail="invalid api key")
     return token
 

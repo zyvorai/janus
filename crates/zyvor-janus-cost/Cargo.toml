@@ -8,3 +8,6 @@ description = "Zyvor Janus GPU cost model — seed crate for future multi-provid
 
 [dependencies]
 serde = { workspace = true }
+
+[dev-dependencies]
+serde_yaml = { workspace = true }
