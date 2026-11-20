@@ -1,0 +1,8 @@
+jobs:
+  - id: bad-gang
+    name: bad-gang
+    arrival_time: 0
+    runtime: 10
+    gpu_count: 5
+    gang_enabled: true
+    gang_size_nodes: 2

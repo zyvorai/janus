@@ -1,0 +1,75 @@
+jobs:
+  - id: job-001
+    name: llama70b-training
+    arrival_time: 0
+    runtime: 3600
+    gpu_count: 2
+    gpu_memory_gb: 80
+    priority: 10
+    tenant: research
+    network_bw_gbps: 400
+
+  - id: job-002
+    name: stable-diffusion-inference
+    arrival_time: 5
+    runtime: 1.8
+    gpu_count: 1
+    gpu_memory_gb: 24
+    priority: 20
+    tenant: prod
+
+  - id: job-003
+    name: fine-tune-small
+    arrival_time: 10
+    runtime: 600
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 5
+    tenant: research
+
+  - id: job-004
+    name: batch-eval
+    arrival_time: 12
+    runtime: 300
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 1
+    tenant: batch
+
+  - id: job-005
+    name: inference-burst
+    arrival_time: 15
+    runtime: 30
+    gpu_count: 1
+    gpu_memory_gb: 24
+    priority: 15
+    tenant: prod
+
+  - id: job-006
+    name: training-run-b
+    arrival_time: 20
+    runtime: 1800
+    gpu_count: 4
+    gpu_memory_gb: 80
+    priority: 8
+    tenant: research
+    network_bw_gbps: 400
+
+  - id: job-007
+    name: quick-test
+    arrival_time: 25
+    runtime: 60
+    gpu_count: 1
+    gpu_memory_gb: 16
+    priority: 3
+    tenant: dev
+
+  - id: job-008
+    name: large-gang-job
+    arrival_time: 30
+    runtime: 2400
+    gpu_count: 4
+    gpu_memory_gb: 80
+    priority: 12
+    tenant: research
+    network_bw_gbps: 400

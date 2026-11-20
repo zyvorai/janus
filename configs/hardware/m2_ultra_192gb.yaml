@@ -1,0 +1,5 @@
+name: M2_ULTRA_192GB
+memory_gb: 192
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

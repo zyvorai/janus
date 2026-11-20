@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><title>Getting Started — Zyvor Janus</title>
+<style>
+@page{size:A4;margin:15mm 16mm}*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#1f2937;line-height:1.58;font-size:10.5pt}
+.cover{height:262mm;margin:-15mm -16mm 0;background:linear-gradient(135deg,#0a0614,#1e1b4b,#0d1b2a);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;page-break-after:always;position:relative}
+.cover .kicker{letter-spacing:5px;text-transform:uppercase;opacity:.72;margin-bottom:1.4em}
+.cover h1{font-size:3.2em;font-weight:800;letter-spacing:-2px}
+.cover h1 span{color:#a78bfa}
+.cover .sub{font-size:1.3em;font-weight:300;opacity:.93;margin:1em 0;max-width:24em}
+.cover .badge{display:inline-block;background:rgba(96,165,250,.2);border:1px solid #a78bfa;padding:8px 22px;border-radius:20px;margin-top:2em}
+.cover .foot{position:absolute;bottom:34px;font-size:.82em;opacity:.6}
+h2{page-break-before:always;margin:0 0 .35em;font-size:1.55em;font-weight:750;color:#12203a;border-bottom:2px solid #e5edfb;padding-bottom:.28em}
+h2:first-of-type{page-break-before:avoid}
+h3{margin:1.1em 0 .4em;font-size:1.12em;font-weight:700}
+p,li{margin:.4em 0}ul,ol{margin:.5em 0 .9em 1.4em}
+a{color:#2563eb;text-decoration:none}
+code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.86em;font-family:ui-monospace,Menlo,monospace}
+pre{background:#0f172a;color:#e2e8f0;padding:12px 15px;border-radius:9px;overflow-x:auto;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.1em;font-size:9.5pt}
+th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f1f5f9}
+hr{border:none;border-top:1px solid #e5e7eb;margin:1.2em 0}
+</style></head><body>
+<section class="cover"><div class="kicker">ZyvorAI Labs · Customer Documentation</div>
+<h1>Zyvor <span>Janus</span></h1>
+<div class="sub">Getting Started</div>
+<div class="badge">2026-08-29</div>
+<div class="foot">zyvor.dev · Confidential — for licensed customers</div></section>
+<main><p>Zyvor Janus replays GPU schedulers against a cluster config — no physical GPUs required. This page gets you to a first CLI run and an optional web console session.</p>
+<h2>Prerequisites</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rust toolchain</td>
+<td><code>cargo</code> to build <code>zyvor-janus-cli</code></td>
+</tr>
+<tr>
+<td>Cluster config YAML</td>
+<td><code>configs/clusters/</code> or a Forge CRD export bundle</td>
+</tr>
+<tr>
+<td>Node.js (optional)</td>
+<td>Only for the Next.js web dashboard</td>
+</tr>
+</tbody></table>
+<h2>1. Clone and build</h2>
+<pre><code class="language-bash">git clone https://github.com/zyvorai/janus.git
+cd zyvor-janus   # or your checkout path
+cargo build -p zyvor-janus-cli
+</code></pre>
+<h2>2. First simulation (CLI)</h2>
+<pre><code class="language-bash">cargo run -p zyvor-janus-cli -- run --config configs/clusters/small_h100.yaml
+</code></pre>
+<p>Scheduler choice (FIFO, priority, preemptive, best-fit) comes from the config. LLM-serving workloads also report TTFT/TPS.</p>
+<h2>3. Optional — start the web console</h2>
+<pre><code class="language-bash">./scripts/run_web_dashboard.sh
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>http://&lt;host&gt;:3000</code></td>
+<td>Next.js UI</td>
+</tr>
+<tr>
+<td><code>http://&lt;host&gt;:8080/api/health</code></td>
+<td>FastAPI backend</td>
+</tr>
+</tbody></table>
+<p>Sign in (<strong>Admin</strong> / <strong>Admin@321</strong> by default) → <a href="pages/console/home.md">Dashboard</a> → <strong>Run</strong>.</p>
+<p>Override ports: <code>API_PORT=9000 UI_PORT=3001 ./scripts/run_web_dashboard.sh</code>.</p>
+<h2>4. Orient yourself (UX)</h2>
+<ol>
+<li>Sidebar: Dashboard · Runs · Benchmark · What-if · Twins.</li>
+<li>Launch a run from Dashboard; open <strong>Run detail</strong> then <strong>Simulate</strong> to replay decisions.</li>
+<li>Use <strong>What-if</strong> to sweep schedulers; <strong>Benchmark</strong> for TTFT/TPS score vectors.</li>
+</ol>
+<h2>Troubleshooting</h2>
+<ul>
+<li><strong><code>cargo run</code> can&#39;t find the config</strong> — <code>--config</code> is relative to your cwd under <code>configs/clusters/</code>.</li>
+<li><strong>No TTFT/TPS</strong> — only LLM-serving workloads emit those metrics.</li>
+<li><strong>Dashboard empty</strong> — confirm FastAPI health and that CLI/UI share the same outputs path.</li>
+</ul>
+<h2>Next steps</h2>
+<ul>
+<li><a href="using-the-dashboard.md">Using the Dashboard</a></li>
+<li><a href="configuration.md">Configuration</a></li>
+<li><a href="pages/README.md">Page guides</a></li>
+<li><a href="workflows.md">Workflows</a></li>
+</ul>
+<hr>
+<p>Zyvor Janus ships a CLI and a Next.js web console. Both consume the same simulation engine output.</p>
+<h2>Shell chrome</h2>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sidebar / glass icons</td>
+<td>Dashboard · Runs · Benchmark · What-if · Twins</td>
+</tr>
+<tr>
+<td>Top bar brand</td>
+<td>Jump home</td>
+</tr>
+<tr>
+<td>Collapse control</td>
+<td>Icon-only sidebar</td>
+</tr>
+<tr>
+<td>Mobile bottom nav</td>
+<td>Same primary destinations</td>
+</tr>
+</tbody></table>
+<h2>Surfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Launch / compare configs</td>
+<td><a href="pages/console/home.md">Dashboard</a></td>
+</tr>
+<tr>
+<td>Live scheduling replay</td>
+<td><a href="pages/console/simulate.md">Simulate</a></td>
+</tr>
+<tr>
+<td>TTFT/TPS benchmarks</td>
+<td><a href="pages/console/benchmark.md">Benchmark</a></td>
+</tr>
+<tr>
+<td>Scheduler sweeps</td>
+<td><a href="pages/console/what-if.md">What-if</a></td>
+</tr>
+<tr>
+<td>AIPerf twins</td>
+<td><a href="pages/console/twins.md">Twins</a></td>
+</tr>
+<tr>
+<td>One run</td>
+<td><a href="pages/console/runs-id.md">Run detail</a></td>
+</tr>
+</tbody></table>
+<h2>Operate tips</h2>
+<ol>
+<li>Start the stack with <code>./scripts/run_web_dashboard.sh</code>, then sign in.</li>
+<li>Prefer Dashboard <strong>Run</strong> for interactive work; use CLI for CI and scripts.</li>
+<li>After a run, <strong>Open in Simulate</strong> before changing schedulers in What-if.</li>
+<li>Never paste lab IPs into runbooks — use <code>&lt;host&gt;</code>.</li>
+</ol>
+<h2>Related</h2>
+<ul>
+<li><a href="getting-started.md">Getting Started</a></li>
+<li><a href="PAGE_INDEX.md">Page index</a></li>
+<li><a href="admin-basics.md">Admin basics</a></li>
+</ul>
+<hr>
+<h2>First CLI run</h2>
+<ol>
+<li><a href="getting-started.md">Getting Started</a> — build + <code>run --config configs/clusters/small_h100.yaml</code></li>
+<li>Confirm the run completes; note TTFT/TPS only for LLM-serving configs</li>
+</ol>
+<h2>Console: run → simulate → inspect</h2>
+<ol>
+<li><code>./scripts/run_web_dashboard.sh</code> → <a href="pages/auth/login.md">Login</a></li>
+<li><a href="pages/console/home.md">Dashboard</a> → pick config → <strong>Run</strong></li>
+<li>Open <a href="pages/console/runs-id.md">Run detail</a> → <strong>Open in Simulate</strong></li>
+<li>Watch Accept→assign decisions on <a href="pages/console/simulate.md">Simulate</a></li>
+</ol>
+<h2>Compare two configs</h2>
+<ol>
+<li>Dashboard → <strong>Compare configs</strong> (A vs B)</li>
+<li>Or CLI two runs + Benchmark / What-if for scheduler sweeps</li>
+</ol>
+<h2>Scheduler what-if sweep</h2>
+<ol>
+<li><a href="pages/console/what-if.md">What-if</a> → select schedulers → <strong>Run sweep</strong></li>
+<li>Download CSV; open best candidate run detail</li>
+</ol>
+<h2>Benchmark with twins</h2>
+<ol>
+<li>Calibrate / list <a href="pages/console/twins.md">Twins</a></li>
+<li><a href="pages/console/benchmark.md">Benchmark</a> → <strong>Run benchmark</strong> → read sim vs measured</li>
+</ol>
+<h2>Related</h2>
+<ul>
+<li><a href="configuration.md">Configuration</a></li>
+<li><a href="using-the-dashboard.md">Using the Dashboard</a></li>
+</ul>
+</main></body></html>

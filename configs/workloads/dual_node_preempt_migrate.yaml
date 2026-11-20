@@ -1,0 +1,24 @@
+# Dual-node preemption "migrate" story (placement move, not live CUDA):
+# mover starts on node-0/gpu-0, hold occupies node-1/gpu-1, high arrives when
+# both busy → preempts mover → hold finishes → mover resumes on node-1/gpu-1.
+jobs:
+  - id: job-mover
+    name: mover-low
+    arrival_time: 0
+    runtime: 100
+    gpu_count: 1
+    priority: 10
+
+  - id: job-hold
+    name: hold-mid
+    arrival_time: 1
+    runtime: 40
+    gpu_count: 1
+    priority: 50
+
+  - id: job-high
+    name: high-priority
+    arrival_time: 10
+    runtime: 50
+    gpu_count: 1
+    priority: 90

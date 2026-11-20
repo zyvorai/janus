@@ -1,0 +1,9 @@
+apiVersion: zynera.ai/v1
+kind: FabricGpuNode
+metadata:
+  name: quota-node-0
+spec:
+  nodeName: quota-node-0
+  gpuType: H100
+  gpuCount: 4
+  memoryGB: 80

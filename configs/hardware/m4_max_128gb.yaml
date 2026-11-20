@@ -1,0 +1,7 @@
+# Apple Silicon M4 Max — unified memory, no MIG, no NVLink.
+# Order-of-magnitude twin profile (not live Metal).
+name: M4_MAX_128GB
+memory_gb: 128
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

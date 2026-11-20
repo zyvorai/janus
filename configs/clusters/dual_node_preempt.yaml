@@ -1,0 +1,20 @@
+# Two machines × one H100 each — preempt "migrate" across hosts.
+# mover: node-0/gpu-0 → preempt → resume on node-1/gpu-1
+cluster:
+  nodes:
+    - id: node-0
+      gpus:
+        - id: gpu-0
+          profile: H100_80GB
+    - id: node-1
+      gpus:
+        - id: gpu-1
+          profile: H100_80GB
+
+scheduler:
+  type: preemptive
+
+workload:
+  path: ../workloads/dual_node_preempt_migrate.yaml
+
+hardware_profiles_dir: ../hardware

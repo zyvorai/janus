@@ -1,0 +1,26 @@
+cluster:
+  nodes:
+    - id: node-0
+      gpus:
+        - id: gpu-0
+          profile: H100_80GB
+          nvlink_group: 1
+        - id: gpu-1
+          profile: H100_80GB
+          nvlink_group: 1
+    - id: node-1
+      gpus:
+        - id: gpu-2
+          profile: H100_80GB
+          nvlink_group: 2
+        - id: gpu-3
+          profile: H100_80GB
+          nvlink_group: 2
+
+scheduler:
+  type: fifo
+
+workload:
+  path: ../workloads/synthetic_m1.yaml
+
+hardware_profiles_dir: ../hardware

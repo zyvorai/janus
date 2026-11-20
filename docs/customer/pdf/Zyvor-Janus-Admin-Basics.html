@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><title>Admin Basics — Zyvor Janus</title>
+<style>
+@page{size:A4;margin:15mm 16mm}*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#1f2937;line-height:1.58;font-size:10.5pt}
+.cover{height:262mm;margin:-15mm -16mm 0;background:linear-gradient(135deg,#0a0614,#1e1b4b,#0d1b2a);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;page-break-after:always;position:relative}
+.cover .kicker{letter-spacing:5px;text-transform:uppercase;opacity:.72;margin-bottom:1.4em}
+.cover h1{font-size:3.2em;font-weight:800;letter-spacing:-2px}
+.cover h1 span{color:#a78bfa}
+.cover .sub{font-size:1.3em;font-weight:300;opacity:.93;margin:1em 0;max-width:24em}
+.cover .badge{display:inline-block;background:rgba(96,165,250,.2);border:1px solid #a78bfa;padding:8px 22px;border-radius:20px;margin-top:2em}
+.cover .foot{position:absolute;bottom:34px;font-size:.82em;opacity:.6}
+h2{page-break-before:always;margin:0 0 .35em;font-size:1.55em;font-weight:750;color:#12203a;border-bottom:2px solid #e5edfb;padding-bottom:.28em}
+h2:first-of-type{page-break-before:avoid}
+h3{margin:1.1em 0 .4em;font-size:1.12em;font-weight:700}
+p,li{margin:.4em 0}ul,ol{margin:.5em 0 .9em 1.4em}
+a{color:#2563eb;text-decoration:none}
+code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.86em;font-family:ui-monospace,Menlo,monospace}
+pre{background:#0f172a;color:#e2e8f0;padding:12px 15px;border-radius:9px;overflow-x:auto;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.1em;font-size:9.5pt}
+th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f1f5f9}
+hr{border:none;border-top:1px solid #e5e7eb;margin:1.2em 0}
+</style></head><body>
+<section class="cover"><div class="kicker">ZyvorAI Labs · Customer Documentation</div>
+<h1>Zyvor <span>Janus</span></h1>
+<div class="sub">Admin Basics</div>
+<div class="badge">2026-08-29</div>
+<div class="foot">zyvor.dev · Confidential — for licensed customers</div></section>
+<main><h2>Ports</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Next.js UI</td>
+<td><code>3000</code></td>
+<td><code>UI_PORT</code></td>
+</tr>
+<tr>
+<td>FastAPI</td>
+<td><code>8080</code></td>
+<td><code>API_PORT</code>; health <code>GET /api/health</code></td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>n/a</td>
+<td>Local <code>zyvor-janus-cli</code> process</td>
+</tr>
+</tbody></table>
+<p>Start together: <code>./scripts/run_web_dashboard.sh</code> (API binds <code>0.0.0.0</code> by default in <code>run_web_api.sh</code>).</p>
+<h2>Auth (web console)</h2>
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ZYVOR_JANUS_DASHBOARD_USER</code></td>
+<td><code>Admin</code></td>
+<td>Login username</td>
+</tr>
+<tr>
+<td><code>ZYVOR_JANUS_DASHBOARD_PASSWORD</code></td>
+<td><code>Admin@321</code></td>
+<td>Login password</td>
+</tr>
+<tr>
+<td><code>ZYVOR_JANUS_AUTH_SECRET</code></td>
+<td>(password)</td>
+<td>HMAC for session cookies</td>
+</tr>
+</tbody></table>
+<p>Sessions are httpOnly cookies (≈7-day expiry). Change defaults before any shared host.</p>
+<h2>Operate from the console (admin)</h2>
+<ol>
+<li>Confirm <code>http://&lt;host&gt;:8080/api/health</code> then open <code>http://&lt;host&gt;:3000</code>.</li>
+<li>Sign in → Dashboard Run smoke test with <code>small_h100.yaml</code>.</li>
+<li>Restrict config file permissions; follow upstream <code>SECURITY.md</code>.</li>
+<li>Packaged systemd units when available — <code>journalctl -u &lt;unit&gt; -f</code>.</li>
+</ol>
+<h2>Support</h2>
+<p>GitHub issues on the Janus repo · Contact Zyvor for Enterprise.</p>
+<h2>Related</h2>
+<ul>
+<li><a href="getting-started.md">Getting Started</a></li>
+<li><a href="using-the-dashboard.md">Using the Dashboard</a></li>
+<li><a href="pages/auth/login.md">Login</a></li>
+</ul>
+</main></body></html>

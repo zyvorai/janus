@@ -1,0 +1,8 @@
+model: gpt-13b
+profiles:
+  H100:
+    runtime_seconds: 604800
+    gpu_memory_gb: 80
+  A100:
+    runtime_seconds: 720000
+    gpu_memory_gb: 80

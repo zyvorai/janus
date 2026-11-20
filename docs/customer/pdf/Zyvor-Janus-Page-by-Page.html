@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><title>Page-by-Page Product Manual — Zyvor Janus</title>
+<style>
+@page{size:A4;margin:15mm 16mm}*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#1f2937;line-height:1.58;font-size:10.5pt}
+.cover{height:262mm;margin:-15mm -16mm 0;background:linear-gradient(135deg,#0a0614,#1e1b4b,#0d1b2a);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;page-break-after:always;position:relative}
+.cover .kicker{letter-spacing:5px;text-transform:uppercase;opacity:.72;margin-bottom:1.4em}
+.cover h1{font-size:3.2em;font-weight:800;letter-spacing:-2px}
+.cover h1 span{color:#a78bfa}
+.cover .sub{font-size:1.3em;font-weight:300;opacity:.93;margin:1em 0;max-width:24em}
+.cover .badge{display:inline-block;background:rgba(96,165,250,.2);border:1px solid #a78bfa;padding:8px 22px;border-radius:20px;margin-top:2em}
+.cover .foot{position:absolute;bottom:34px;font-size:.82em;opacity:.6}
+h2{page-break-before:always;margin:0 0 .35em;font-size:1.55em;font-weight:750;color:#12203a;border-bottom:2px solid #e5edfb;padding-bottom:.28em}
+h2:first-of-type{page-break-before:avoid}
+h3{margin:1.1em 0 .4em;font-size:1.12em;font-weight:700}
+p,li{margin:.4em 0}ul,ol{margin:.5em 0 .9em 1.4em}
+a{color:#2563eb;text-decoration:none}
+code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.86em;font-family:ui-monospace,Menlo,monospace}
+pre{background:#0f172a;color:#e2e8f0;padding:12px 15px;border-radius:9px;overflow-x:auto;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.1em;font-size:9.5pt}
+th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f1f5f9}
+hr{border:none;border-top:1px solid #e5e7eb;margin:1.2em 0}
+</style></head><body>
+<section class="cover"><div class="kicker">ZyvorAI Labs · Customer Documentation</div>
+<h1>Zyvor <span>Janus</span></h1>
+<div class="sub">Page-by-Page Product Manual</div>
+<div class="badge">2026-08-29</div>
+<div class="foot">zyvor.dev · Confidential — for licensed customers</div></section>
+<main><h2>Page-by-page guides</h2>
+<p>Each guide follows: Purpose → When to use it → How to get there → Operate from the console (UX) → Related pages.</p>
+<p>Every route is also listed in the <a href="../PAGE_INDEX.md">complete page index</a>.</p>
+<h3>Auth</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="auth/login.md">Login</a></td>
+<td>Sign in to the Zyvor Janus web console (session cookie).</td>
+</tr>
+</tbody></table>
+<h3>Console</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="console/benchmark.md">Benchmark</a></td>
+<td>Scheduler benchmarks with inference TTFT/TPS metrics, score vectors, and AIPerf twin comparison.</td>
+</tr>
+<tr>
+<td><a href="console/home.md">Dashboard</a></td>
+<td>Mission Control — launch simulations, compare configs, and jump into recent runs.</td>
+</tr>
+<tr>
+<td><a href="console/runs-id.md">Run detail</a></td>
+<td>Inspect one simulation run — cluster/queue view, metrics, and jump to Simulate.</td>
+</tr>
+<tr>
+<td><a href="console/simulate.md">Simulate</a></td>
+<td>Live scheduling replay — watch requests → queue → GPU assign → complete for a run.</td>
+</tr>
+<tr>
+<td><a href="console/twins.md">Twins</a></td>
+<td>AIPerf-calibrated GPU/model performance twins that ground the simulator against measured hardware.</td>
+</tr>
+<tr>
+<td><a href="console/what-if.md">What-if</a></td>
+<td>Sweep schedulers on the same inference workload and compare a results matrix.</td>
+</tr>
+</tbody></table>
+<hr>
+<p>7 guides. Regenerate: <code>node scripts/customer-docs/generate-guide-index.mjs</code>.</p>
+<hr>
+<h2>Login</h2>
+<h3>Purpose</h3>
+<p>Sign in to the Zyvor Janus web console (session cookie).</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Login</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/login</code></li>
+<li>Nav: <strong>Unauthenticated → <code>/login</code></strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>http://&lt;host&gt;:3000/login</code> (or you are redirected here).</li>
+<li>Enter dashboard credentials (default <strong>Admin</strong> / <strong>Admin@321</strong> unless <code>ZYVOR_JANUS_DASHBOARD_USER</code> / <code>PASSWORD</code> override).</li>
+<li>Submit — session is an httpOnly cookie (≈7 days).</li>
+<li><strong>Empty / fail:</strong> Login failed → check API on <code>:8080</code> and env credentials; middleware blocks <code>/api</code> without auth.</li>
+<li><strong>Success:</strong> Land on Dashboard; sidebar shows Dashboard · Runs · Benchmark · What-if · Twins.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="../console/home.md">Dashboard</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Benchmark</h2>
+<h3>Purpose</h3>
+<p>Scheduler benchmarks with inference TTFT/TPS metrics, score vectors, and AIPerf twin comparison.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Benchmark</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/benchmark</code></li>
+<li>Nav: <strong>Sidebar → Benchmark</strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/benchmark</code>.</li>
+<li>Configure the benchmark case → <strong>Run benchmark</strong>.</li>
+<li>Read Score vector radar and Sim vs measured (AIPerf twin) panels.</li>
+<li>Open recent benchmark reports → link into <code>/runs/:id</code>.</li>
+<li><strong>Empty / fail:</strong> Running stuck → API/engine error; no TTFT → non-LLM workload.</li>
+<li><strong>Success:</strong> Report row appears with colored cells vs best-in-column.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="runs-id.md">Run detail</a></li>
+<li><a href="twins.md">Twins</a></li>
+<li><a href="home.md">Dashboard</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Dashboard</h2>
+<h3>Purpose</h3>
+<p>Mission Control — launch simulations, compare configs, and jump into recent runs.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Dashboard</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/</code></li>
+<li>Nav: <strong>Sidebar → Dashboard</strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/</code> after sign-in.</li>
+<li><strong>Launch simulation</strong>: pick a cluster config → optional shadow scheduler → <strong>Run</strong> (or <strong>Run + shadow</strong>).</li>
+<li><strong>Compare configs</strong>: choose A and B → Compare → review metric deltas in ComparePanel.</li>
+<li>Open a recent run → <code>/runs/:id</code>, or jump to Benchmark / What-if shortcuts.</li>
+<li>Anchor <strong>/#runs</strong> focuses the runs list (sidebar Runs).</li>
+<li><strong>Empty / fail:</strong> No configs → ensure <code>configs/clusters/</code> is visible to the API; Run fails → check FastAPI logs on <code>:8080</code>.</li>
+<li><strong>Success:</strong> New run appears; Open navigates to run detail.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="runs-id.md">Run detail</a></li>
+<li><a href="benchmark.md">Benchmark</a></li>
+<li><a href="what-if.md">What-if</a></li>
+<li><a href="simulate.md">Simulate</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Run detail</h2>
+<h3>Purpose</h3>
+<p>Inspect one simulation run — cluster/queue view, metrics, and jump to Simulate.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Run detail</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/runs/:id</code></li>
+<li>Nav: <strong>Dashboard runs · Benchmark reports → Open</strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/runs/&lt;id&gt;</code> from a run link.</li>
+<li>Read status, metrics, and cluster/queue panels.</li>
+<li><strong>Open in Simulate</strong> to replay scheduling decisions.</li>
+<li><strong>Back to dashboard</strong> when done.</li>
+<li><strong>Empty / fail:</strong> Run not found → stale id or API offline.</li>
+<li><strong>Success:</strong> Run payload loads; Simulate deep-link works.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="simulate.md">Simulate</a></li>
+<li><a href="home.md">Dashboard</a></li>
+<li><a href="benchmark.md">Benchmark</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Simulate</h2>
+<h3>Purpose</h3>
+<p>Live scheduling replay — watch requests → queue → GPU assign → complete for a run.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Simulate</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/simulate</code></li>
+<li>Nav: <strong>Run detail → Open in Simulate · <code>/simulate?run=&lt;id&gt;</code></strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/simulate</code> or <code>/simulate?run=&lt;id&gt;</code> from a completed/in-progress run.</li>
+<li>Select a run if needed → <strong>Watch</strong> / load to stream the SimulateStage.</li>
+<li>Follow legend for scheduler decisions; respect reduced-motion preferences.</li>
+<li>Jump <strong>Run detail</strong> or <strong>Dashboard</strong> from actions.</li>
+<li><strong>Empty / fail:</strong> No runs to watch → start one from Dashboard; busy spinner → wait for snapshot.</li>
+<li><strong>Success:</strong> Stage animation advances with decisions for the selected run.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="runs-id.md">Run detail</a></li>
+<li><a href="home.md">Dashboard</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Twins</h2>
+<h3>Purpose</h3>
+<p>AIPerf-calibrated GPU/model performance twins that ground the simulator against measured hardware.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>Twins</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/twins</code></li>
+<li>Nav: <strong>Sidebar → Twins</strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/twins</code>.</li>
+<li>Browse calibrated twins; sort/filter by measured_at.</li>
+<li>Open linked AIPerf run when <code>aiperf_run_id</code> is present.</li>
+<li><strong>Empty / fail:</strong> No twins calibrated yet → run AIPerf calibration pipeline per product docs.</li>
+<li><strong>Success:</strong> Twin cards list hardware/model pairs used by Benchmark sim-vs-measured.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="benchmark.md">Benchmark</a></li>
+<li><a href="runs-id.md">Run detail</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>What-if</h2>
+<h3>Purpose</h3>
+<p>Sweep schedulers on the same inference workload and compare a results matrix.</p>
+<h3>When to use it</h3>
+<ul>
+<li>Operate <strong>What-if</strong> when your job matches this screen</li>
+<li>Prefer <strong>Dashboard</strong> after login if you are unsure where to start</li>
+<li>Confirm FastAPI health on <code>:8080</code> if the UI looks empty</li>
+</ul>
+<h3>How to get there</h3>
+<ul>
+<li>Route: <code>/what-if</code></li>
+<li>Nav: <strong>Sidebar → What-if</strong></li>
+</ul>
+<h3>Operate from the console (UX)</h3>
+<ol>
+<li>Open <code>/what-if</code>.</li>
+<li>Pick base config (e.g. <code>small_h100.yaml</code>) and subset of schedulers.</li>
+<li><strong>Run sweep</strong> → inspect Results matrix bars; <strong>Download CSV</strong> when offered.</li>
+<li><strong>Empty / fail:</strong> No schedulers selected → enable at least one; sweep fails → config path.</li>
+<li><strong>Success:</strong> Matrix populated for each scheduler under test.</li>
+</ol>
+<p>Web UI: <code>http://&lt;host&gt;:3000</code> · API: <code>http://&lt;host&gt;:8080/api/health</code> (<code>./scripts/run_web_dashboard.sh</code>). CLI: <code>cargo run -p zyvor-janus-cli -- run --config …</code>. Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+<h3>Related pages</h3>
+<ul>
+<li><a href="home.md">Dashboard</a></li>
+<li><a href="benchmark.md">Benchmark</a></li>
+<li><a href="../../getting-started.md">Getting Started</a></li>
+<li><a href="../../PAGE_INDEX.md">Page index</a></li>
+</ul>
+<hr>
+<h2>Zyvor Janus — Complete page index</h2>
+<p>Every primary navigable dashboard route.</p>
+<p><em>Generated: 2026-08-29 · 7 routes</em></p>
+<p>Regenerate: <code>node scripts/customer-docs/generate-page-index.mjs</code></p>
+<h3>AUTH</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Route</th>
+<th>Purpose</th>
+<th>Guide</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Login</td>
+<td><code>/login</code></td>
+<td>Sign in to the Zyvor Janus web console (session cookie).</td>
+<td><a href="pages/auth/login.md">Open</a></td>
+</tr>
+</tbody></table>
+<h3>CONSOLE</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Route</th>
+<th>Purpose</th>
+<th>Guide</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dashboard</td>
+<td><code>/</code></td>
+<td>Mission Control — launch simulations, compare configs, and jump into recent runs.</td>
+<td><a href="pages/console/home.md">Open</a></td>
+</tr>
+<tr>
+<td>Simulate</td>
+<td><code>/simulate</code></td>
+<td>Live scheduling replay — watch requests → queue → GPU assign → complete for a run.</td>
+<td><a href="pages/console/simulate.md">Open</a></td>
+</tr>
+<tr>
+<td>Benchmark</td>
+<td><code>/benchmark</code></td>
+<td>Scheduler benchmarks with inference TTFT/TPS metrics, score vectors, and AIPerf twin comparison.</td>
+<td><a href="pages/console/benchmark.md">Open</a></td>
+</tr>
+<tr>
+<td>What-if</td>
+<td><code>/what-if</code></td>
+<td>Sweep schedulers on the same inference workload and compare a results matrix.</td>
+<td><a href="pages/console/what-if.md">Open</a></td>
+</tr>
+<tr>
+<td>Twins</td>
+<td><code>/twins</code></td>
+<td>AIPerf-calibrated GPU/model performance twins that ground the simulator against measured hardware.</td>
+<td><a href="pages/console/twins.md">Open</a></td>
+</tr>
+<tr>
+<td>Run detail</td>
+<td><code>/runs/:id</code></td>
+<td>Inspect one simulation run — cluster/queue view, metrics, and jump to Simulate.</td>
+<td><a href="pages/console/runs-id.md">Open</a></td>
+</tr>
+</tbody></table>
+<h3>Related</h3>
+<ul>
+<li><a href="README.md">Customer docs home</a></li>
+<li><a href="pages/README.md">Page-by-page guides</a></li>
+</ul>
+</main></body></html>

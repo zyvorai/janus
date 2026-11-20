@@ -1,0 +1,13 @@
+apiVersion: zynera.ai/v1
+kind: FabricAIJob
+metadata:
+  name: mig-inference
+  namespace: ml-infra
+spec:
+  type: inference
+  model: gpt-13b
+  gpuType: H100
+  priority: 50
+  mig:
+    profile: 1g.10gb
+    count: 2

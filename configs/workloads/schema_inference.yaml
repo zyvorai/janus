@@ -1,0 +1,22 @@
+# Inference workload schema (Zyvor Janus benchmark platform)
+#
+# Required for inference jobs:
+#   model_id, input_tokens, output_tokens
+#
+# Optional:
+#   batch_size (default 1), concurrency (default 1), request_id, tenant
+#
+# runtime is ignored when model_id + tokens are set; Zyvor Janus derives runtime
+# from calibrated profiles in configs/profiles/.
+
+jobs:
+  - id: example-chat
+    arrival_time: 0.0
+    runtime: 1.0
+    gpu_count: 1
+    model_id: llama-70b
+    input_tokens: 512
+    output_tokens: 128
+    batch_size: 1
+    concurrency: 1
+    tenant: team-a

@@ -1,0 +1,23 @@
+apiVersion: zynera.ai/v1
+kind: FabricAIJob
+metadata:
+  name: gpt-distributed-training
+  namespace: ml-training
+  annotations:
+    zynera.ai/gang-schedule: "true"
+    zynera.ai/gang-size: "4"
+    zynera.ai/gang-timeout: "10m"
+spec:
+  type: training
+  model: gpt-13b
+  gpus: 8
+  gpuType: H100
+  network: rdma
+  distributed:
+    enabled: true
+    framework: pytorch
+    nodes: 4
+    gpusPerNode: 8
+    backend: nccl
+  priority: 80
+  image: nvcr.io/nvidia/pytorch:24.01-py3

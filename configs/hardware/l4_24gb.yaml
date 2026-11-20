@@ -1,0 +1,6 @@
+name: L4_24GB
+memory_gb: 24
+sm: 58
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

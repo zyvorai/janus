@@ -1,0 +1,39 @@
+name: Rust
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --exclude zyvor-janus-py -- -D warnings
+
+      - name: Unit tests
+        run: cargo test --workspace --exclude zyvor-janus-py
+
+      - name: Integration tests (config)
+        run: cargo test -p zyvor-janus-config --test integration
+
+      - name: Integration tests (cli)
+        run: cargo test -p zyvor-janus-cli --test cli_integration

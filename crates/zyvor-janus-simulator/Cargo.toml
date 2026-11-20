@@ -1,0 +1,14 @@
+[package]
+name = "zyvor-janus-simulator"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zyvor Janus discrete-event simulation engine, RL stepping session, and inference timing model"
+
+[dependencies]
+zyvor-janus-core = { path = "../zyvor-janus-core" }
+zyvor-janus-model = { path = "../zyvor-janus-model" }
+zyvor-janus-scheduler = { path = "../zyvor-janus-scheduler" }
+zyvor-janus-metrics = { path = "../zyvor-janus-metrics" }
+serde = { workspace = true }

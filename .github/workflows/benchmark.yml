@@ -1,0 +1,27 @@
+name: Benchmark Gates
+
+on:
+  pull_request:
+  push:
+    branches: [main, init_dev]
+
+jobs:
+  rust-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Rust tests
+        run: cargo test --workspace --exclude zyvor-janus-py
+      - name: Golden inference benchmark
+        run: bash benchmarks/ci/run_golden.sh
+
+  python-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Python unit tests
+        run: PYTHONPATH=python python3 -m unittest discover -s python/tests -v

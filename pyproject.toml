@@ -1,0 +1,39 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "zyvor_janus"
+version = "0.2.0"
+description = "Discrete-event GPU cluster scheduler simulator inspired by Zynera"
+readme = "README.md"
+license = { text = "LicenseRef-Zyvor-Production-1.0" }
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["pyyaml>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pyyaml>=6.0"]
+rl = ["gymnasium>=0.29", "numpy>=1.26", "torch>=2.0"]
+viz = ["matplotlib>=3.8", "numpy>=1.26"]
+dashboard = ["rich>=13.0"]
+server = ["fastapi>=0.115", "uvicorn[standard]>=0.32", "websockets>=13.0", "rich>=13.0", "pydantic>=2.0"]
+
+[project.scripts]
+zyvor-janus-py = "zyvor_janus.cli:main"
+zyvor-janus-dashboard = "zyvor_janus.dashboard.__main__:main"
+
+[tool.maturin]
+manifest-path = "crates/zyvor-janus-py/Cargo.toml"
+python-source = "python"
+module-name = "zyvor_janus._zyvor_janus"
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]

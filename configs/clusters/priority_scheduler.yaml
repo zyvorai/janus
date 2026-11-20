@@ -1,0 +1,14 @@
+cluster:
+  nodes:
+    - id: node-0
+      gpus:
+        - id: gpu-0
+          profile: H100_80GB
+
+scheduler:
+  type: priority
+
+workload:
+  path: ../workloads/priority_demo.yaml
+
+hardware_profiles_dir: ../hardware

@@ -1,0 +1,13 @@
+jobs:
+  - id: filler
+    name: filler
+    arrival_time: 0
+    runtime: 60
+    gpu_count: 4
+  - id: gang-wait
+    name: gang-wait
+    arrival_time: 1
+    runtime: 20
+    gpu_count: 4
+    gang_enabled: true
+    gang_size_nodes: 2

@@ -1,0 +1,20 @@
+cluster:
+  nodes:
+    - id: node-a
+      gpus:
+        - { id: a-g0, profile: H100_80GB }
+        - { id: a-g1, profile: H100_80GB }
+        - { id: a-g2, profile: H100_80GB }
+        - { id: a-g3, profile: H100_80GB }
+    - id: node-b
+      gpus:
+        - { id: b-g0, profile: H100_80GB }
+        - { id: b-g1, profile: H100_80GB }
+        - { id: b-g2, profile: H100_80GB }
+        - { id: b-g3, profile: H100_80GB }
+scheduler:
+  type: fifo
+workload:
+  path: ../workloads/gang_timeout_m6.yaml
+hardware_profiles_dir: ../hardware
+mig_profiles_dir: ../mig

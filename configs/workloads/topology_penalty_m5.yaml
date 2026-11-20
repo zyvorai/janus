@@ -1,0 +1,7 @@
+jobs:
+  - id: cross-domain
+    name: cross-domain
+    arrival_time: 0
+    runtime: 10
+    gpu_count: 2
+    network_bw_gbps: 200

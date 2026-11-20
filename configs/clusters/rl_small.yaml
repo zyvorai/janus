@@ -1,0 +1,16 @@
+cluster:
+  nodes:
+    - id: node-a
+      gpus:
+        - { id: a-g0, profile: H100_80GB, nvlink_group: 0 }
+        - { id: a-g1, profile: H100_80GB, nvlink_group: 0 }
+    - id: node-b
+      gpus:
+        - { id: b-g0, profile: H100_80GB, nvlink_group: 0 }
+        - { id: b-g1, profile: H100_80GB, nvlink_group: 0 }
+scheduler:
+  type: fifo
+workload:
+  path: ../workloads/rl_small.yaml
+hardware_profiles_dir: ../hardware
+mig_profiles_dir: ../mig

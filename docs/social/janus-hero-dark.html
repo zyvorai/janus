@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Janus hero card</title>
+<!--
+  1200x630 dark hero card: README hero and GitHub social preview.
+  Build: ./docs/social/build-hero-dark.sh  ->  janus-hero-dark.jpg (2400x1260)
+-->
+<style>
+  :root { --blue:#0071e3; --signal:#2997ff; --cyan:#64d2ff; --green:#30d158; --amber:#ff9f0a; --red:#ff453a; --violet:#bf5af2;
+    --sans:'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif; --mono:'SF Mono',Menlo,Consolas,monospace; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { width:1200px; height:630px; overflow:hidden; color:#f5f5f7; font-family:var(--sans); position:relative; background:#000; }
+  .aurora { position:absolute; inset:0;
+    background:radial-gradient(720px 460px at 80% 16%, rgba(41,151,255,.34), transparent 62%),
+               radial-gradient(600px 420px at 104% 98%, rgba(100,210,255,.16), transparent 60%),
+               radial-gradient(520px 380px at 6% 110%, rgba(0,113,227,.28), transparent 60%); }
+  .copy { position:absolute; left:60px; top:52px; width:560px; z-index:3; }
+  .brand { display:flex; align-items:center; gap:12px; font-family:var(--mono); font-size:14px; letter-spacing:.18em; text-transform:uppercase; color:#a1a1a6; }
+  .brand b { color:#fff; }
+  .word { margin:20px 0 0; font-size:112px; line-height:.95; font-weight:800; letter-spacing:-.05em; white-space:nowrap;
+    background:linear-gradient(92deg,#fff 0%,#e3f0ff 38%,var(--signal) 74%,var(--cyan) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; padding-bottom:6px; }
+  .tag { margin:14px 0 0; font-size:31px; line-height:1.15; font-weight:700; letter-spacing:-.02em; }
+  .tag em { font-style:normal; color:var(--signal); }
+  .lede { margin:12px 0 0; font-size:18px; line-height:1.45; color:#b8b8bf; width:520px; text-shadow:0 1px 12px #000; }
+  .stats { margin-top:24px; display:flex; gap:32px; }
+  .stat b { display:block; font-size:34px; font-weight:800; letter-spacing:-.03em; color:#fff; }
+  .stat span { font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#8e8e93; }
+  .pill { position:absolute; left:60px; bottom:40px; display:flex; gap:10px; z-index:3; }
+  .pill span { font-family:var(--mono); font-size:13.5px; font-weight:700; padding:7px 13px; border-radius:18px; border:1.5px solid rgba(255,255,255,.2); color:#e5e5ea; background:rgba(0,0,0,.6); }
+  .pill span.b { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 0 24px rgba(0,113,227,.55); }
+  .art { position:absolute; left:520px; top:0; width:680px; height:630px; z-index:2; }
+  .art svg { display:block; }
+  #labels { position:absolute; inset:0; z-index:4; pointer-events:none; }
+  .lbl { position:absolute; font-family:var(--mono); font-size:12.5px; color:#a1a1a6; text-align:center; transform:translate(-50%,-50%); white-space:nowrap; }
+  .lbl b { display:block; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#e5e5ea; }
+  .lbl span { display:block; margin-top:3px; }
+  .lbl.box { padding:7px 12px; border-radius:12px; background:rgba(8,10,14,.85); border:1px solid rgba(255,255,255,.14); }
+  .lbl.chip { padding:6px 11px; border-radius:13px; font-size:12.5px; font-weight:700; color:#cfe6ff; background:rgba(10,20,35,.85); border:1px solid rgba(41,151,255,.5); box-shadow:0 0 16px rgba(41,151,255,.2); }
+  .lbl.left { transform:translate(0,-50%); text-align:left; }
+  .lbl.right { transform:translate(-100%,-50%); text-align:right; }
+  .ok { color:var(--green) !important; } .warn { color:var(--amber) !important; } .bad { color:var(--red) !important; } .sig { color:var(--signal) !important; } .cy { color:var(--cyan) !important; } .vi { color:var(--violet) !important; }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<div class="art"><svg id="art" width="680" height="630" viewBox="0 0 680 630" xmlns="http://www.w3.org/2000/svg"></svg></div>
+<div id="labels"></div>
+<div class="copy">
+  <div class="brand"><svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true"><defs><linearGradient id="zb" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff5a15"/><stop offset="1" stop-color="#cc420a"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#zb)"/><path d="M18.5,20.5 45.5,20.5 18.5,43.5 45.5,43.5" fill="none" stroke="#fff" stroke-width="8.3" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Zyvor</b><span>&middot;</span><span>GPU scheduling simulator</span></div>
+  <div class="word">Janus</div>
+  <div class="tag">GPU scheduling R&amp;D.<br><em>Zero GPUs required.</em></div>
+  <div class="lede">Discrete-event digital twin for Kubernetes GPU scheduling: MIG, topology, gang jobs and quotas, simulated without a single GPU.</div>
+  <div class="stats"><div class="stat"><b>0</b><span>GPUs required</span></div><div class="stat"><b>14</b><span>GPU profiles</span></div><div class="stat"><b>4</b><span>scheduler policies</span></div></div>
+</div>
+<div class="pill"><span class="b">github.com/zyvorai/janus</span><span>Zyvor Production License</span></div>
+<script>
+var Z = (function () {
+  var NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('art'), labels = document.getElementById('labels');
+  var seed = 20261004;
+  function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  function el(tag, a, parent) { var n = document.createElementNS(NS, tag); for (var k in a) n.setAttribute(k, a[k]); (parent || svg).appendChild(n); return n; }
+  function g(attrs) { return el('g', attrs || {}); }
+  function label(x, y, inner, cls, style) { var d = document.createElement('div'); d.className = 'lbl ' + (cls || ''); d.style.left = (520 + x) + 'px'; d.style.top = y + 'px'; if (style) d.setAttribute('style', d.getAttribute('style') + ';' + style); d.innerHTML = inner; labels.appendChild(d); return d; }
+  return { NS: NS, svg: svg, W: 680, H: 630, rnd: rnd, el: el, g: g, label: label,
+    reseed: function (s) { seed = s; },
+    c: { blue: '#0071e3', signal: '#2997ff', cyan: '#64d2ff', green: '#30d158', amber: '#ff9f0a', red: '#ff453a', violet: '#bf5af2', teal: '#40c8e0', indigo: '#5e5ce6', pink: '#ff375f', white: '#f5f5f7', grey: '#8e8e93' } };
+})();
+(function () {
+// Janus: two-faced GPU Gantt. Left, the real cluster as solid job bars; right, its simulated twin mirrored as wireframe. MIG slices and a gang job.
+var C = Z.c, ax = 382;
+var defs = Z.el('defs', {});
+defs.innerHTML = '<filter id="jngl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+  '<filter id="jnsf" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16"/></filter>' +
+  '<linearGradient id="jnax" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#64d2ff" stop-opacity="0"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#64d2ff" stop-opacity="0"/></linearGradient>' +
+  '<linearGradient id="jnfadeL" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#2997ff" stop-opacity=".14"/><stop offset="1" stop-color="#2997ff" stop-opacity="0"/></linearGradient>' +
+  '<linearGradient id="jnfadeR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#64d2ff" stop-opacity=".10"/><stop offset="1" stop-color="#64d2ff" stop-opacity="0"/></linearGradient>';
+var top = 152, rowH = 46, span = 262;
+// rows: 6 GPUs, two of them sliced into MIG lanes
+var rows = [{ n: 1 }, { n: 1 }, { n: 1 }, { n: 1 }, { n: 1 }, { n: 3 }, { n: 2 }];
+var jobs = [
+  [[0.0, 0.34, 'b', 'g'], [0.38, 0.92, 'b']],
+  [[0.0, 0.34, 'b', 'g'], [0.40, 0.70, 'c']],
+  [[0.0, 0.34, 'b', 'g'], [0.42, 0.66, 'c'], [0.70, 0.98, 'b']],
+  [[0.10, 0.56, 'c'], [0.62, 0.80, 'b']],
+  [[0.0, 0.18, 'c'], [0.24, 0.62, 'b'], [0.66, 0.92, 'c']],
+  [[0.0, 0.22, 'v'], [0.06, 0.52, 'v'], [0.12, 0.40, 'v'], [0.30, 0.74, 'v'], [0.58, 0.96, 'v'], [0.46, 0.88, 'v']],
+  [[0.04, 0.46, 'v'], [0.10, 0.60, 'v'], [0.50, 0.86, 'v'], [0.66, 0.97, 'v']]
+];
+var colOf = { b: C.signal, c: C.cyan, v: C.violet };
+Z.el('rect', { x: ax - span - 10, y: top - 16, width: span + 10, height: rows.length * rowH + 20, fill: 'url(#jnfadeL)' });
+Z.el('rect', { x: ax, y: top - 16, width: span + 10, height: rows.length * rowH + 20, fill: 'url(#jnfadeR)' });
+// time grid
+for (var k = 0; k <= 6; k++) {
+  var dx = span * k / 6;
+  [-1, 1].forEach(function (s) {
+    Z.el('line', { x1: ax + s * dx, y1: top - 14, x2: ax + s * dx, y2: top + rows.length * rowH + 4, stroke: 'rgba(255,255,255,.06)', 'stroke-dasharray': s > 0 ? '2 4' : 'none' });
+  });
+}
+var gangL = [], gangR = [];
+rows.forEach(function (row, i) {
+  var y = top + i * rowH, h = rowH - 12;
+  var lanes = jobs[i];
+  // sliced rows: lanes stacked inside one GPU row
+  lanes.forEach(function (j, li) {
+    var ly = y, lh = h;
+    if (row.n > 1) { var sub = li % row.n; lh = (h - (row.n - 1) * 2) / row.n; ly = y + sub * (lh + 2); }
+    var col = colOf[j[2]];
+    [-1, 1].forEach(function (s) {
+      var a = ax + s * (6 + j[0] * (span - 6)), b = ax + s * (6 + j[1] * (span - 6));
+      var x = Math.min(a, b), w = Math.abs(b - a);
+      if (s < 0) {
+        Z.el('rect', { x: x, y: ly, width: w, height: lh, rx: 4, fill: col, opacity: .82 });
+        Z.el('rect', { x: x, y: ly, width: w, height: Math.min(3, lh / 3), rx: 1.5, fill: '#fff', opacity: .22 });
+      } else {
+        Z.el('rect', { x: x + .75, y: ly + .75, width: w - 1.5, height: lh - 1.5, rx: 4, fill: 'none', stroke: col, 'stroke-width': lh < 12 ? 1 : 1.3, 'stroke-dasharray': lh < 12 ? '3 2' : '5 3', opacity: lh < 12 ? .75 : .9 });
+      }
+      if (j[3] === 'g') (s < 0 ? gangL : gangR).push([x, ly, w, lh]);
+    });
+  });
+  if (row.n > 1) {
+    Z.el('rect', { x: ax - span - 2, y: y - 3, width: span - 4, height: h + 6, rx: 6, fill: 'none', stroke: 'rgba(255,255,255,.18)' });
+  }
+});
+// gang job: linked across three GPUs (solid on left, ghost on right)
+function gang(list, s) {
+  var x = s < 0 ? list[0][0] - 9 : list[0][0] + list[0][2] + 9, y0 = list[0][1] + 4, y1 = list[list.length - 1][1] + list[list.length - 1][3] - 4;
+  Z.el('path', { d: 'M' + (x - s * 5) + ',' + y0 + ' L' + x + ',' + y0 + ' L' + x + ',' + y1 + ' L' + (x - s * 5) + ',' + y1, fill: 'none', stroke: C.amber, 'stroke-width': 1.6, opacity: s < 0 ? 1 : .75, 'stroke-dasharray': s < 0 ? 'none' : '3 3' });
+}
+// the twin axis
+Z.el('line', { x1: ax, y1: 70, x2: ax, y2: 560, stroke: 'url(#jnax)', 'stroke-width': 2, filter: 'url(#jngl)' });
+Z.el('circle', { cx: ax, cy: top + rows.length * rowH / 2, r: 60, fill: C.signal, opacity: .14, filter: 'url(#jnsf)' });
+// mirror markers on the axis
+var my = top - 44;
+Z.el('path', { d: 'M' + ax + ',' + (my - 13) + ' L' + (ax + 13) + ',' + my + ' L' + ax + ',' + (my + 13) + ' L' + (ax - 13) + ',' + my + 'Z', fill: 'rgba(6,10,18,.95)', stroke: '#fff', 'stroke-width': 1.6, filter: 'url(#jngl)' });
+Z.el('path', { d: 'M' + ax + ',' + (my - 13) + ' L' + (ax - 13) + ',' + my + ' L' + ax + ',' + (my + 13) + 'Z', fill: C.signal });
+var rb = top + rows.length * rowH - 6;
+Z.el('path', { d: 'M' + (ax - span - 2) + ',' + (rb + 6) + ' L' + (ax - span - 2) + ',' + (rb + 12) + ' L' + (ax - 8) + ',' + (rb + 12) + ' L' + (ax - 8) + ',' + (rb + 6), fill: 'none', stroke: C.violet, 'stroke-width': 1.2, opacity: .8 });
+Z.label(ax - 140, my, '<b>cluster</b><span>real GPUs</span>');
+Z.label(ax + 140, my, '<b class="cy">digital twin</b><span>0 GPUs, simulated</span>');
+Z.label(ax - span / 2, rb + 30, '<span class="vi" style="margin:0">MIG slices</span>');
+Z.label(ax - 6 - 0.17 * (span - 6), top - 12, '<span class="warn" style="margin:0;font-size:11.5px">gang job</span>');
+Z.label(ax + span / 2, rb + 30, '<span style="margin:0">same jobs, replayed</span>');
+Z.label(ax, 556, 'discrete-event', 'chip');
+gang(gangL, -1); gang(gangR, 1);
+})();
+</script>
+</body>
+</html>

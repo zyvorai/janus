@@ -1,0 +1,108 @@
+{
+  "product": "Zyvor Janus",
+  "surfaces": [
+    {
+      "path": "/login",
+      "label": "Login",
+      "category": "AUTH",
+      "nav": "Unauthenticated \u2192 `/login`",
+      "purpose": "Sign in to the Zyvor Janus web console (session cookie).",
+      "operate": [
+        "Open `http://<host>:3000/login` (or you are redirected here).",
+        "Enter dashboard credentials (default **Admin** / **Admin@321** unless `ZYVOR_JANUS_DASHBOARD_USER` / `PASSWORD` override).",
+        "Submit \u2014 session is an httpOnly cookie (\u22487 days).",
+        "**Empty / fail:** Login failed \u2192 check API on `:8080` and env credentials; middleware blocks `/api` without auth.",
+        "**Success:** Land on Dashboard; sidebar shows Dashboard \u00b7 Runs \u00b7 Benchmark \u00b7 What-if \u00b7 Twins."
+      ]
+    },
+    {
+      "path": "/",
+      "label": "Dashboard",
+      "category": "CONSOLE",
+      "nav": "Sidebar \u2192 Dashboard",
+      "purpose": "Mission Control \u2014 launch simulations, compare configs, and jump into recent runs.",
+      "operate": [
+        "Open `/` after sign-in.",
+        "**Launch simulation**: pick a cluster config \u2192 optional shadow scheduler \u2192 **Run** (or **Run + shadow**).",
+        "**Compare configs**: choose A and B \u2192 Compare \u2192 review metric deltas in ComparePanel.",
+        "Open a recent run \u2192 `/runs/:id`, or jump to Benchmark / What-if shortcuts.",
+        "Anchor **/#runs** focuses the runs list (sidebar Runs).",
+        "**Empty / fail:** No configs \u2192 ensure `configs/clusters/` is visible to the API; Run fails \u2192 check FastAPI logs on `:8080`.",
+        "**Success:** New run appears; Open navigates to run detail."
+      ]
+    },
+    {
+      "path": "/simulate",
+      "label": "Simulate",
+      "category": "CONSOLE",
+      "nav": "Run detail \u2192 Open in Simulate \u00b7 `/simulate?run=<id>`",
+      "purpose": "Live scheduling replay \u2014 watch requests \u2192 queue \u2192 GPU assign \u2192 complete for a run.",
+      "operate": [
+        "Open `/simulate` or `/simulate?run=<id>` from a completed/in-progress run.",
+        "Select a run if needed \u2192 **Watch** / load to stream the SimulateStage.",
+        "Follow legend for scheduler decisions; respect reduced-motion preferences.",
+        "Jump **Run detail** or **Dashboard** from actions.",
+        "**Empty / fail:** No runs to watch \u2192 start one from Dashboard; busy spinner \u2192 wait for snapshot.",
+        "**Success:** Stage animation advances with decisions for the selected run."
+      ]
+    },
+    {
+      "path": "/benchmark",
+      "label": "Benchmark",
+      "category": "CONSOLE",
+      "nav": "Sidebar \u2192 Benchmark",
+      "purpose": "Scheduler benchmarks with inference TTFT/TPS metrics, score vectors, and AIPerf twin comparison.",
+      "operate": [
+        "Open `/benchmark`.",
+        "Configure the benchmark case \u2192 **Run benchmark**.",
+        "Read Score vector radar and Sim vs measured (AIPerf twin) panels.",
+        "Open recent benchmark reports \u2192 link into `/runs/:id`.",
+        "**Empty / fail:** Running stuck \u2192 API/engine error; no TTFT \u2192 non-LLM workload.",
+        "**Success:** Report row appears with colored cells vs best-in-column."
+      ]
+    },
+    {
+      "path": "/what-if",
+      "label": "What-if",
+      "category": "CONSOLE",
+      "nav": "Sidebar \u2192 What-if",
+      "purpose": "Sweep schedulers on the same inference workload and compare a results matrix.",
+      "operate": [
+        "Open `/what-if`.",
+        "Pick base config (e.g. `small_h100.yaml`) and subset of schedulers.",
+        "**Run sweep** \u2192 inspect Results matrix bars; **Download CSV** when offered.",
+        "**Empty / fail:** No schedulers selected \u2192 enable at least one; sweep fails \u2192 config path.",
+        "**Success:** Matrix populated for each scheduler under test."
+      ]
+    },
+    {
+      "path": "/twins",
+      "label": "Twins",
+      "category": "CONSOLE",
+      "nav": "Sidebar \u2192 Twins",
+      "purpose": "AIPerf-calibrated GPU/model performance twins that ground the simulator against measured hardware.",
+      "operate": [
+        "Open `/twins`.",
+        "Browse calibrated twins; sort/filter by measured_at.",
+        "Open linked AIPerf run when `aiperf_run_id` is present.",
+        "**Empty / fail:** No twins calibrated yet \u2192 run AIPerf calibration pipeline per product docs.",
+        "**Success:** Twin cards list hardware/model pairs used by Benchmark sim-vs-measured."
+      ]
+    },
+    {
+      "path": "/runs/:id",
+      "label": "Run detail",
+      "category": "CONSOLE",
+      "nav": "Dashboard runs \u00b7 Benchmark reports \u2192 Open",
+      "purpose": "Inspect one simulation run \u2014 cluster/queue view, metrics, and jump to Simulate.",
+      "operate": [
+        "Open `/runs/<id>` from a run link.",
+        "Read status, metrics, and cluster/queue panels.",
+        "**Open in Simulate** to replay scheduling decisions.",
+        "**Back to dashboard** when done.",
+        "**Empty / fail:** Run not found \u2192 stale id or API offline.",
+        "**Success:** Run payload loads; Simulate deep-link works."
+      ]
+    }
+  ]
+}

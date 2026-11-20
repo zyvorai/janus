@@ -1,0 +1,25 @@
+# Apple Silicon twin cluster: two M4 Max Macs + one M3 Ultra.
+# topology_template pcie_only — no NVLink domains on Apple packages.
+cluster:
+  topology_template: pcie_only
+  nodes:
+    - id: mac-studio-0
+      gpus:
+        - id: gpu-m4-0
+          profile: M4_MAX_128GB
+    - id: mac-studio-1
+      gpus:
+        - id: gpu-m4-1
+          profile: M4_MAX_128GB
+    - id: mac-pro-ultra
+      gpus:
+        - id: gpu-m3u-0
+          profile: M3_ULTRA_192GB
+
+scheduler:
+  type: fifo
+
+workload:
+  path: ../workloads/apple_m4.yaml
+
+hardware_profiles_dir: ../hardware

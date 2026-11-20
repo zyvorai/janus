@@ -1,0 +1,45 @@
+model: llama-70b
+profiles:
+  H100:
+    runtime_seconds: 3480
+    gpu_memory_gb: 80
+    prefill_ms_per_token: 0.12
+    decode_tps: 95.0
+    max_batch: 32
+  A100:
+    runtime_seconds: 4200
+    gpu_memory_gb: 80
+    prefill_ms_per_token: 0.18
+    decode_tps: 72.0
+    max_batch: 16
+  # Order-of-magnitude MLX-on-Apple twin curves (not live Metal timings).
+  M4Max:
+    runtime_seconds: 9600
+    gpu_memory_gb: 48
+    prefill_ms_per_token: 0.55
+    decode_tps: 28.0
+    max_batch: 4
+  M3Ultra:
+    runtime_seconds: 7200
+    gpu_memory_gb: 64
+    prefill_ms_per_token: 0.42
+    decode_tps: 36.0
+    max_batch: 6
+  B200:
+    runtime_seconds: 2100
+    gpu_memory_gb: 140
+    prefill_ms_per_token: 0.07
+    decode_tps: 160.0
+    max_batch: 64
+  MI300X:
+    runtime_seconds: 2800
+    gpu_memory_gb: 140
+    prefill_ms_per_token: 0.09
+    decode_tps: 120.0
+    max_batch: 48
+  Gaudi3:
+    runtime_seconds: 3200
+    gpu_memory_gb: 96
+    prefill_ms_per_token: 0.11
+    decode_tps: 100.0
+    max_batch: 32

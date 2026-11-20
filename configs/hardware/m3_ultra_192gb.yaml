@@ -1,0 +1,6 @@
+# Apple Silicon M3 Ultra — unified memory, no MIG, no NVLink.
+name: M3_ULTRA_192GB
+memory_gb: 192
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

@@ -1,0 +1,42 @@
+# Rust
+/target/
+**/target/
+debug/
+*.rs.bk
+*.pdb
+**/mutants.out*/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+*.so
+*.dylib
+.venv/
+.venv*/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Maturin
+*.whl
+
+# Setup bootstrap (downloaded on demand)
+scripts/get-pip.py
+
+# Outputs
+outputs/
+runs/
+!web/src/app/runs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+.docs-tools/

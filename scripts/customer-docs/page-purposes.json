@@ -1,0 +1,9 @@
+{
+  "/login": "Sign in to the Zyvor Janus web console (session cookie).",
+  "/": "Mission Control \u2014 launch simulations, compare configs, and jump into recent runs.",
+  "/simulate": "Live scheduling replay \u2014 watch requests \u2192 queue \u2192 GPU assign \u2192 complete for a run.",
+  "/benchmark": "Scheduler benchmarks with inference TTFT/TPS metrics, score vectors, and AIPerf twin comparison.",
+  "/what-if": "Sweep schedulers on the same inference workload and compare a results matrix.",
+  "/twins": "AIPerf-calibrated GPU/model performance twins that ground the simulator against measured hardware.",
+  "/runs/:id": "Inspect one simulation run \u2014 cluster/queue view, metrics, and jump to Simulate."
+}

@@ -1,0 +1,13 @@
+apiVersion: zynera.ai/v1
+kind: FabricAIJob
+metadata:
+  name: llm-pretrain-8gpu
+  namespace: ml-infra
+spec:
+  type: training
+  model: llama-70b
+  gpus: 8
+  gpuType: H100
+  network: rdma
+  priority: 10
+  image: training/pytorch:latest

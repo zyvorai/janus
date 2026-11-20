@@ -1,0 +1,32 @@
+{
+  "makespan": 20.0,
+  "gpu_count": 2,
+  "jobs": [
+    {
+      "job_id": "j1",
+      "name": "job-a",
+      "arrival_time": 0.0,
+      "start_time": 0.0,
+      "finish_time": 10.0,
+      "runtime": 10.0,
+      "gpu_count": 1,
+      "assigned_gpus": ["g0"],
+      "priority": 0,
+      "tenant": null,
+      "state": "finished"
+    },
+    {
+      "job_id": "j2",
+      "name": "job-b",
+      "arrival_time": 5.0,
+      "start_time": 10.0,
+      "finish_time": 20.0,
+      "runtime": 10.0,
+      "gpu_count": 1,
+      "assigned_gpus": ["g1"],
+      "priority": 0,
+      "tenant": null,
+      "state": "finished"
+    }
+  ]
+}

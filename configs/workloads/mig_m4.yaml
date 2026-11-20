@@ -1,0 +1,16 @@
+jobs:
+  - id: mig-infer-a
+    name: inference-a
+    arrival_time: 0
+    runtime: 60
+    gpu_count: 1
+    mig_profile: 1g.10gb
+    mig_count: 2
+
+  - id: mig-infer-b
+    name: inference-b
+    arrival_time: 65
+    runtime: 30
+    gpu_count: 1
+    mig_profile: 1g.10gb
+    mig_count: 1

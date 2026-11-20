@@ -1,0 +1,5 @@
+name: M4_PRO_64GB
+memory_gb: 64
+mig_profiles: []
+pcie_bw_gbs: 64
+mig: false

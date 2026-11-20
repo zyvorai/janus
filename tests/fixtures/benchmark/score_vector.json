@@ -1,0 +1,9 @@
+{
+  "scheduler": "fifo",
+  "score_vector": {
+    "makespan": 0.0,
+    "gpu_utilization": 0.0,
+    "ttft_p50": 0.0,
+    "goodput": 0.0
+  }
+}

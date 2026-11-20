@@ -1,0 +1,11 @@
+apiVersion: zynera.ai/v1
+kind: FabricAIJob
+metadata:
+  name: quota-job-b
+  namespace: quota-test
+spec:
+  type: training
+  model: gpt-13b
+  gpus: 2
+  gpuType: H100
+  priority: 50

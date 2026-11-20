@@ -1,0 +1,2 @@
+{"timestamp":0,"event":"JobSubmitted","job":"gang-train","gpu_count":4,"runtime":100,"priority":10,"gang_enabled":true,"gang_size_nodes":2,"gang_timeout_secs":60,"tenant":"acme"}
+{"timestamp":0,"event":"JobScheduled","job":"gang-train","node":"node-a","gpus":["a-g0","a-g1"],"nodes":["node-a","node-b"]}

@@ -1,0 +1,14 @@
+jobs:
+  - id: local-pair
+    name: local-pair
+    arrival_time: 0
+    runtime: 20
+    gpu_count: 2
+    network_bw_gbps: 200
+  - id: gang-2n
+    name: gang-2n
+    arrival_time: 5
+    runtime: 30
+    gpu_count: 4
+    gang_enabled: true
+    gang_size_nodes: 2

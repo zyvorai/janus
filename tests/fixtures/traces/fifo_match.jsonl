@@ -1,0 +1,4 @@
+{"timestamp": 0, "event": "JobSubmitted", "job": "job-a", "gpu_count": 1, "runtime": 120}
+{"timestamp": 10, "event": "JobSubmitted", "job": "job-b", "gpu_count": 1, "runtime": 80}
+{"timestamp": 0, "event": "JobScheduled", "job": "job-a", "node": "node-0", "gpus": ["gpu-0"]}
+{"timestamp": 120, "event": "JobScheduled", "job": "job-b", "node": "node-0", "gpus": ["gpu-0"]}

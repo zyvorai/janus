@@ -1,0 +1,4665 @@
+{
+  "version": "serving.trace.v1",
+  "records": [
+    {
+      "time": 0.4080241149099204,
+      "model": "llama-70b",
+      "input_tokens": 307,
+      "output_tokens": 443,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0001",
+      "tenant": "team-a"
+    },
+    {
+      "time": 0.46813841155465924,
+      "model": "llama-70b",
+      "input_tokens": 465,
+      "output_tokens": 410,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0002",
+      "tenant": "team-c"
+    },
+    {
+      "time": 0.6873568753132556,
+      "model": "llama-70b",
+      "input_tokens": 317,
+      "output_tokens": 111,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0003",
+      "tenant": "team-c"
+    },
+    {
+      "time": 1.0558970084010482,
+      "model": "llama-70b",
+      "input_tokens": 1405,
+      "output_tokens": 165,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0004",
+      "tenant": "team-a"
+    },
+    {
+      "time": 1.2944569828658592,
+      "model": "llama-70b",
+      "input_tokens": 825,
+      "output_tokens": 478,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0005",
+      "tenant": "team-c"
+    },
+    {
+      "time": 1.5141549621657413,
+      "model": "llama-70b",
+      "input_tokens": 825,
+      "output_tokens": 143,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0006",
+      "tenant": "team-a"
+    },
+    {
+      "time": 1.5530880227017243,
+      "model": "llama-70b",
+      "input_tokens": 454,
+      "output_tokens": 247,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0007",
+      "tenant": "team-b"
+    },
+    {
+      "time": 2.2113799984638276,
+      "model": "llama-70b",
+      "input_tokens": 1750,
+      "output_tokens": 299,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0008",
+      "tenant": "team-b"
+    },
+    {
+      "time": 2.244211328886963,
+      "model": "llama-70b",
+      "input_tokens": 856,
+      "output_tokens": 488,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0009",
+      "tenant": "team-c"
+    },
+    {
+      "time": 2.3296315090546824,
+      "model": "llama-70b",
+      "input_tokens": 398,
+      "output_tokens": 87,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0010",
+      "tenant": "team-a"
+    },
+    {
+      "time": 3.10291755710371,
+      "model": "llama-70b",
+      "input_tokens": 2030,
+      "output_tokens": 115,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0011",
+      "tenant": "team-b"
+    },
+    {
+      "time": 3.506811507317503,
+      "model": "llama-70b",
+      "input_tokens": 1003,
+      "output_tokens": 147,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0012",
+      "tenant": "team-a"
+    },
+    {
+      "time": 3.9504889460815265,
+      "model": "llama-70b",
+      "input_tokens": 1693,
+      "output_tokens": 413,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0013",
+      "tenant": "team-c"
+    },
+    {
+      "time": 4.025569900225173,
+      "model": "llama-70b",
+      "input_tokens": 1749,
+      "output_tokens": 189,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0014",
+      "tenant": "team-b"
+    },
+    {
+      "time": 4.151425611119191,
+      "model": "llama-70b",
+      "input_tokens": 1566,
+      "output_tokens": 416,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0015",
+      "tenant": "team-c"
+    },
+    {
+      "time": 4.308217825761196,
+      "model": "llama-70b",
+      "input_tokens": 1829,
+      "output_tokens": 461,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0016",
+      "tenant": "team-a"
+    },
+    {
+      "time": 4.962214075263531,
+      "model": "llama-70b",
+      "input_tokens": 1077,
+      "output_tokens": 201,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0017",
+      "tenant": "team-c"
+    },
+    {
+      "time": 5.79839121386829,
+      "model": "llama-70b",
+      "input_tokens": 900,
+      "output_tokens": 172,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0018",
+      "tenant": "team-c"
+    },
+    {
+      "time": 6.044016092937736,
+      "model": "llama-70b",
+      "input_tokens": 798,
+      "output_tokens": 135,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0019",
+      "tenant": "team-c"
+    },
+    {
+      "time": 6.165942832625412,
+      "model": "llama-70b",
+      "input_tokens": 1453,
+      "output_tokens": 283,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0020",
+      "tenant": "team-b"
+    },
+    {
+      "time": 6.2649791992855794,
+      "model": "llama-70b",
+      "input_tokens": 539,
+      "output_tokens": 324,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0021",
+      "tenant": "team-a"
+    },
+    {
+      "time": 7.054587990231743,
+      "model": "llama-70b",
+      "input_tokens": 569,
+      "output_tokens": 385,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0022",
+      "tenant": "team-c"
+    },
+    {
+      "time": 7.08084212716034,
+      "model": "llama-70b",
+      "input_tokens": 1037,
+      "output_tokens": 369,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0023",
+      "tenant": "team-b"
+    },
+    {
+      "time": 8.4981084408207,
+      "model": "llama-70b",
+      "input_tokens": 2018,
+      "output_tokens": 69,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0024",
+      "tenant": "team-b"
+    },
+    {
+      "time": 9.08354923577665,
+      "model": "llama-70b",
+      "input_tokens": 952,
+      "output_tokens": 121,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0025",
+      "tenant": "team-a"
+    },
+    {
+      "time": 9.325401395322386,
+      "model": "llama-70b",
+      "input_tokens": 1734,
+      "output_tokens": 512,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0026",
+      "tenant": "team-a"
+    },
+    {
+      "time": 9.608853302870061,
+      "model": "llama-70b",
+      "input_tokens": 473,
+      "output_tokens": 509,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0027",
+      "tenant": "team-c"
+    },
+    {
+      "time": 9.697566644473282,
+      "model": "llama-70b",
+      "input_tokens": 1021,
+      "output_tokens": 454,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0028",
+      "tenant": "team-c"
+    },
+    {
+      "time": 10.700395619895449,
+      "model": "llama-70b",
+      "input_tokens": 1482,
+      "output_tokens": 229,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0029",
+      "tenant": "team-a"
+    },
+    {
+      "time": 11.758981751461619,
+      "model": "llama-70b",
+      "input_tokens": 1959,
+      "output_tokens": 477,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0030",
+      "tenant": "team-a"
+    },
+    {
+      "time": 11.869215485855376,
+      "model": "llama-70b",
+      "input_tokens": 1417,
+      "output_tokens": 104,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0031",
+      "tenant": "team-a"
+    },
+    {
+      "time": 13.395618782276733,
+      "model": "llama-70b",
+      "input_tokens": 1346,
+      "output_tokens": 456,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0032",
+      "tenant": "team-c"
+    },
+    {
+      "time": 13.653576791931105,
+      "model": "llama-70b",
+      "input_tokens": 1381,
+      "output_tokens": 148,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0033",
+      "tenant": "team-c"
+    },
+    {
+      "time": 13.873637634142083,
+      "model": "llama-70b",
+      "input_tokens": 689,
+      "output_tokens": 340,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0034",
+      "tenant": "team-b"
+    },
+    {
+      "time": 16.00509520837864,
+      "model": "llama-70b",
+      "input_tokens": 1586,
+      "output_tokens": 255,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0035",
+      "tenant": "team-b"
+    },
+    {
+      "time": 16.056685270284582,
+      "model": "llama-70b",
+      "input_tokens": 716,
+      "output_tokens": 96,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0036",
+      "tenant": "team-c"
+    },
+    {
+      "time": 16.379589423785173,
+      "model": "llama-70b",
+      "input_tokens": 1461,
+      "output_tokens": 176,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0037",
+      "tenant": "team-c"
+    },
+    {
+      "time": 16.778484500131665,
+      "model": "llama-70b",
+      "input_tokens": 724,
+      "output_tokens": 98,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0038",
+      "tenant": "team-a"
+    },
+    {
+      "time": 17.06723167647664,
+      "model": "llama-70b",
+      "input_tokens": 826,
+      "output_tokens": 406,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0039",
+      "tenant": "team-c"
+    },
+    {
+      "time": 17.124000837116792,
+      "model": "llama-70b",
+      "input_tokens": 1425,
+      "output_tokens": 359,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0040",
+      "tenant": "team-b"
+    },
+    {
+      "time": 17.783058248860183,
+      "model": "llama-70b",
+      "input_tokens": 645,
+      "output_tokens": 112,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0041",
+      "tenant": "team-b"
+    },
+    {
+      "time": 18.00342478025488,
+      "model": "llama-70b",
+      "input_tokens": 1212,
+      "output_tokens": 506,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0042",
+      "tenant": "team-a"
+    },
+    {
+      "time": 18.209506379606147,
+      "model": "llama-70b",
+      "input_tokens": 950,
+      "output_tokens": 473,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0043",
+      "tenant": "team-a"
+    },
+    {
+      "time": 18.29389797010051,
+      "model": "llama-70b",
+      "input_tokens": 1174,
+      "output_tokens": 135,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0044",
+      "tenant": "team-b"
+    },
+    {
+      "time": 18.54232389576565,
+      "model": "llama-70b",
+      "input_tokens": 2046,
+      "output_tokens": 102,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0045",
+      "tenant": "team-a"
+    },
+    {
+      "time": 18.56308900795211,
+      "model": "llama-70b",
+      "input_tokens": 1363,
+      "output_tokens": 492,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0046",
+      "tenant": "team-a"
+    },
+    {
+      "time": 18.63584700015821,
+      "model": "llama-70b",
+      "input_tokens": 1250,
+      "output_tokens": 310,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0047",
+      "tenant": "team-a"
+    },
+    {
+      "time": 18.707802625513484,
+      "model": "llama-70b",
+      "input_tokens": 260,
+      "output_tokens": 263,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0048",
+      "tenant": "team-b"
+    },
+    {
+      "time": 18.92777302013133,
+      "model": "llama-70b",
+      "input_tokens": 1752,
+      "output_tokens": 465,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0049",
+      "tenant": "team-a"
+    },
+    {
+      "time": 19.012010999919834,
+      "model": "llama-70b",
+      "input_tokens": 701,
+      "output_tokens": 93,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0050",
+      "tenant": "team-a"
+    },
+    {
+      "time": 19.56330268534002,
+      "model": "llama-70b",
+      "input_tokens": 373,
+      "output_tokens": 89,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0051",
+      "tenant": "team-c"
+    },
+    {
+      "time": 20.570541475387678,
+      "model": "llama-70b",
+      "input_tokens": 1343,
+      "output_tokens": 144,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0052",
+      "tenant": "team-a"
+    },
+    {
+      "time": 21.332985708086944,
+      "model": "llama-70b",
+      "input_tokens": 396,
+      "output_tokens": 368,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0053",
+      "tenant": "team-b"
+    },
+    {
+      "time": 21.38406752089602,
+      "model": "llama-70b",
+      "input_tokens": 1422,
+      "output_tokens": 190,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0054",
+      "tenant": "team-a"
+    },
+    {
+      "time": 21.77045061889004,
+      "model": "llama-70b",
+      "input_tokens": 1114,
+      "output_tokens": 400,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0055",
+      "tenant": "team-c"
+    },
+    {
+      "time": 21.922585906125448,
+      "model": "llama-70b",
+      "input_tokens": 790,
+      "output_tokens": 168,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0056",
+      "tenant": "team-b"
+    },
+    {
+      "time": 22.1241165403637,
+      "model": "llama-70b",
+      "input_tokens": 1631,
+      "output_tokens": 394,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0057",
+      "tenant": "team-b"
+    },
+    {
+      "time": 23.18224999168922,
+      "model": "llama-70b",
+      "input_tokens": 404,
+      "output_tokens": 68,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0058",
+      "tenant": "team-c"
+    },
+    {
+      "time": 25.400597325286395,
+      "model": "llama-70b",
+      "input_tokens": 406,
+      "output_tokens": 339,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0059",
+      "tenant": "team-b"
+    },
+    {
+      "time": 25.457433207460834,
+      "model": "llama-70b",
+      "input_tokens": 970,
+      "output_tokens": 99,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0060",
+      "tenant": "team-b"
+    },
+    {
+      "time": 25.5261030617701,
+      "model": "llama-70b",
+      "input_tokens": 1963,
+      "output_tokens": 342,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0061",
+      "tenant": "team-c"
+    },
+    {
+      "time": 25.82721157171044,
+      "model": "llama-70b",
+      "input_tokens": 1623,
+      "output_tokens": 482,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0062",
+      "tenant": "team-c"
+    },
+    {
+      "time": 25.870952963337512,
+      "model": "llama-70b",
+      "input_tokens": 531,
+      "output_tokens": 199,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0063",
+      "tenant": "team-c"
+    },
+    {
+      "time": 26.193231813236125,
+      "model": "llama-70b",
+      "input_tokens": 813,
+      "output_tokens": 208,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0064",
+      "tenant": "team-c"
+    },
+    {
+      "time": 26.361187439930315,
+      "model": "llama-70b",
+      "input_tokens": 1663,
+      "output_tokens": 388,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0065",
+      "tenant": "team-b"
+    },
+    {
+      "time": 26.47685871746764,
+      "model": "llama-70b",
+      "input_tokens": 1988,
+      "output_tokens": 90,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0066",
+      "tenant": "team-b"
+    },
+    {
+      "time": 26.494893967495297,
+      "model": "llama-70b",
+      "input_tokens": 939,
+      "output_tokens": 458,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0067",
+      "tenant": "team-a"
+    },
+    {
+      "time": 27.035621628680055,
+      "model": "llama-70b",
+      "input_tokens": 1385,
+      "output_tokens": 425,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0068",
+      "tenant": "team-a"
+    },
+    {
+      "time": 27.083078236564614,
+      "model": "llama-70b",
+      "input_tokens": 1671,
+      "output_tokens": 140,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0069",
+      "tenant": "team-b"
+    },
+    {
+      "time": 27.43247569604532,
+      "model": "llama-70b",
+      "input_tokens": 559,
+      "output_tokens": 284,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0070",
+      "tenant": "team-b"
+    },
+    {
+      "time": 27.613908350390115,
+      "model": "llama-70b",
+      "input_tokens": 1886,
+      "output_tokens": 504,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0071",
+      "tenant": "team-a"
+    },
+    {
+      "time": 28.072273802335317,
+      "model": "llama-70b",
+      "input_tokens": 1621,
+      "output_tokens": 116,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0072",
+      "tenant": "team-b"
+    },
+    {
+      "time": 29.529637780459367,
+      "model": "llama-70b",
+      "input_tokens": 1790,
+      "output_tokens": 143,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0073",
+      "tenant": "team-a"
+    },
+    {
+      "time": 30.38249195432549,
+      "model": "llama-70b",
+      "input_tokens": 306,
+      "output_tokens": 155,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0074",
+      "tenant": "team-c"
+    },
+    {
+      "time": 31.180720474718605,
+      "model": "llama-70b",
+      "input_tokens": 1916,
+      "output_tokens": 191,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0075",
+      "tenant": "team-c"
+    },
+    {
+      "time": 31.22647901737323,
+      "model": "llama-70b",
+      "input_tokens": 2042,
+      "output_tokens": 83,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0076",
+      "tenant": "team-a"
+    },
+    {
+      "time": 31.90488409257482,
+      "model": "llama-70b",
+      "input_tokens": 1198,
+      "output_tokens": 243,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0077",
+      "tenant": "team-a"
+    },
+    {
+      "time": 31.914463666477335,
+      "model": "llama-70b",
+      "input_tokens": 651,
+      "output_tokens": 268,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0078",
+      "tenant": "team-a"
+    },
+    {
+      "time": 33.27762081365291,
+      "model": "llama-70b",
+      "input_tokens": 827,
+      "output_tokens": 243,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0079",
+      "tenant": "team-c"
+    },
+    {
+      "time": 34.86611112204053,
+      "model": "llama-70b",
+      "input_tokens": 1354,
+      "output_tokens": 233,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0080",
+      "tenant": "team-b"
+    },
+    {
+      "time": 34.94479348066158,
+      "model": "llama-70b",
+      "input_tokens": 799,
+      "output_tokens": 83,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0081",
+      "tenant": "team-b"
+    },
+    {
+      "time": 35.114461328431396,
+      "model": "llama-70b",
+      "input_tokens": 1866,
+      "output_tokens": 224,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0082",
+      "tenant": "team-c"
+    },
+    {
+      "time": 35.16362036835244,
+      "model": "llama-70b",
+      "input_tokens": 1436,
+      "output_tokens": 161,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0083",
+      "tenant": "team-c"
+    },
+    {
+      "time": 35.39274157252892,
+      "model": "llama-70b",
+      "input_tokens": 1320,
+      "output_tokens": 476,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0084",
+      "tenant": "team-b"
+    },
+    {
+      "time": 35.61850063340489,
+      "model": "llama-70b",
+      "input_tokens": 1616,
+      "output_tokens": 233,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0085",
+      "tenant": "team-c"
+    },
+    {
+      "time": 36.37209074790755,
+      "model": "llama-70b",
+      "input_tokens": 1730,
+      "output_tokens": 217,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0086",
+      "tenant": "team-c"
+    },
+    {
+      "time": 36.58205577248131,
+      "model": "llama-70b",
+      "input_tokens": 1080,
+      "output_tokens": 420,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0087",
+      "tenant": "team-a"
+    },
+    {
+      "time": 36.66725390661188,
+      "model": "llama-70b",
+      "input_tokens": 1617,
+      "output_tokens": 258,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0088",
+      "tenant": "team-c"
+    },
+    {
+      "time": 36.81046703825698,
+      "model": "llama-70b",
+      "input_tokens": 1378,
+      "output_tokens": 490,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0089",
+      "tenant": "team-b"
+    },
+    {
+      "time": 36.90484848103682,
+      "model": "llama-70b",
+      "input_tokens": 1865,
+      "output_tokens": 360,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0090",
+      "tenant": "team-b"
+    },
+    {
+      "time": 37.13805364413368,
+      "model": "llama-70b",
+      "input_tokens": 1639,
+      "output_tokens": 173,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0091",
+      "tenant": "team-c"
+    },
+    {
+      "time": 37.212436778328396,
+      "model": "llama-70b",
+      "input_tokens": 429,
+      "output_tokens": 209,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0092",
+      "tenant": "team-b"
+    },
+    {
+      "time": 37.25165270711768,
+      "model": "llama-70b",
+      "input_tokens": 1794,
+      "output_tokens": 184,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0093",
+      "tenant": "team-a"
+    },
+    {
+      "time": 37.31541701880247,
+      "model": "llama-70b",
+      "input_tokens": 350,
+      "output_tokens": 189,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0094",
+      "tenant": "team-a"
+    },
+    {
+      "time": 37.55851037389263,
+      "model": "llama-70b",
+      "input_tokens": 1545,
+      "output_tokens": 358,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0095",
+      "tenant": "team-b"
+    },
+    {
+      "time": 37.76260926557101,
+      "model": "llama-70b",
+      "input_tokens": 558,
+      "output_tokens": 399,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0096",
+      "tenant": "team-b"
+    },
+    {
+      "time": 37.86139996151342,
+      "model": "llama-70b",
+      "input_tokens": 1902,
+      "output_tokens": 420,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0097",
+      "tenant": "team-a"
+    },
+    {
+      "time": 38.187440738454725,
+      "model": "llama-70b",
+      "input_tokens": 1993,
+      "output_tokens": 126,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0098",
+      "tenant": "team-b"
+    },
+    {
+      "time": 38.62798042982758,
+      "model": "llama-70b",
+      "input_tokens": 1400,
+      "output_tokens": 368,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0099",
+      "tenant": "team-c"
+    },
+    {
+      "time": 39.30295428154291,
+      "model": "llama-70b",
+      "input_tokens": 1289,
+      "output_tokens": 282,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0100",
+      "tenant": "team-a"
+    },
+    {
+      "time": 39.84744740569854,
+      "model": "llama-70b",
+      "input_tokens": 1228,
+      "output_tokens": 294,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0101",
+      "tenant": "team-c"
+    },
+    {
+      "time": 39.97735812175604,
+      "model": "llama-70b",
+      "input_tokens": 1848,
+      "output_tokens": 330,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0102",
+      "tenant": "team-b"
+    },
+    {
+      "time": 40.20919452539721,
+      "model": "llama-70b",
+      "input_tokens": 1717,
+      "output_tokens": 210,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0103",
+      "tenant": "team-b"
+    },
+    {
+      "time": 40.36328871208879,
+      "model": "llama-70b",
+      "input_tokens": 1362,
+      "output_tokens": 105,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0104",
+      "tenant": "team-a"
+    },
+    {
+      "time": 40.556466094794196,
+      "model": "llama-70b",
+      "input_tokens": 568,
+      "output_tokens": 425,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0105",
+      "tenant": "team-b"
+    },
+    {
+      "time": 40.76589494781644,
+      "model": "llama-70b",
+      "input_tokens": 1367,
+      "output_tokens": 302,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0106",
+      "tenant": "team-a"
+    },
+    {
+      "time": 41.48153894710488,
+      "model": "llama-70b",
+      "input_tokens": 1053,
+      "output_tokens": 458,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0107",
+      "tenant": "team-c"
+    },
+    {
+      "time": 41.67299916816518,
+      "model": "llama-70b",
+      "input_tokens": 268,
+      "output_tokens": 244,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0108",
+      "tenant": "team-b"
+    },
+    {
+      "time": 41.98206633655355,
+      "model": "llama-70b",
+      "input_tokens": 1760,
+      "output_tokens": 343,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0109",
+      "tenant": "team-b"
+    },
+    {
+      "time": 42.081154392551284,
+      "model": "llama-70b",
+      "input_tokens": 1148,
+      "output_tokens": 312,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0110",
+      "tenant": "team-b"
+    },
+    {
+      "time": 42.523256458819034,
+      "model": "llama-70b",
+      "input_tokens": 1890,
+      "output_tokens": 271,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0111",
+      "tenant": "team-a"
+    },
+    {
+      "time": 44.10277228420668,
+      "model": "llama-70b",
+      "input_tokens": 1349,
+      "output_tokens": 77,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0112",
+      "tenant": "team-c"
+    },
+    {
+      "time": 44.537840935036925,
+      "model": "llama-70b",
+      "input_tokens": 427,
+      "output_tokens": 393,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0113",
+      "tenant": "team-b"
+    },
+    {
+      "time": 44.618065628558526,
+      "model": "llama-70b",
+      "input_tokens": 788,
+      "output_tokens": 258,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0114",
+      "tenant": "team-b"
+    },
+    {
+      "time": 44.77637797236059,
+      "model": "llama-70b",
+      "input_tokens": 1814,
+      "output_tokens": 258,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0115",
+      "tenant": "team-b"
+    },
+    {
+      "time": 45.496885988823315,
+      "model": "llama-70b",
+      "input_tokens": 1219,
+      "output_tokens": 73,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0116",
+      "tenant": "team-b"
+    },
+    {
+      "time": 45.59844162715134,
+      "model": "llama-70b",
+      "input_tokens": 396,
+      "output_tokens": 463,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0117",
+      "tenant": "team-a"
+    },
+    {
+      "time": 45.68737951651748,
+      "model": "llama-70b",
+      "input_tokens": 297,
+      "output_tokens": 382,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0118",
+      "tenant": "team-a"
+    },
+    {
+      "time": 45.94402748825351,
+      "model": "llama-70b",
+      "input_tokens": 490,
+      "output_tokens": 352,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0119",
+      "tenant": "team-c"
+    },
+    {
+      "time": 46.06244422703259,
+      "model": "llama-70b",
+      "input_tokens": 1011,
+      "output_tokens": 149,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0120",
+      "tenant": "team-c"
+    },
+    {
+      "time": 46.56929053869015,
+      "model": "llama-70b",
+      "input_tokens": 1848,
+      "output_tokens": 483,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0121",
+      "tenant": "team-a"
+    },
+    {
+      "time": 46.915040087351606,
+      "model": "llama-70b",
+      "input_tokens": 894,
+      "output_tokens": 358,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0122",
+      "tenant": "team-c"
+    },
+    {
+      "time": 47.0034632669756,
+      "model": "llama-70b",
+      "input_tokens": 1468,
+      "output_tokens": 417,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0123",
+      "tenant": "team-c"
+    },
+    {
+      "time": 47.59567167574695,
+      "model": "llama-70b",
+      "input_tokens": 1997,
+      "output_tokens": 414,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0124",
+      "tenant": "team-c"
+    },
+    {
+      "time": 48.206143237455315,
+      "model": "llama-70b",
+      "input_tokens": 967,
+      "output_tokens": 336,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0125",
+      "tenant": "team-a"
+    },
+    {
+      "time": 48.488199394183624,
+      "model": "llama-70b",
+      "input_tokens": 954,
+      "output_tokens": 70,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0126",
+      "tenant": "team-a"
+    },
+    {
+      "time": 48.71552719737333,
+      "model": "llama-70b",
+      "input_tokens": 997,
+      "output_tokens": 389,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0127",
+      "tenant": "team-b"
+    },
+    {
+      "time": 48.7930275884926,
+      "model": "llama-70b",
+      "input_tokens": 1324,
+      "output_tokens": 397,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0128",
+      "tenant": "team-c"
+    },
+    {
+      "time": 49.389052624985936,
+      "model": "llama-70b",
+      "input_tokens": 1208,
+      "output_tokens": 287,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0129",
+      "tenant": "team-b"
+    },
+    {
+      "time": 50.152495334165394,
+      "model": "llama-70b",
+      "input_tokens": 1957,
+      "output_tokens": 108,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0130",
+      "tenant": "team-a"
+    },
+    {
+      "time": 50.70777585636185,
+      "model": "llama-70b",
+      "input_tokens": 1423,
+      "output_tokens": 376,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0131",
+      "tenant": "team-a"
+    },
+    {
+      "time": 50.980505669001715,
+      "model": "llama-70b",
+      "input_tokens": 921,
+      "output_tokens": 157,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0132",
+      "tenant": "team-b"
+    },
+    {
+      "time": 51.61996887263323,
+      "model": "llama-70b",
+      "input_tokens": 953,
+      "output_tokens": 207,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0133",
+      "tenant": "team-c"
+    },
+    {
+      "time": 51.62405006797381,
+      "model": "llama-70b",
+      "input_tokens": 647,
+      "output_tokens": 107,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0134",
+      "tenant": "team-b"
+    },
+    {
+      "time": 51.948080890501785,
+      "model": "llama-70b",
+      "input_tokens": 748,
+      "output_tokens": 417,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0135",
+      "tenant": "team-b"
+    },
+    {
+      "time": 52.57796578240334,
+      "model": "llama-70b",
+      "input_tokens": 446,
+      "output_tokens": 214,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0136",
+      "tenant": "team-c"
+    },
+    {
+      "time": 52.68948387420776,
+      "model": "llama-70b",
+      "input_tokens": 1615,
+      "output_tokens": 361,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0137",
+      "tenant": "team-c"
+    },
+    {
+      "time": 52.9922783007186,
+      "model": "llama-70b",
+      "input_tokens": 1127,
+      "output_tokens": 445,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0138",
+      "tenant": "team-b"
+    },
+    {
+      "time": 53.477692240424176,
+      "model": "llama-70b",
+      "input_tokens": 810,
+      "output_tokens": 220,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0139",
+      "tenant": "team-a"
+    },
+    {
+      "time": 53.98871749062446,
+      "model": "llama-70b",
+      "input_tokens": 902,
+      "output_tokens": 125,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0140",
+      "tenant": "team-a"
+    },
+    {
+      "time": 54.08625228706897,
+      "model": "llama-70b",
+      "input_tokens": 1247,
+      "output_tokens": 205,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0141",
+      "tenant": "team-c"
+    },
+    {
+      "time": 54.21932333900559,
+      "model": "llama-70b",
+      "input_tokens": 461,
+      "output_tokens": 490,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0142",
+      "tenant": "team-a"
+    },
+    {
+      "time": 54.39838922766792,
+      "model": "llama-70b",
+      "input_tokens": 875,
+      "output_tokens": 71,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0143",
+      "tenant": "team-b"
+    },
+    {
+      "time": 54.41702286182153,
+      "model": "llama-70b",
+      "input_tokens": 367,
+      "output_tokens": 347,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0144",
+      "tenant": "team-c"
+    },
+    {
+      "time": 55.22840421903869,
+      "model": "llama-70b",
+      "input_tokens": 1261,
+      "output_tokens": 116,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0145",
+      "tenant": "team-b"
+    },
+    {
+      "time": 55.48190065085118,
+      "model": "llama-70b",
+      "input_tokens": 1158,
+      "output_tokens": 238,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0146",
+      "tenant": "team-b"
+    },
+    {
+      "time": 56.61441918195695,
+      "model": "llama-70b",
+      "input_tokens": 1234,
+      "output_tokens": 122,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0147",
+      "tenant": "team-b"
+    },
+    {
+      "time": 56.64520709597713,
+      "model": "llama-70b",
+      "input_tokens": 1545,
+      "output_tokens": 415,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0148",
+      "tenant": "team-a"
+    },
+    {
+      "time": 57.311911205150494,
+      "model": "llama-70b",
+      "input_tokens": 878,
+      "output_tokens": 107,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0149",
+      "tenant": "team-c"
+    },
+    {
+      "time": 57.89023290399911,
+      "model": "llama-70b",
+      "input_tokens": 1497,
+      "output_tokens": 369,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0150",
+      "tenant": "team-c"
+    },
+    {
+      "time": 58.081691186594625,
+      "model": "llama-70b",
+      "input_tokens": 1162,
+      "output_tokens": 216,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0151",
+      "tenant": "team-b"
+    },
+    {
+      "time": 58.418006331106064,
+      "model": "llama-70b",
+      "input_tokens": 379,
+      "output_tokens": 376,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0152",
+      "tenant": "team-c"
+    },
+    {
+      "time": 58.51281468784989,
+      "model": "llama-70b",
+      "input_tokens": 1608,
+      "output_tokens": 105,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0153",
+      "tenant": "team-a"
+    },
+    {
+      "time": 58.833992582945385,
+      "model": "llama-70b",
+      "input_tokens": 576,
+      "output_tokens": 65,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0154",
+      "tenant": "team-c"
+    },
+    {
+      "time": 59.19436745927543,
+      "model": "llama-70b",
+      "input_tokens": 852,
+      "output_tokens": 80,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0155",
+      "tenant": "team-c"
+    },
+    {
+      "time": 59.32728215145256,
+      "model": "llama-70b",
+      "input_tokens": 2016,
+      "output_tokens": 296,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0156",
+      "tenant": "team-b"
+    },
+    {
+      "time": 59.94742540668793,
+      "model": "llama-70b",
+      "input_tokens": 1536,
+      "output_tokens": 365,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0157",
+      "tenant": "team-a"
+    },
+    {
+      "time": 60.26202401358296,
+      "model": "llama-70b",
+      "input_tokens": 1582,
+      "output_tokens": 140,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0158",
+      "tenant": "team-a"
+    },
+    {
+      "time": 60.28662017897871,
+      "model": "llama-70b",
+      "input_tokens": 1879,
+      "output_tokens": 221,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0159",
+      "tenant": "team-b"
+    },
+    {
+      "time": 60.51794335414769,
+      "model": "llama-70b",
+      "input_tokens": 1215,
+      "output_tokens": 416,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0160",
+      "tenant": "team-b"
+    },
+    {
+      "time": 60.795580146539365,
+      "model": "llama-70b",
+      "input_tokens": 1267,
+      "output_tokens": 288,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0161",
+      "tenant": "team-a"
+    },
+    {
+      "time": 61.67639701331542,
+      "model": "llama-70b",
+      "input_tokens": 1760,
+      "output_tokens": 229,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0162",
+      "tenant": "team-a"
+    },
+    {
+      "time": 61.71470495760963,
+      "model": "llama-70b",
+      "input_tokens": 1636,
+      "output_tokens": 492,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0163",
+      "tenant": "team-a"
+    },
+    {
+      "time": 64.81764969752079,
+      "model": "llama-70b",
+      "input_tokens": 1632,
+      "output_tokens": 484,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0164",
+      "tenant": "team-a"
+    },
+    {
+      "time": 65.39371176826586,
+      "model": "llama-70b",
+      "input_tokens": 614,
+      "output_tokens": 304,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0165",
+      "tenant": "team-b"
+    },
+    {
+      "time": 65.47381921742993,
+      "model": "llama-70b",
+      "input_tokens": 1454,
+      "output_tokens": 287,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0166",
+      "tenant": "team-b"
+    },
+    {
+      "time": 65.64487961312186,
+      "model": "llama-70b",
+      "input_tokens": 938,
+      "output_tokens": 228,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0167",
+      "tenant": "team-b"
+    },
+    {
+      "time": 65.85704958287134,
+      "model": "llama-70b",
+      "input_tokens": 1270,
+      "output_tokens": 211,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0168",
+      "tenant": "team-a"
+    },
+    {
+      "time": 66.09970962349882,
+      "model": "llama-70b",
+      "input_tokens": 900,
+      "output_tokens": 193,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0169",
+      "tenant": "team-b"
+    },
+    {
+      "time": 66.90043697527395,
+      "model": "llama-70b",
+      "input_tokens": 1945,
+      "output_tokens": 64,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0170",
+      "tenant": "team-b"
+    },
+    {
+      "time": 66.92272836258392,
+      "model": "llama-70b",
+      "input_tokens": 1317,
+      "output_tokens": 249,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0171",
+      "tenant": "team-c"
+    },
+    {
+      "time": 67.15611624924243,
+      "model": "llama-70b",
+      "input_tokens": 361,
+      "output_tokens": 168,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0172",
+      "tenant": "team-a"
+    },
+    {
+      "time": 68.20673803682837,
+      "model": "llama-70b",
+      "input_tokens": 1153,
+      "output_tokens": 421,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0173",
+      "tenant": "team-a"
+    },
+    {
+      "time": 69.65368638630352,
+      "model": "llama-70b",
+      "input_tokens": 1502,
+      "output_tokens": 473,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0174",
+      "tenant": "team-b"
+    },
+    {
+      "time": 69.9738359449006,
+      "model": "llama-70b",
+      "input_tokens": 1387,
+      "output_tokens": 272,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0175",
+      "tenant": "team-a"
+    },
+    {
+      "time": 70.22138435531042,
+      "model": "llama-70b",
+      "input_tokens": 496,
+      "output_tokens": 395,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0176",
+      "tenant": "team-c"
+    },
+    {
+      "time": 70.35943062253033,
+      "model": "llama-70b",
+      "input_tokens": 1700,
+      "output_tokens": 203,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0177",
+      "tenant": "team-b"
+    },
+    {
+      "time": 70.4711738312466,
+      "model": "llama-70b",
+      "input_tokens": 1384,
+      "output_tokens": 138,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0178",
+      "tenant": "team-c"
+    },
+    {
+      "time": 70.75508035102665,
+      "model": "llama-70b",
+      "input_tokens": 535,
+      "output_tokens": 506,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0179",
+      "tenant": "team-b"
+    },
+    {
+      "time": 70.92121092552279,
+      "model": "llama-70b",
+      "input_tokens": 1869,
+      "output_tokens": 323,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0180",
+      "tenant": "team-b"
+    },
+    {
+      "time": 71.43913622865857,
+      "model": "llama-70b",
+      "input_tokens": 1971,
+      "output_tokens": 364,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0181",
+      "tenant": "team-a"
+    },
+    {
+      "time": 71.67576789057338,
+      "model": "llama-70b",
+      "input_tokens": 1247,
+      "output_tokens": 240,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0182",
+      "tenant": "team-c"
+    },
+    {
+      "time": 71.86518628366146,
+      "model": "llama-70b",
+      "input_tokens": 915,
+      "output_tokens": 509,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0183",
+      "tenant": "team-c"
+    },
+    {
+      "time": 72.05832188755163,
+      "model": "llama-70b",
+      "input_tokens": 2009,
+      "output_tokens": 461,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0184",
+      "tenant": "team-b"
+    },
+    {
+      "time": 72.60445634091776,
+      "model": "llama-70b",
+      "input_tokens": 1700,
+      "output_tokens": 479,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0185",
+      "tenant": "team-c"
+    },
+    {
+      "time": 73.23330097772941,
+      "model": "llama-70b",
+      "input_tokens": 1591,
+      "output_tokens": 141,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0186",
+      "tenant": "team-a"
+    },
+    {
+      "time": 73.51239698242806,
+      "model": "llama-70b",
+      "input_tokens": 1464,
+      "output_tokens": 233,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0187",
+      "tenant": "team-a"
+    },
+    {
+      "time": 73.81097489051683,
+      "model": "llama-70b",
+      "input_tokens": 1191,
+      "output_tokens": 71,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0188",
+      "tenant": "team-c"
+    },
+    {
+      "time": 75.21302238442946,
+      "model": "llama-70b",
+      "input_tokens": 409,
+      "output_tokens": 304,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0189",
+      "tenant": "team-c"
+    },
+    {
+      "time": 75.68500069420736,
+      "model": "llama-70b",
+      "input_tokens": 1586,
+      "output_tokens": 105,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0190",
+      "tenant": "team-b"
+    },
+    {
+      "time": 76.91786194161841,
+      "model": "llama-70b",
+      "input_tokens": 1539,
+      "output_tokens": 431,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0191",
+      "tenant": "team-a"
+    },
+    {
+      "time": 77.30223020105575,
+      "model": "llama-70b",
+      "input_tokens": 736,
+      "output_tokens": 387,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0192",
+      "tenant": "team-c"
+    },
+    {
+      "time": 77.34012124640574,
+      "model": "llama-70b",
+      "input_tokens": 457,
+      "output_tokens": 453,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0193",
+      "tenant": "team-a"
+    },
+    {
+      "time": 77.81379083721168,
+      "model": "llama-70b",
+      "input_tokens": 315,
+      "output_tokens": 87,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0194",
+      "tenant": "team-b"
+    },
+    {
+      "time": 77.99134641834529,
+      "model": "llama-70b",
+      "input_tokens": 1138,
+      "output_tokens": 138,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0195",
+      "tenant": "team-b"
+    },
+    {
+      "time": 78.32516441941075,
+      "model": "llama-70b",
+      "input_tokens": 1879,
+      "output_tokens": 156,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0196",
+      "tenant": "team-a"
+    },
+    {
+      "time": 78.7012869304619,
+      "model": "llama-70b",
+      "input_tokens": 1039,
+      "output_tokens": 381,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0197",
+      "tenant": "team-c"
+    },
+    {
+      "time": 78.76306882360723,
+      "model": "llama-70b",
+      "input_tokens": 1200,
+      "output_tokens": 390,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0198",
+      "tenant": "team-b"
+    },
+    {
+      "time": 79.20272265434174,
+      "model": "llama-70b",
+      "input_tokens": 1903,
+      "output_tokens": 302,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0199",
+      "tenant": "team-a"
+    },
+    {
+      "time": 79.23341542221853,
+      "model": "llama-70b",
+      "input_tokens": 963,
+      "output_tokens": 364,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0200",
+      "tenant": "team-c"
+    },
+    {
+      "time": 79.34854064098073,
+      "model": "llama-70b",
+      "input_tokens": 1987,
+      "output_tokens": 218,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0201",
+      "tenant": "team-b"
+    },
+    {
+      "time": 79.39365283902224,
+      "model": "llama-70b",
+      "input_tokens": 1037,
+      "output_tokens": 356,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0202",
+      "tenant": "team-b"
+    },
+    {
+      "time": 81.36116948311398,
+      "model": "llama-70b",
+      "input_tokens": 860,
+      "output_tokens": 75,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0203",
+      "tenant": "team-a"
+    },
+    {
+      "time": 81.69498836425552,
+      "model": "llama-70b",
+      "input_tokens": 1660,
+      "output_tokens": 462,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0204",
+      "tenant": "team-c"
+    },
+    {
+      "time": 81.96963759701423,
+      "model": "llama-70b",
+      "input_tokens": 842,
+      "output_tokens": 461,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0205",
+      "tenant": "team-b"
+    },
+    {
+      "time": 82.06851197335305,
+      "model": "llama-70b",
+      "input_tokens": 645,
+      "output_tokens": 381,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0206",
+      "tenant": "team-c"
+    },
+    {
+      "time": 82.10939768581488,
+      "model": "llama-70b",
+      "input_tokens": 1541,
+      "output_tokens": 394,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0207",
+      "tenant": "team-b"
+    },
+    {
+      "time": 82.12297121617443,
+      "model": "llama-70b",
+      "input_tokens": 1003,
+      "output_tokens": 438,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0208",
+      "tenant": "team-b"
+    },
+    {
+      "time": 82.28120829208098,
+      "model": "llama-70b",
+      "input_tokens": 1106,
+      "output_tokens": 153,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0209",
+      "tenant": "team-c"
+    },
+    {
+      "time": 83.11768633959872,
+      "model": "llama-70b",
+      "input_tokens": 1005,
+      "output_tokens": 335,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0210",
+      "tenant": "team-a"
+    },
+    {
+      "time": 83.23649392841375,
+      "model": "llama-70b",
+      "input_tokens": 1944,
+      "output_tokens": 310,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0211",
+      "tenant": "team-a"
+    },
+    {
+      "time": 83.4891878864568,
+      "model": "llama-70b",
+      "input_tokens": 410,
+      "output_tokens": 136,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0212",
+      "tenant": "team-c"
+    },
+    {
+      "time": 83.67132851678183,
+      "model": "llama-70b",
+      "input_tokens": 1875,
+      "output_tokens": 266,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0213",
+      "tenant": "team-c"
+    },
+    {
+      "time": 83.72409644463616,
+      "model": "llama-70b",
+      "input_tokens": 1010,
+      "output_tokens": 408,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0214",
+      "tenant": "team-b"
+    },
+    {
+      "time": 84.41542399263089,
+      "model": "llama-70b",
+      "input_tokens": 1016,
+      "output_tokens": 119,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0215",
+      "tenant": "team-a"
+    },
+    {
+      "time": 84.80198090524117,
+      "model": "llama-70b",
+      "input_tokens": 1405,
+      "output_tokens": 231,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0216",
+      "tenant": "team-c"
+    },
+    {
+      "time": 84.8281023683148,
+      "model": "llama-70b",
+      "input_tokens": 1943,
+      "output_tokens": 301,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0217",
+      "tenant": "team-a"
+    },
+    {
+      "time": 84.88832782253942,
+      "model": "llama-70b",
+      "input_tokens": 332,
+      "output_tokens": 219,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0218",
+      "tenant": "team-a"
+    },
+    {
+      "time": 84.99537505605896,
+      "model": "llama-70b",
+      "input_tokens": 1356,
+      "output_tokens": 133,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0219",
+      "tenant": "team-b"
+    },
+    {
+      "time": 85.43942989665247,
+      "model": "llama-70b",
+      "input_tokens": 1777,
+      "output_tokens": 420,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0220",
+      "tenant": "team-c"
+    },
+    {
+      "time": 85.98176546902516,
+      "model": "llama-70b",
+      "input_tokens": 572,
+      "output_tokens": 276,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0221",
+      "tenant": "team-c"
+    },
+    {
+      "time": 86.19154323547635,
+      "model": "llama-70b",
+      "input_tokens": 828,
+      "output_tokens": 80,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0222",
+      "tenant": "team-b"
+    },
+    {
+      "time": 86.42683896145036,
+      "model": "llama-70b",
+      "input_tokens": 739,
+      "output_tokens": 501,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0223",
+      "tenant": "team-c"
+    },
+    {
+      "time": 86.60996462434468,
+      "model": "llama-70b",
+      "input_tokens": 1576,
+      "output_tokens": 247,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0224",
+      "tenant": "team-b"
+    },
+    {
+      "time": 86.69415851083639,
+      "model": "llama-70b",
+      "input_tokens": 506,
+      "output_tokens": 498,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0225",
+      "tenant": "team-c"
+    },
+    {
+      "time": 86.78951510350568,
+      "model": "llama-70b",
+      "input_tokens": 1565,
+      "output_tokens": 369,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0226",
+      "tenant": "team-b"
+    },
+    {
+      "time": 86.90117263289855,
+      "model": "llama-70b",
+      "input_tokens": 513,
+      "output_tokens": 466,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0227",
+      "tenant": "team-a"
+    },
+    {
+      "time": 87.60952698083683,
+      "model": "llama-70b",
+      "input_tokens": 1391,
+      "output_tokens": 170,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0228",
+      "tenant": "team-a"
+    },
+    {
+      "time": 87.7688589624841,
+      "model": "llama-70b",
+      "input_tokens": 558,
+      "output_tokens": 467,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0229",
+      "tenant": "team-b"
+    },
+    {
+      "time": 88.55077590810619,
+      "model": "llama-70b",
+      "input_tokens": 552,
+      "output_tokens": 130,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0230",
+      "tenant": "team-a"
+    },
+    {
+      "time": 88.59735633390602,
+      "model": "llama-70b",
+      "input_tokens": 2030,
+      "output_tokens": 77,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0231",
+      "tenant": "team-b"
+    },
+    {
+      "time": 89.22158622329701,
+      "model": "llama-70b",
+      "input_tokens": 743,
+      "output_tokens": 365,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0232",
+      "tenant": "team-a"
+    },
+    {
+      "time": 89.34494018975427,
+      "model": "llama-70b",
+      "input_tokens": 515,
+      "output_tokens": 443,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0233",
+      "tenant": "team-a"
+    },
+    {
+      "time": 89.89258181563133,
+      "model": "llama-70b",
+      "input_tokens": 1231,
+      "output_tokens": 293,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0234",
+      "tenant": "team-c"
+    },
+    {
+      "time": 89.9387704038861,
+      "model": "llama-70b",
+      "input_tokens": 1287,
+      "output_tokens": 177,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0235",
+      "tenant": "team-c"
+    },
+    {
+      "time": 90.55033221883595,
+      "model": "llama-70b",
+      "input_tokens": 2031,
+      "output_tokens": 401,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0236",
+      "tenant": "team-b"
+    },
+    {
+      "time": 90.96272191896739,
+      "model": "llama-70b",
+      "input_tokens": 319,
+      "output_tokens": 95,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0237",
+      "tenant": "team-b"
+    },
+    {
+      "time": 91.42619105428801,
+      "model": "llama-70b",
+      "input_tokens": 1260,
+      "output_tokens": 428,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0238",
+      "tenant": "team-a"
+    },
+    {
+      "time": 91.58170022649723,
+      "model": "llama-70b",
+      "input_tokens": 559,
+      "output_tokens": 97,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0239",
+      "tenant": "team-c"
+    },
+    {
+      "time": 91.9827412308269,
+      "model": "llama-70b",
+      "input_tokens": 1379,
+      "output_tokens": 428,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0240",
+      "tenant": "team-c"
+    },
+    {
+      "time": 92.2852244496884,
+      "model": "llama-70b",
+      "input_tokens": 1185,
+      "output_tokens": 322,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0241",
+      "tenant": "team-a"
+    },
+    {
+      "time": 92.91542477424103,
+      "model": "llama-70b",
+      "input_tokens": 490,
+      "output_tokens": 500,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0242",
+      "tenant": "team-b"
+    },
+    {
+      "time": 93.15569202405867,
+      "model": "llama-70b",
+      "input_tokens": 723,
+      "output_tokens": 275,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0243",
+      "tenant": "team-b"
+    },
+    {
+      "time": 93.37082665372105,
+      "model": "llama-70b",
+      "input_tokens": 450,
+      "output_tokens": 224,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0244",
+      "tenant": "team-c"
+    },
+    {
+      "time": 93.48851591266428,
+      "model": "llama-70b",
+      "input_tokens": 568,
+      "output_tokens": 415,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0245",
+      "tenant": "team-a"
+    },
+    {
+      "time": 94.20148967821129,
+      "model": "llama-70b",
+      "input_tokens": 446,
+      "output_tokens": 285,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0246",
+      "tenant": "team-a"
+    },
+    {
+      "time": 94.5265961004005,
+      "model": "llama-70b",
+      "input_tokens": 1457,
+      "output_tokens": 351,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0247",
+      "tenant": "team-c"
+    },
+    {
+      "time": 94.5787449576021,
+      "model": "llama-70b",
+      "input_tokens": 980,
+      "output_tokens": 511,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0248",
+      "tenant": "team-b"
+    },
+    {
+      "time": 94.94567155193874,
+      "model": "llama-70b",
+      "input_tokens": 976,
+      "output_tokens": 117,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0249",
+      "tenant": "team-a"
+    },
+    {
+      "time": 95.01291130557289,
+      "model": "llama-70b",
+      "input_tokens": 1243,
+      "output_tokens": 178,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0250",
+      "tenant": "team-c"
+    },
+    {
+      "time": 95.19617993987332,
+      "model": "llama-70b",
+      "input_tokens": 1817,
+      "output_tokens": 206,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0251",
+      "tenant": "team-b"
+    },
+    {
+      "time": 95.94231262158011,
+      "model": "llama-70b",
+      "input_tokens": 1827,
+      "output_tokens": 483,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0252",
+      "tenant": "team-c"
+    },
+    {
+      "time": 96.35398349106362,
+      "model": "llama-70b",
+      "input_tokens": 309,
+      "output_tokens": 375,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0253",
+      "tenant": "team-a"
+    },
+    {
+      "time": 96.481663808896,
+      "model": "llama-70b",
+      "input_tokens": 1817,
+      "output_tokens": 222,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0254",
+      "tenant": "team-a"
+    },
+    {
+      "time": 96.56173041083497,
+      "model": "llama-70b",
+      "input_tokens": 549,
+      "output_tokens": 353,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0255",
+      "tenant": "team-a"
+    },
+    {
+      "time": 97.10205351545676,
+      "model": "llama-70b",
+      "input_tokens": 318,
+      "output_tokens": 110,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0256",
+      "tenant": "team-b"
+    },
+    {
+      "time": 97.31982888077003,
+      "model": "llama-70b",
+      "input_tokens": 954,
+      "output_tokens": 144,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0257",
+      "tenant": "team-c"
+    },
+    {
+      "time": 97.47668038949365,
+      "model": "llama-70b",
+      "input_tokens": 1418,
+      "output_tokens": 369,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0258",
+      "tenant": "team-a"
+    },
+    {
+      "time": 97.54519025966174,
+      "model": "llama-70b",
+      "input_tokens": 1521,
+      "output_tokens": 89,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0259",
+      "tenant": "team-b"
+    },
+    {
+      "time": 97.97900146675086,
+      "model": "llama-70b",
+      "input_tokens": 1250,
+      "output_tokens": 374,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0260",
+      "tenant": "team-b"
+    },
+    {
+      "time": 98.07612011499101,
+      "model": "llama-70b",
+      "input_tokens": 1305,
+      "output_tokens": 122,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0261",
+      "tenant": "team-a"
+    },
+    {
+      "time": 98.20932941472473,
+      "model": "llama-70b",
+      "input_tokens": 1645,
+      "output_tokens": 367,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0262",
+      "tenant": "team-c"
+    },
+    {
+      "time": 98.35683964059679,
+      "model": "llama-70b",
+      "input_tokens": 707,
+      "output_tokens": 266,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0263",
+      "tenant": "team-a"
+    },
+    {
+      "time": 98.44831475968721,
+      "model": "llama-70b",
+      "input_tokens": 688,
+      "output_tokens": 456,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0264",
+      "tenant": "team-b"
+    },
+    {
+      "time": 98.60738637261741,
+      "model": "llama-70b",
+      "input_tokens": 271,
+      "output_tokens": 318,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0265",
+      "tenant": "team-a"
+    },
+    {
+      "time": 98.798734551335,
+      "model": "llama-70b",
+      "input_tokens": 1697,
+      "output_tokens": 181,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0266",
+      "tenant": "team-c"
+    },
+    {
+      "time": 99.4551063682161,
+      "model": "llama-70b",
+      "input_tokens": 403,
+      "output_tokens": 267,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0267",
+      "tenant": "team-a"
+    },
+    {
+      "time": 99.70139882862166,
+      "model": "llama-70b",
+      "input_tokens": 415,
+      "output_tokens": 505,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0268",
+      "tenant": "team-b"
+    },
+    {
+      "time": 100.04216191858346,
+      "model": "llama-70b",
+      "input_tokens": 1709,
+      "output_tokens": 391,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0269",
+      "tenant": "team-a"
+    },
+    {
+      "time": 100.249861187583,
+      "model": "llama-70b",
+      "input_tokens": 921,
+      "output_tokens": 151,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0270",
+      "tenant": "team-c"
+    },
+    {
+      "time": 101.25900305753694,
+      "model": "llama-70b",
+      "input_tokens": 436,
+      "output_tokens": 287,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0271",
+      "tenant": "team-b"
+    },
+    {
+      "time": 101.61454263608346,
+      "model": "llama-70b",
+      "input_tokens": 1329,
+      "output_tokens": 104,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0272",
+      "tenant": "team-c"
+    },
+    {
+      "time": 101.78045394125986,
+      "model": "llama-70b",
+      "input_tokens": 938,
+      "output_tokens": 462,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0273",
+      "tenant": "team-c"
+    },
+    {
+      "time": 102.18165625724248,
+      "model": "llama-70b",
+      "input_tokens": 1342,
+      "output_tokens": 325,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0274",
+      "tenant": "team-b"
+    },
+    {
+      "time": 102.701525502986,
+      "model": "llama-70b",
+      "input_tokens": 1933,
+      "output_tokens": 394,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0275",
+      "tenant": "team-a"
+    },
+    {
+      "time": 102.76486325596295,
+      "model": "llama-70b",
+      "input_tokens": 660,
+      "output_tokens": 152,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0276",
+      "tenant": "team-c"
+    },
+    {
+      "time": 102.79620066868355,
+      "model": "llama-70b",
+      "input_tokens": 1838,
+      "output_tokens": 385,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0277",
+      "tenant": "team-c"
+    },
+    {
+      "time": 103.36684251267152,
+      "model": "llama-70b",
+      "input_tokens": 1175,
+      "output_tokens": 412,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0278",
+      "tenant": "team-b"
+    },
+    {
+      "time": 104.16560943224488,
+      "model": "llama-70b",
+      "input_tokens": 1540,
+      "output_tokens": 225,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0279",
+      "tenant": "team-a"
+    },
+    {
+      "time": 104.41874729232026,
+      "model": "llama-70b",
+      "input_tokens": 1549,
+      "output_tokens": 219,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0280",
+      "tenant": "team-a"
+    },
+    {
+      "time": 104.59225746191277,
+      "model": "llama-70b",
+      "input_tokens": 407,
+      "output_tokens": 222,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0281",
+      "tenant": "team-a"
+    },
+    {
+      "time": 104.61568642513653,
+      "model": "llama-70b",
+      "input_tokens": 1959,
+      "output_tokens": 210,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0282",
+      "tenant": "team-c"
+    },
+    {
+      "time": 104.97632591966341,
+      "model": "llama-70b",
+      "input_tokens": 1043,
+      "output_tokens": 300,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0283",
+      "tenant": "team-c"
+    },
+    {
+      "time": 105.88119797357007,
+      "model": "llama-70b",
+      "input_tokens": 1177,
+      "output_tokens": 478,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0284",
+      "tenant": "team-b"
+    },
+    {
+      "time": 106.25275168716516,
+      "model": "llama-70b",
+      "input_tokens": 1282,
+      "output_tokens": 141,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0285",
+      "tenant": "team-a"
+    },
+    {
+      "time": 106.91908475831356,
+      "model": "llama-70b",
+      "input_tokens": 1970,
+      "output_tokens": 239,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0286",
+      "tenant": "team-c"
+    },
+    {
+      "time": 106.99485170484688,
+      "model": "llama-70b",
+      "input_tokens": 763,
+      "output_tokens": 426,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0287",
+      "tenant": "team-c"
+    },
+    {
+      "time": 107.29073598468777,
+      "model": "llama-70b",
+      "input_tokens": 581,
+      "output_tokens": 250,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0288",
+      "tenant": "team-b"
+    },
+    {
+      "time": 107.50095564344689,
+      "model": "llama-70b",
+      "input_tokens": 948,
+      "output_tokens": 411,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0289",
+      "tenant": "team-c"
+    },
+    {
+      "time": 107.91781669557247,
+      "model": "llama-70b",
+      "input_tokens": 390,
+      "output_tokens": 232,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0290",
+      "tenant": "team-c"
+    },
+    {
+      "time": 108.11328856496611,
+      "model": "llama-70b",
+      "input_tokens": 772,
+      "output_tokens": 434,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0291",
+      "tenant": "team-b"
+    },
+    {
+      "time": 108.14729478021678,
+      "model": "llama-70b",
+      "input_tokens": 1615,
+      "output_tokens": 136,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0292",
+      "tenant": "team-c"
+    },
+    {
+      "time": 108.6268623028919,
+      "model": "llama-70b",
+      "input_tokens": 1058,
+      "output_tokens": 130,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0293",
+      "tenant": "team-b"
+    },
+    {
+      "time": 108.95427578582603,
+      "model": "llama-70b",
+      "input_tokens": 1573,
+      "output_tokens": 469,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0294",
+      "tenant": "team-c"
+    },
+    {
+      "time": 109.43965732511991,
+      "model": "llama-70b",
+      "input_tokens": 1769,
+      "output_tokens": 414,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0295",
+      "tenant": "team-c"
+    },
+    {
+      "time": 109.88367553308672,
+      "model": "llama-70b",
+      "input_tokens": 1297,
+      "output_tokens": 249,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0296",
+      "tenant": "team-b"
+    },
+    {
+      "time": 109.96318418420422,
+      "model": "llama-70b",
+      "input_tokens": 694,
+      "output_tokens": 238,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0297",
+      "tenant": "team-a"
+    },
+    {
+      "time": 114.22865489673559,
+      "model": "llama-70b",
+      "input_tokens": 573,
+      "output_tokens": 103,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0298",
+      "tenant": "team-c"
+    },
+    {
+      "time": 114.81804943768255,
+      "model": "llama-70b",
+      "input_tokens": 1966,
+      "output_tokens": 442,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0299",
+      "tenant": "team-c"
+    },
+    {
+      "time": 114.98229941976219,
+      "model": "llama-70b",
+      "input_tokens": 1825,
+      "output_tokens": 380,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0300",
+      "tenant": "team-b"
+    },
+    {
+      "time": 115.04931331426795,
+      "model": "llama-70b",
+      "input_tokens": 626,
+      "output_tokens": 489,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0301",
+      "tenant": "team-c"
+    },
+    {
+      "time": 115.27958230156068,
+      "model": "llama-70b",
+      "input_tokens": 1097,
+      "output_tokens": 250,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0302",
+      "tenant": "team-c"
+    },
+    {
+      "time": 115.4137310806606,
+      "model": "llama-70b",
+      "input_tokens": 1789,
+      "output_tokens": 465,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0303",
+      "tenant": "team-c"
+    },
+    {
+      "time": 115.52306842514149,
+      "model": "llama-70b",
+      "input_tokens": 1912,
+      "output_tokens": 465,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0304",
+      "tenant": "team-b"
+    },
+    {
+      "time": 115.97673124937455,
+      "model": "llama-70b",
+      "input_tokens": 1424,
+      "output_tokens": 289,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0305",
+      "tenant": "team-b"
+    },
+    {
+      "time": 116.2563222601831,
+      "model": "llama-70b",
+      "input_tokens": 1113,
+      "output_tokens": 146,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0306",
+      "tenant": "team-a"
+    },
+    {
+      "time": 117.08175558466924,
+      "model": "llama-70b",
+      "input_tokens": 362,
+      "output_tokens": 392,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0307",
+      "tenant": "team-c"
+    },
+    {
+      "time": 118.17077888292246,
+      "model": "llama-70b",
+      "input_tokens": 1712,
+      "output_tokens": 497,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0308",
+      "tenant": "team-b"
+    },
+    {
+      "time": 118.20581992195696,
+      "model": "llama-70b",
+      "input_tokens": 584,
+      "output_tokens": 203,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0309",
+      "tenant": "team-a"
+    },
+    {
+      "time": 118.91707313952583,
+      "model": "llama-70b",
+      "input_tokens": 443,
+      "output_tokens": 177,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0310",
+      "tenant": "team-a"
+    },
+    {
+      "time": 119.13146002668888,
+      "model": "llama-70b",
+      "input_tokens": 1067,
+      "output_tokens": 321,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0311",
+      "tenant": "team-b"
+    },
+    {
+      "time": 121.2145108900689,
+      "model": "llama-70b",
+      "input_tokens": 1023,
+      "output_tokens": 178,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0312",
+      "tenant": "team-a"
+    },
+    {
+      "time": 121.94548947727178,
+      "model": "llama-70b",
+      "input_tokens": 1587,
+      "output_tokens": 235,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0313",
+      "tenant": "team-a"
+    },
+    {
+      "time": 122.0807313671292,
+      "model": "llama-70b",
+      "input_tokens": 1955,
+      "output_tokens": 305,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0314",
+      "tenant": "team-b"
+    },
+    {
+      "time": 122.4628981343774,
+      "model": "llama-70b",
+      "input_tokens": 418,
+      "output_tokens": 73,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0315",
+      "tenant": "team-a"
+    },
+    {
+      "time": 122.78123972960576,
+      "model": "llama-70b",
+      "input_tokens": 1745,
+      "output_tokens": 375,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0316",
+      "tenant": "team-a"
+    },
+    {
+      "time": 123.37999181187084,
+      "model": "llama-70b",
+      "input_tokens": 742,
+      "output_tokens": 218,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0317",
+      "tenant": "team-a"
+    },
+    {
+      "time": 123.5977623854856,
+      "model": "llama-70b",
+      "input_tokens": 1881,
+      "output_tokens": 382,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0318",
+      "tenant": "team-a"
+    },
+    {
+      "time": 124.32259882009336,
+      "model": "llama-70b",
+      "input_tokens": 1279,
+      "output_tokens": 369,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0319",
+      "tenant": "team-c"
+    },
+    {
+      "time": 124.6123513759908,
+      "model": "llama-70b",
+      "input_tokens": 751,
+      "output_tokens": 431,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0320",
+      "tenant": "team-b"
+    },
+    {
+      "time": 124.61297760030456,
+      "model": "llama-70b",
+      "input_tokens": 978,
+      "output_tokens": 187,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0321",
+      "tenant": "team-a"
+    },
+    {
+      "time": 125.04967751820917,
+      "model": "llama-70b",
+      "input_tokens": 431,
+      "output_tokens": 332,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0322",
+      "tenant": "team-c"
+    },
+    {
+      "time": 125.36385440713181,
+      "model": "llama-70b",
+      "input_tokens": 1866,
+      "output_tokens": 323,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0323",
+      "tenant": "team-b"
+    },
+    {
+      "time": 126.19032694955118,
+      "model": "llama-70b",
+      "input_tokens": 345,
+      "output_tokens": 389,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0324",
+      "tenant": "team-b"
+    },
+    {
+      "time": 126.74057411910991,
+      "model": "llama-70b",
+      "input_tokens": 987,
+      "output_tokens": 467,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0325",
+      "tenant": "team-a"
+    },
+    {
+      "time": 127.2686884197227,
+      "model": "llama-70b",
+      "input_tokens": 1542,
+      "output_tokens": 117,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0326",
+      "tenant": "team-a"
+    },
+    {
+      "time": 127.28682784611404,
+      "model": "llama-70b",
+      "input_tokens": 1374,
+      "output_tokens": 237,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0327",
+      "tenant": "team-c"
+    },
+    {
+      "time": 127.54727015784394,
+      "model": "llama-70b",
+      "input_tokens": 629,
+      "output_tokens": 479,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0328",
+      "tenant": "team-c"
+    },
+    {
+      "time": 128.14605399274666,
+      "model": "llama-70b",
+      "input_tokens": 1193,
+      "output_tokens": 82,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0329",
+      "tenant": "team-a"
+    },
+    {
+      "time": 128.77243147871866,
+      "model": "llama-70b",
+      "input_tokens": 341,
+      "output_tokens": 225,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0330",
+      "tenant": "team-b"
+    },
+    {
+      "time": 130.58086245520244,
+      "model": "llama-70b",
+      "input_tokens": 1368,
+      "output_tokens": 306,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0331",
+      "tenant": "team-c"
+    },
+    {
+      "time": 130.6656961432828,
+      "model": "llama-70b",
+      "input_tokens": 987,
+      "output_tokens": 505,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0332",
+      "tenant": "team-b"
+    },
+    {
+      "time": 130.71886877607042,
+      "model": "llama-70b",
+      "input_tokens": 1009,
+      "output_tokens": 287,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0333",
+      "tenant": "team-b"
+    },
+    {
+      "time": 130.88449151778798,
+      "model": "llama-70b",
+      "input_tokens": 638,
+      "output_tokens": 318,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0334",
+      "tenant": "team-c"
+    },
+    {
+      "time": 131.00858296063276,
+      "model": "llama-70b",
+      "input_tokens": 425,
+      "output_tokens": 436,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0335",
+      "tenant": "team-b"
+    },
+    {
+      "time": 131.37756010646046,
+      "model": "llama-70b",
+      "input_tokens": 1940,
+      "output_tokens": 156,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0336",
+      "tenant": "team-b"
+    },
+    {
+      "time": 131.42086060806895,
+      "model": "llama-70b",
+      "input_tokens": 927,
+      "output_tokens": 402,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0337",
+      "tenant": "team-b"
+    },
+    {
+      "time": 131.7900071574377,
+      "model": "llama-70b",
+      "input_tokens": 1128,
+      "output_tokens": 149,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0338",
+      "tenant": "team-b"
+    },
+    {
+      "time": 131.80731847880332,
+      "model": "llama-70b",
+      "input_tokens": 2037,
+      "output_tokens": 244,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0339",
+      "tenant": "team-b"
+    },
+    {
+      "time": 132.2153897569974,
+      "model": "llama-70b",
+      "input_tokens": 1876,
+      "output_tokens": 93,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0340",
+      "tenant": "team-b"
+    },
+    {
+      "time": 132.50325687813532,
+      "model": "llama-70b",
+      "input_tokens": 1791,
+      "output_tokens": 411,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0341",
+      "tenant": "team-a"
+    },
+    {
+      "time": 133.25857201274616,
+      "model": "llama-70b",
+      "input_tokens": 1644,
+      "output_tokens": 464,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0342",
+      "tenant": "team-a"
+    },
+    {
+      "time": 133.2864121049868,
+      "model": "llama-70b",
+      "input_tokens": 1850,
+      "output_tokens": 394,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0343",
+      "tenant": "team-b"
+    },
+    {
+      "time": 134.48046446689457,
+      "model": "llama-70b",
+      "input_tokens": 322,
+      "output_tokens": 373,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0344",
+      "tenant": "team-b"
+    },
+    {
+      "time": 134.66655903330982,
+      "model": "llama-70b",
+      "input_tokens": 1818,
+      "output_tokens": 103,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0345",
+      "tenant": "team-c"
+    },
+    {
+      "time": 134.8494413492725,
+      "model": "llama-70b",
+      "input_tokens": 899,
+      "output_tokens": 396,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0346",
+      "tenant": "team-a"
+    },
+    {
+      "time": 134.85994335202398,
+      "model": "llama-70b",
+      "input_tokens": 637,
+      "output_tokens": 319,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0347",
+      "tenant": "team-c"
+    },
+    {
+      "time": 134.9100602638298,
+      "model": "llama-70b",
+      "input_tokens": 1843,
+      "output_tokens": 197,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0348",
+      "tenant": "team-c"
+    },
+    {
+      "time": 135.04457221738963,
+      "model": "llama-70b",
+      "input_tokens": 1261,
+      "output_tokens": 166,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0349",
+      "tenant": "team-a"
+    },
+    {
+      "time": 135.28519537253024,
+      "model": "llama-70b",
+      "input_tokens": 1716,
+      "output_tokens": 291,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0350",
+      "tenant": "team-c"
+    },
+    {
+      "time": 135.45592723473695,
+      "model": "llama-70b",
+      "input_tokens": 388,
+      "output_tokens": 345,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0351",
+      "tenant": "team-b"
+    },
+    {
+      "time": 136.21842395505297,
+      "model": "llama-70b",
+      "input_tokens": 1713,
+      "output_tokens": 427,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0352",
+      "tenant": "team-c"
+    },
+    {
+      "time": 136.31998962190676,
+      "model": "llama-70b",
+      "input_tokens": 667,
+      "output_tokens": 469,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0353",
+      "tenant": "team-b"
+    },
+    {
+      "time": 136.3306438725061,
+      "model": "llama-70b",
+      "input_tokens": 1390,
+      "output_tokens": 357,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0354",
+      "tenant": "team-c"
+    },
+    {
+      "time": 136.38624353152528,
+      "model": "llama-70b",
+      "input_tokens": 432,
+      "output_tokens": 97,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0355",
+      "tenant": "team-c"
+    },
+    {
+      "time": 136.89381828087943,
+      "model": "llama-70b",
+      "input_tokens": 1332,
+      "output_tokens": 274,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0356",
+      "tenant": "team-a"
+    },
+    {
+      "time": 136.9473802520071,
+      "model": "llama-70b",
+      "input_tokens": 905,
+      "output_tokens": 392,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0357",
+      "tenant": "team-b"
+    },
+    {
+      "time": 137.40329022680078,
+      "model": "llama-70b",
+      "input_tokens": 961,
+      "output_tokens": 129,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0358",
+      "tenant": "team-a"
+    },
+    {
+      "time": 137.98732107948,
+      "model": "llama-70b",
+      "input_tokens": 520,
+      "output_tokens": 285,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0359",
+      "tenant": "team-a"
+    },
+    {
+      "time": 138.279330312047,
+      "model": "llama-70b",
+      "input_tokens": 878,
+      "output_tokens": 148,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0360",
+      "tenant": "team-c"
+    },
+    {
+      "time": 138.38153001316925,
+      "model": "llama-70b",
+      "input_tokens": 1318,
+      "output_tokens": 209,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0361",
+      "tenant": "team-a"
+    },
+    {
+      "time": 138.78473575412713,
+      "model": "llama-70b",
+      "input_tokens": 1384,
+      "output_tokens": 204,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0362",
+      "tenant": "team-c"
+    },
+    {
+      "time": 139.08971581969354,
+      "model": "llama-70b",
+      "input_tokens": 1285,
+      "output_tokens": 392,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0363",
+      "tenant": "team-c"
+    },
+    {
+      "time": 139.15670204994402,
+      "model": "llama-70b",
+      "input_tokens": 1605,
+      "output_tokens": 383,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0364",
+      "tenant": "team-c"
+    },
+    {
+      "time": 139.1735287840166,
+      "model": "llama-70b",
+      "input_tokens": 2025,
+      "output_tokens": 78,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0365",
+      "tenant": "team-c"
+    },
+    {
+      "time": 139.76318116822625,
+      "model": "llama-70b",
+      "input_tokens": 798,
+      "output_tokens": 397,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0366",
+      "tenant": "team-b"
+    },
+    {
+      "time": 140.1482285879112,
+      "model": "llama-70b",
+      "input_tokens": 318,
+      "output_tokens": 318,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0367",
+      "tenant": "team-c"
+    },
+    {
+      "time": 141.40360958642324,
+      "model": "llama-70b",
+      "input_tokens": 1245,
+      "output_tokens": 189,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0368",
+      "tenant": "team-b"
+    },
+    {
+      "time": 141.43391863247922,
+      "model": "llama-70b",
+      "input_tokens": 378,
+      "output_tokens": 144,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0369",
+      "tenant": "team-b"
+    },
+    {
+      "time": 141.6836971843067,
+      "model": "llama-70b",
+      "input_tokens": 952,
+      "output_tokens": 374,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0370",
+      "tenant": "team-c"
+    },
+    {
+      "time": 141.83756025665122,
+      "model": "llama-70b",
+      "input_tokens": 2018,
+      "output_tokens": 240,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0371",
+      "tenant": "team-b"
+    },
+    {
+      "time": 142.12698642794254,
+      "model": "llama-70b",
+      "input_tokens": 473,
+      "output_tokens": 227,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0372",
+      "tenant": "team-a"
+    },
+    {
+      "time": 142.25148773560312,
+      "model": "llama-70b",
+      "input_tokens": 763,
+      "output_tokens": 136,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0373",
+      "tenant": "team-b"
+    },
+    {
+      "time": 143.41446563323743,
+      "model": "llama-70b",
+      "input_tokens": 2025,
+      "output_tokens": 379,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0374",
+      "tenant": "team-a"
+    },
+    {
+      "time": 144.08614773767954,
+      "model": "llama-70b",
+      "input_tokens": 1439,
+      "output_tokens": 433,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0375",
+      "tenant": "team-a"
+    },
+    {
+      "time": 144.36202144467566,
+      "model": "llama-70b",
+      "input_tokens": 1310,
+      "output_tokens": 303,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0376",
+      "tenant": "team-b"
+    },
+    {
+      "time": 144.37140108137757,
+      "model": "llama-70b",
+      "input_tokens": 1061,
+      "output_tokens": 322,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0377",
+      "tenant": "team-a"
+    },
+    {
+      "time": 144.72159892395922,
+      "model": "llama-70b",
+      "input_tokens": 355,
+      "output_tokens": 89,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0378",
+      "tenant": "team-c"
+    },
+    {
+      "time": 145.5775796116292,
+      "model": "llama-70b",
+      "input_tokens": 1595,
+      "output_tokens": 408,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0379",
+      "tenant": "team-c"
+    },
+    {
+      "time": 145.58086402136152,
+      "model": "llama-70b",
+      "input_tokens": 476,
+      "output_tokens": 284,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0380",
+      "tenant": "team-c"
+    },
+    {
+      "time": 145.76300628541296,
+      "model": "llama-70b",
+      "input_tokens": 1081,
+      "output_tokens": 251,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0381",
+      "tenant": "team-a"
+    },
+    {
+      "time": 146.10085639367745,
+      "model": "llama-70b",
+      "input_tokens": 654,
+      "output_tokens": 249,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0382",
+      "tenant": "team-a"
+    },
+    {
+      "time": 146.29618784613155,
+      "model": "llama-70b",
+      "input_tokens": 1178,
+      "output_tokens": 455,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0383",
+      "tenant": "team-c"
+    },
+    {
+      "time": 146.75246017019228,
+      "model": "llama-70b",
+      "input_tokens": 499,
+      "output_tokens": 129,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0384",
+      "tenant": "team-b"
+    },
+    {
+      "time": 147.38615781038993,
+      "model": "llama-70b",
+      "input_tokens": 950,
+      "output_tokens": 349,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0385",
+      "tenant": "team-a"
+    },
+    {
+      "time": 147.75514466823267,
+      "model": "llama-70b",
+      "input_tokens": 1078,
+      "output_tokens": 320,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0386",
+      "tenant": "team-a"
+    },
+    {
+      "time": 147.81409776287492,
+      "model": "llama-70b",
+      "input_tokens": 938,
+      "output_tokens": 475,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0387",
+      "tenant": "team-b"
+    },
+    {
+      "time": 147.87860713426988,
+      "model": "llama-70b",
+      "input_tokens": 1311,
+      "output_tokens": 135,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0388",
+      "tenant": "team-b"
+    },
+    {
+      "time": 147.9495417175195,
+      "model": "llama-70b",
+      "input_tokens": 1518,
+      "output_tokens": 442,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0389",
+      "tenant": "team-b"
+    },
+    {
+      "time": 148.23269580807073,
+      "model": "llama-70b",
+      "input_tokens": 1299,
+      "output_tokens": 336,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0390",
+      "tenant": "team-b"
+    },
+    {
+      "time": 148.49035679442275,
+      "model": "llama-70b",
+      "input_tokens": 290,
+      "output_tokens": 252,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0391",
+      "tenant": "team-b"
+    },
+    {
+      "time": 148.84089850232638,
+      "model": "llama-70b",
+      "input_tokens": 1887,
+      "output_tokens": 435,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0392",
+      "tenant": "team-b"
+    },
+    {
+      "time": 148.96434119163902,
+      "model": "llama-70b",
+      "input_tokens": 1598,
+      "output_tokens": 464,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0393",
+      "tenant": "team-a"
+    },
+    {
+      "time": 149.47553263992307,
+      "model": "llama-70b",
+      "input_tokens": 1451,
+      "output_tokens": 309,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0394",
+      "tenant": "team-c"
+    },
+    {
+      "time": 149.98641225410412,
+      "model": "llama-70b",
+      "input_tokens": 1842,
+      "output_tokens": 494,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0395",
+      "tenant": "team-c"
+    },
+    {
+      "time": 150.09734475055933,
+      "model": "llama-70b",
+      "input_tokens": 1428,
+      "output_tokens": 422,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0396",
+      "tenant": "team-a"
+    },
+    {
+      "time": 150.3300146703965,
+      "model": "llama-70b",
+      "input_tokens": 1113,
+      "output_tokens": 141,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0397",
+      "tenant": "team-b"
+    },
+    {
+      "time": 150.6087318012297,
+      "model": "llama-70b",
+      "input_tokens": 1508,
+      "output_tokens": 305,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0398",
+      "tenant": "team-c"
+    },
+    {
+      "time": 150.70167702195576,
+      "model": "llama-70b",
+      "input_tokens": 921,
+      "output_tokens": 403,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0399",
+      "tenant": "team-b"
+    },
+    {
+      "time": 150.85228385116898,
+      "model": "llama-70b",
+      "input_tokens": 610,
+      "output_tokens": 299,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0400",
+      "tenant": "team-c"
+    },
+    {
+      "time": 151.02724390268023,
+      "model": "llama-70b",
+      "input_tokens": 1837,
+      "output_tokens": 508,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0401",
+      "tenant": "team-b"
+    },
+    {
+      "time": 151.11265198904786,
+      "model": "llama-70b",
+      "input_tokens": 760,
+      "output_tokens": 206,
+      "batch_size": 4,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0402",
+      "tenant": "team-a"
+    },
+    {
+      "time": 152.24804458262224,
+      "model": "llama-70b",
+      "input_tokens": 865,
+      "output_tokens": 458,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0403",
+      "tenant": "team-c"
+    },
+    {
+      "time": 152.73634063299957,
+      "model": "llama-70b",
+      "input_tokens": 905,
+      "output_tokens": 309,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0404",
+      "tenant": "team-c"
+    },
+    {
+      "time": 152.86412397244615,
+      "model": "llama-70b",
+      "input_tokens": 505,
+      "output_tokens": 357,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0405",
+      "tenant": "team-b"
+    },
+    {
+      "time": 153.54645385336343,
+      "model": "llama-70b",
+      "input_tokens": 1839,
+      "output_tokens": 475,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0406",
+      "tenant": "team-a"
+    },
+    {
+      "time": 153.6821171810326,
+      "model": "llama-70b",
+      "input_tokens": 1718,
+      "output_tokens": 104,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0407",
+      "tenant": "team-c"
+    },
+    {
+      "time": 153.8006416464317,
+      "model": "llama-70b",
+      "input_tokens": 1237,
+      "output_tokens": 173,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0408",
+      "tenant": "team-b"
+    },
+    {
+      "time": 154.88200962405412,
+      "model": "llama-70b",
+      "input_tokens": 1681,
+      "output_tokens": 203,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0409",
+      "tenant": "team-c"
+    },
+    {
+      "time": 155.42221217062456,
+      "model": "llama-70b",
+      "input_tokens": 746,
+      "output_tokens": 188,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0410",
+      "tenant": "team-a"
+    },
+    {
+      "time": 155.82859535732297,
+      "model": "llama-70b",
+      "input_tokens": 363,
+      "output_tokens": 115,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0411",
+      "tenant": "team-c"
+    },
+    {
+      "time": 156.08436506270846,
+      "model": "llama-70b",
+      "input_tokens": 1651,
+      "output_tokens": 458,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0412",
+      "tenant": "team-c"
+    },
+    {
+      "time": 157.6094300572254,
+      "model": "llama-70b",
+      "input_tokens": 579,
+      "output_tokens": 272,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0413",
+      "tenant": "team-c"
+    },
+    {
+      "time": 157.6984155575316,
+      "model": "llama-70b",
+      "input_tokens": 844,
+      "output_tokens": 228,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0414",
+      "tenant": "team-a"
+    },
+    {
+      "time": 158.1209801929741,
+      "model": "llama-70b",
+      "input_tokens": 731,
+      "output_tokens": 337,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0415",
+      "tenant": "team-b"
+    },
+    {
+      "time": 158.976639735475,
+      "model": "llama-70b",
+      "input_tokens": 616,
+      "output_tokens": 82,
+      "batch_size": 2,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0416",
+      "tenant": "team-a"
+    },
+    {
+      "time": 160.08001147839533,
+      "model": "llama-70b",
+      "input_tokens": 2042,
+      "output_tokens": 212,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0417",
+      "tenant": "team-b"
+    },
+    {
+      "time": 160.41570804945653,
+      "model": "llama-70b",
+      "input_tokens": 475,
+      "output_tokens": 235,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0418",
+      "tenant": "team-c"
+    },
+    {
+      "time": 160.72919989649586,
+      "model": "llama-70b",
+      "input_tokens": 1267,
+      "output_tokens": 132,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0419",
+      "tenant": "team-b"
+    },
+    {
+      "time": 160.814879068815,
+      "model": "llama-70b",
+      "input_tokens": 486,
+      "output_tokens": 233,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0420",
+      "tenant": "team-c"
+    },
+    {
+      "time": 160.93384538833814,
+      "model": "llama-70b",
+      "input_tokens": 637,
+      "output_tokens": 71,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0421",
+      "tenant": "team-c"
+    },
+    {
+      "time": 161.3826810466442,
+      "model": "llama-70b",
+      "input_tokens": 651,
+      "output_tokens": 153,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0422",
+      "tenant": "team-b"
+    },
+    {
+      "time": 161.67235514016866,
+      "model": "llama-70b",
+      "input_tokens": 433,
+      "output_tokens": 269,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0423",
+      "tenant": "team-a"
+    },
+    {
+      "time": 161.9319721198573,
+      "model": "llama-70b",
+      "input_tokens": 764,
+      "output_tokens": 67,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0424",
+      "tenant": "team-a"
+    },
+    {
+      "time": 162.1687397722742,
+      "model": "llama-70b",
+      "input_tokens": 802,
+      "output_tokens": 232,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0425",
+      "tenant": "team-c"
+    },
+    {
+      "time": 162.50901339816966,
+      "model": "llama-70b",
+      "input_tokens": 791,
+      "output_tokens": 398,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0426",
+      "tenant": "team-a"
+    },
+    {
+      "time": 162.94980391215375,
+      "model": "llama-70b",
+      "input_tokens": 1209,
+      "output_tokens": 221,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0427",
+      "tenant": "team-c"
+    },
+    {
+      "time": 163.22908426073295,
+      "model": "llama-70b",
+      "input_tokens": 1696,
+      "output_tokens": 458,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0428",
+      "tenant": "team-c"
+    },
+    {
+      "time": 164.22048102016348,
+      "model": "llama-70b",
+      "input_tokens": 860,
+      "output_tokens": 252,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0429",
+      "tenant": "team-a"
+    },
+    {
+      "time": 165.48247105601035,
+      "model": "llama-70b",
+      "input_tokens": 1235,
+      "output_tokens": 142,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0430",
+      "tenant": "team-b"
+    },
+    {
+      "time": 165.69750704559107,
+      "model": "llama-70b",
+      "input_tokens": 1380,
+      "output_tokens": 305,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0431",
+      "tenant": "team-a"
+    },
+    {
+      "time": 166.1537083872668,
+      "model": "llama-70b",
+      "input_tokens": 1476,
+      "output_tokens": 511,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0432",
+      "tenant": "team-b"
+    },
+    {
+      "time": 166.454165646855,
+      "model": "llama-70b",
+      "input_tokens": 996,
+      "output_tokens": 103,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0433",
+      "tenant": "team-a"
+    },
+    {
+      "time": 167.1600741559656,
+      "model": "llama-70b",
+      "input_tokens": 1291,
+      "output_tokens": 167,
+      "batch_size": 4,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0434",
+      "tenant": "team-a"
+    },
+    {
+      "time": 167.2319819176484,
+      "model": "llama-70b",
+      "input_tokens": 2005,
+      "output_tokens": 330,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0435",
+      "tenant": "team-c"
+    },
+    {
+      "time": 167.3239492397072,
+      "model": "llama-70b",
+      "input_tokens": 1450,
+      "output_tokens": 314,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0436",
+      "tenant": "team-b"
+    },
+    {
+      "time": 167.9854976473312,
+      "model": "llama-70b",
+      "input_tokens": 1184,
+      "output_tokens": 131,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0437",
+      "tenant": "team-b"
+    },
+    {
+      "time": 168.31746138832153,
+      "model": "llama-70b",
+      "input_tokens": 1400,
+      "output_tokens": 300,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0438",
+      "tenant": "team-b"
+    },
+    {
+      "time": 168.43491849266846,
+      "model": "llama-70b",
+      "input_tokens": 262,
+      "output_tokens": 445,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0439",
+      "tenant": "team-a"
+    },
+    {
+      "time": 168.45345746983165,
+      "model": "llama-70b",
+      "input_tokens": 961,
+      "output_tokens": 422,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0440",
+      "tenant": "team-a"
+    },
+    {
+      "time": 169.54424548627543,
+      "model": "llama-70b",
+      "input_tokens": 397,
+      "output_tokens": 305,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0441",
+      "tenant": "team-b"
+    },
+    {
+      "time": 169.62361675300318,
+      "model": "llama-70b",
+      "input_tokens": 533,
+      "output_tokens": 456,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0442",
+      "tenant": "team-b"
+    },
+    {
+      "time": 169.86168906214695,
+      "model": "llama-70b",
+      "input_tokens": 1029,
+      "output_tokens": 256,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0443",
+      "tenant": "team-a"
+    },
+    {
+      "time": 170.2856774114787,
+      "model": "llama-70b",
+      "input_tokens": 968,
+      "output_tokens": 124,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0444",
+      "tenant": "team-b"
+    },
+    {
+      "time": 170.586702583434,
+      "model": "llama-70b",
+      "input_tokens": 1746,
+      "output_tokens": 178,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0445",
+      "tenant": "team-b"
+    },
+    {
+      "time": 170.83540836315177,
+      "model": "llama-70b",
+      "input_tokens": 1728,
+      "output_tokens": 342,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0446",
+      "tenant": "team-b"
+    },
+    {
+      "time": 171.52886595994465,
+      "model": "llama-70b",
+      "input_tokens": 762,
+      "output_tokens": 299,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0447",
+      "tenant": "team-b"
+    },
+    {
+      "time": 171.61240468100564,
+      "model": "llama-70b",
+      "input_tokens": 2048,
+      "output_tokens": 435,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0448",
+      "tenant": "team-c"
+    },
+    {
+      "time": 171.8297721685653,
+      "model": "llama-70b",
+      "input_tokens": 1824,
+      "output_tokens": 72,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0449",
+      "tenant": "team-a"
+    },
+    {
+      "time": 171.87231511265446,
+      "model": "llama-70b",
+      "input_tokens": 324,
+      "output_tokens": 292,
+      "batch_size": 4,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0450",
+      "tenant": "team-a"
+    },
+    {
+      "time": 172.4119778676466,
+      "model": "llama-70b",
+      "input_tokens": 1079,
+      "output_tokens": 288,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0451",
+      "tenant": "team-a"
+    },
+    {
+      "time": 172.97357502575156,
+      "model": "llama-70b",
+      "input_tokens": 1845,
+      "output_tokens": 92,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0452",
+      "tenant": "team-b"
+    },
+    {
+      "time": 173.08028862149655,
+      "model": "llama-70b",
+      "input_tokens": 1754,
+      "output_tokens": 358,
+      "batch_size": 1,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0453",
+      "tenant": "team-c"
+    },
+    {
+      "time": 173.67259783015797,
+      "model": "llama-70b",
+      "input_tokens": 1932,
+      "output_tokens": 228,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0454",
+      "tenant": "team-a"
+    },
+    {
+      "time": 175.37147197059397,
+      "model": "llama-70b",
+      "input_tokens": 1323,
+      "output_tokens": 177,
+      "batch_size": 2,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0455",
+      "tenant": "team-b"
+    },
+    {
+      "time": 175.39662984494967,
+      "model": "llama-70b",
+      "input_tokens": 1467,
+      "output_tokens": 440,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0456",
+      "tenant": "team-c"
+    },
+    {
+      "time": 175.67040060017297,
+      "model": "llama-70b",
+      "input_tokens": 961,
+      "output_tokens": 393,
+      "batch_size": 2,
+      "concurrency": 8,
+      "request_id": "syn-peak_chat-0457",
+      "tenant": "team-b"
+    },
+    {
+      "time": 176.14709763627468,
+      "model": "llama-70b",
+      "input_tokens": 1092,
+      "output_tokens": 140,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0458",
+      "tenant": "team-a"
+    },
+    {
+      "time": 176.70874428721774,
+      "model": "llama-70b",
+      "input_tokens": 1225,
+      "output_tokens": 187,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0459",
+      "tenant": "team-c"
+    },
+    {
+      "time": 176.7711026509033,
+      "model": "llama-70b",
+      "input_tokens": 1204,
+      "output_tokens": 93,
+      "batch_size": 4,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0460",
+      "tenant": "team-b"
+    },
+    {
+      "time": 177.0970358621982,
+      "model": "llama-70b",
+      "input_tokens": 530,
+      "output_tokens": 262,
+      "batch_size": 1,
+      "concurrency": 2,
+      "request_id": "syn-peak_chat-0461",
+      "tenant": "team-a"
+    },
+    {
+      "time": 177.2573839307796,
+      "model": "llama-70b",
+      "input_tokens": 417,
+      "output_tokens": 294,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0462",
+      "tenant": "team-c"
+    },
+    {
+      "time": 177.7731740041241,
+      "model": "llama-70b",
+      "input_tokens": 646,
+      "output_tokens": 90,
+      "batch_size": 1,
+      "concurrency": 4,
+      "request_id": "syn-peak_chat-0463",
+      "tenant": "team-c"
+    },
+    {
+      "time": 178.14469087058126,
+      "model": "llama-70b",
+      "input_tokens": 336,
+      "output_tokens": 511,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0464",
+      "tenant": "team-c"
+    },
+    {
+      "time": 178.6600752572864,
+      "model": "llama-70b",
+      "input_tokens": 1400,
+      "output_tokens": 175,
+      "batch_size": 2,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0465",
+      "tenant": "team-b"
+    },
+    {
+      "time": 178.8045711248029,
+      "model": "llama-70b",
+      "input_tokens": 287,
+      "output_tokens": 172,
+      "batch_size": 1,
+      "concurrency": 1,
+      "request_id": "syn-peak_chat-0466",
+      "tenant": "team-c"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "routes": [
+    {
+      "label": "Login",
+      "path": "/login",
+      "category": "AUTH",
+      "legacy": false
+    },
+    {
+      "label": "Dashboard",
+      "path": "/",
+      "category": "CONSOLE",
+      "legacy": false
+    },
+    {
+      "label": "Simulate",
+      "path": "/simulate",
+      "category": "CONSOLE",
+      "legacy": false
+    },
+    {
+      "label": "Benchmark",
+      "path": "/benchmark",
+      "category": "CONSOLE",
+      "legacy": false
+    },
+    {
+      "label": "What-if",
+      "path": "/what-if",
+      "category": "CONSOLE",
+      "legacy": false
+    },
+    {
+      "label": "Twins",
+      "path": "/twins",
+      "category": "CONSOLE",
+      "legacy": false
+    },
+    {
+      "label": "Run detail",
+      "path": "/runs/:id",
+      "category": "CONSOLE",
+      "legacy": false
+    }
+  ]
+}

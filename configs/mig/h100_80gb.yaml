@@ -1,0 +1,27 @@
+hardware: H100_80GB
+reconfig_seconds: 30
+profiles:
+  1g.10gb:
+    memory_gb: 10
+    max_per_gpu: 7
+  1g:
+    memory_gb: 10
+    max_per_gpu: 7
+  2g.20gb:
+    memory_gb: 20
+    max_per_gpu: 3
+  2g:
+    memory_gb: 20
+    max_per_gpu: 3
+  3g.40gb:
+    memory_gb: 40
+    max_per_gpu: 2
+  3g:
+    memory_gb: 40
+    max_per_gpu: 2
+  7g.80gb:
+    memory_gb: 80
+    max_per_gpu: 1
+  7g:
+    memory_gb: 80
+    max_per_gpu: 1

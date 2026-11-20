@@ -1,0 +1,18 @@
+jobs:
+  # Starts immediately (the GPU is free at t=0) and is still running when
+  # job-high arrives — a case a non-preemptive scheduler can never help,
+  # since job-high just isn't in the waiting queue yet when job-low was
+  # placed.
+  - id: job-low
+    name: low-priority-long-runner
+    arrival_time: 0
+    runtime: 100
+    gpu_count: 1
+    priority: 10
+
+  - id: job-high
+    name: high-priority-latecomer
+    arrival_time: 10
+    runtime: 20
+    gpu_count: 1
+    priority: 90

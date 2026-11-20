@@ -1,0 +1,16 @@
+[package]
+name = "zyvor-janus-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zyvor Janus command-line interface"
+
+[[bin]]
+name = "zyvor-janus"
+path = "src/main.rs"
+
+[dependencies]
+clap = { workspace = true }
+zyvor-janus-config = { path = "../zyvor-janus-config" }
+zyvor-janus-metrics = { path = "../zyvor-janus-metrics" }

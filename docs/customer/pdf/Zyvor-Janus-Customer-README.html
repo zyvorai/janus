@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><title>Customer Documentation Overview — Zyvor Janus</title>
+<style>
+@page{size:A4;margin:15mm 16mm}*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:#1f2937;line-height:1.58;font-size:10.5pt}
+.cover{height:262mm;margin:-15mm -16mm 0;background:linear-gradient(135deg,#0a0614,#1e1b4b,#0d1b2a);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;page-break-after:always;position:relative}
+.cover .kicker{letter-spacing:5px;text-transform:uppercase;opacity:.72;margin-bottom:1.4em}
+.cover h1{font-size:3.2em;font-weight:800;letter-spacing:-2px}
+.cover h1 span{color:#a78bfa}
+.cover .sub{font-size:1.3em;font-weight:300;opacity:.93;margin:1em 0;max-width:24em}
+.cover .badge{display:inline-block;background:rgba(96,165,250,.2);border:1px solid #a78bfa;padding:8px 22px;border-radius:20px;margin-top:2em}
+.cover .foot{position:absolute;bottom:34px;font-size:.82em;opacity:.6}
+h2{page-break-before:always;margin:0 0 .35em;font-size:1.55em;font-weight:750;color:#12203a;border-bottom:2px solid #e5edfb;padding-bottom:.28em}
+h2:first-of-type{page-break-before:avoid}
+h3{margin:1.1em 0 .4em;font-size:1.12em;font-weight:700}
+p,li{margin:.4em 0}ul,ol{margin:.5em 0 .9em 1.4em}
+a{color:#2563eb;text-decoration:none}
+code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.86em;font-family:ui-monospace,Menlo,monospace}
+pre{background:#0f172a;color:#e2e8f0;padding:12px 15px;border-radius:9px;overflow-x:auto;margin:.8em 0}
+table{width:100%;border-collapse:collapse;margin:.8em 0 1.1em;font-size:9.5pt}
+th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f1f5f9}
+hr{border:none;border-top:1px solid #e5e7eb;margin:1.2em 0}
+</style></head><body>
+<section class="cover"><div class="kicker">ZyvorAI Labs · Customer Documentation</div>
+<h1>Zyvor <span>Janus</span></h1>
+<div class="sub">Customer Documentation Overview</div>
+<div class="badge">2026-08-29</div>
+<div class="foot">zyvor.dev · Confidential — for licensed customers</div></section>
+<main><p><strong>Zyvor Janus</strong> is a discrete-event Kubernetes GPU cluster simulator — schedulers, MIG, topology, quotas, gang scheduling, and LLM serving metrics with no physical GPUs required. Operators use the <strong>CLI</strong> and an optional <strong>web console</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>You want to…</th>
+<th>Open</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Install and first run</td>
+<td><a href="getting-started.md">Getting Started</a></td>
+</tr>
+<tr>
+<td>Learn the console shell</td>
+<td><a href="using-the-dashboard.md">Using the Dashboard</a></td>
+</tr>
+<tr>
+<td>Screen-by-screen UX</td>
+<td><a href="pages/README.md">Page-by-page guides</a></td>
+</tr>
+<tr>
+<td>Look up any route</td>
+<td><a href="PAGE_INDEX.md">Complete page index</a></td>
+</tr>
+<tr>
+<td>Cluster YAML / Forge bundles</td>
+<td><a href="configuration.md">Configuration</a></td>
+</tr>
+<tr>
+<td>Ports, auth, systemd</td>
+<td><a href="admin-basics.md">Admin basics</a></td>
+</tr>
+<tr>
+<td>Multi-step jobs</td>
+<td><a href="workflows.md">Common workflows</a></td>
+</tr>
+</tbody></table>
+<h2>Printable PDFs</h2>
+<pre><code class="language-bash">set -a; source scripts/customer-docs/product.env; set +a
+node scripts/customer-docs/build-customer-pdfs.mjs
+</code></pre>
+<p>Output lands in <a href="pdf/"><code>pdf/</code></a>.</p>
+<h2>Product at a glance</h2>
+<pre><code class="language-text">  CLI        →  cargo run -p zyvor-janus-cli -- run --config configs/clusters/….yaml
+  Web UI     →  http://&lt;host&gt;:3000
+  FastAPI    →  http://&lt;host&gt;:8080/api/health
+  Login      →  Admin / Admin@321  (override with ZYVOR_JANUS_DASHBOARD_*)
+</code></pre>
+<p>Never publish lab IPs — use <code>&lt;host&gt;</code>.</p>
+</main></body></html>

@@ -1,0 +1,36 @@
+name: Python
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install maturin
+        run: pip install "maturin>=1.7,<2.0" pyyaml
+
+      - name: Build zyvor_janus extension
+        run: maturin build --release --out dist
+
+      - name: Install wheel
+        run: pip install dist/zyvor_janus-*.whl
+
+      - name: Run Python tests
+        run: python3 -m unittest discover -s python/tests -v

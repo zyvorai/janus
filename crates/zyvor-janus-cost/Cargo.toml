@@ -1,0 +1,13 @@
+[package]
+name = "zyvor-janus-cost"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Zyvor Janus GPU cost model — seed crate for future multi-provider cloud pricing"
+
+[dependencies]
+serde = { workspace = true }
+
+[dev-dependencies]
+serde_yaml = { workspace = true }

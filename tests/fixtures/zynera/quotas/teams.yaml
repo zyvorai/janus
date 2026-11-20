@@ -1,0 +1,24 @@
+apiVersion: zynera.ai/v1
+kind: FabricQuota
+metadata:
+  name: ml-infra-quota
+  namespace: ml-infra
+spec:
+  team: ml-infra
+  namespaces:
+    - ml-infra
+  gpuQuota:
+    maxGPUs: 32
+    maxRunningJobs: 10
+---
+apiVersion: zynera.ai/v1
+kind: FabricQuota
+metadata:
+  name: ml-training-quota
+  namespace: ml-training
+spec:
+  team: ml-training
+  namespaces:
+    - ml-training
+  gpuQuota:
+    maxGPUs: 64

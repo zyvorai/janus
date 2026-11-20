@@ -1,0 +1,19 @@
+jobs:
+  - id: j1
+    name: small-a
+    arrival_time: 0
+    runtime: 10
+    gpu_count: 1
+    priority: 10
+  - id: j2
+    name: small-b
+    arrival_time: 2
+    runtime: 8
+    gpu_count: 1
+    priority: 50
+  - id: j3
+    name: small-c
+    arrival_time: 4
+    runtime: 6
+    gpu_count: 1
+    priority: 30

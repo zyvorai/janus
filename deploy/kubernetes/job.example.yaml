@@ -1,0 +1,39 @@
+# One-off simulation Job (optional). Requires the API image.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zyvor-janus-run-once
+  namespace: zyvor-janus
+  labels:
+    app.kubernetes.io/name: zyvor-janus
+    app.kubernetes.io/component: batch
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zyvor-janus
+        app.kubernetes.io/component: batch
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: sim
+          image: zyvor-janus-api:0.1.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - python
+            - -c
+            - |
+              import json
+              from zyvor_janus import _zyvor_janus
+              report = _zyvor_janus.run_report_from_config(
+                  "configs/clusters/small_h100.yaml", None
+              )
+              print(json.dumps(json.loads(report["metrics"].to_json()), indent=2))
+          volumeMounts:
+            - name: outputs
+              mountPath: /app/outputs
+      volumes:
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: zyvor-janus-outputs

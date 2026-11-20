@@ -1,0 +1,8 @@
+# Test-only profile for the zynera quota-enforcement lab scenario
+# (../zynera/scripts/test-lab-quota-enforcement.sh) — not real calibration
+# data, just enough to let Zyvor Janus simulate the exported job.
+model: quota-test-b
+profiles:
+  A100:
+    runtime_seconds: 60
+    gpu_memory_gb: 1

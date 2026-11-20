@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: zyvor-janus
+
+resources:
+  - namespace.yaml
+  - api.yaml
+  - web.yaml
+  - ingress.yaml
+
+images:
+  # BEGIN zyvor-janus-images (managed by deploy/build-images.sh — do not hand-edit)
+  - name: zyvor-janus-api
+    newName: zyvor-janus-api
+    newTag: "0.1.0"
+  - name: zyvor-janus-web
+    newName: zyvor-janus-web
+    newTag: "0.1.0"
+  # END zyvor-janus-images

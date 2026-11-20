@@ -1,0 +1,11 @@
+apiVersion: zynera.ai/v1
+kind: FabricQuota
+metadata:
+  name: quota-team-quota
+  namespace: quota-test
+spec:
+  team: quota-team
+  namespaces:
+    - quota-test
+  gpuQuota:
+    maxGPUs: 2

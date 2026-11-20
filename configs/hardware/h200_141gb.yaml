@@ -1,0 +1,7 @@
+name: H200_141GB
+memory_gb: 141
+sm: 132
+mig_profiles: [1g, 2g, 3g, 7g]
+nvlink_bw_gbs: 900
+pcie_bw_gbs: 64
+mig: true

@@ -1,0 +1,14 @@
+jobs:
+  - id: filler
+    name: filler
+    arrival_time: 0
+    runtime: 120
+    gpu_count: 4
+  - id: gang-timeout
+    name: gang-timeout
+    arrival_time: 1
+    runtime: 20
+    gpu_count: 4
+    gang_enabled: true
+    gang_size_nodes: 2
+    gang_timeout_secs: 30

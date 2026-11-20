@@ -1,0 +1,47 @@
+apiVersion: zynera.ai/v1
+kind: FabricGpuNode
+metadata:
+  name: gpu-node-0
+spec:
+  nodeName: gpu-node-0
+  gpuType: H100
+  gpuCount: 8
+  memoryGB: 80
+  rdma: true
+  interconnect: NVLink
+---
+apiVersion: zynera.ai/v1
+kind: FabricGpuNode
+metadata:
+  name: gpu-node-1
+spec:
+  nodeName: gpu-node-1
+  gpuType: H100
+  gpuCount: 8
+  memoryGB: 80
+  rdma: true
+  interconnect: NVLink
+---
+apiVersion: zynera.ai/v1
+kind: FabricGpuNode
+metadata:
+  name: gpu-node-2
+spec:
+  nodeName: gpu-node-2
+  gpuType: H100
+  gpuCount: 8
+  memoryGB: 80
+  rdma: true
+  interconnect: NVLink
+---
+apiVersion: zynera.ai/v1
+kind: FabricGpuNode
+metadata:
+  name: gpu-node-3
+spec:
+  nodeName: gpu-node-3
+  gpuType: H100
+  gpuCount: 8
+  memoryGB: 80
+  rdma: true
+  interconnect: NVLink

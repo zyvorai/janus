@@ -1,0 +1,2 @@
+{"timestamp": 15, "event": "JobSubmitted", "job": "llama70b", "gpu_count": 4, "runtime": 3600}
+{"timestamp": 18, "event": "JobScheduled", "job": "llama70b", "node": "node-0", "gpus": [0, 1, 2, 3]}
