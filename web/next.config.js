@@ -1,5 +1,5 @@
 // Copyright 2026 Zyvor AI Labs · https://zyvor.dev
-// SPDX-License-Identifier: LicenseRef-Zyvor-Production-1.0
+// SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
 /** @type {import('next').NextConfig} */
 const apiBase = process.env.ZYVOR_JANUS_API_URL || "http://127.0.0.1:8080";

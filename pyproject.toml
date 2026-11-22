@@ -7,7 +7,7 @@ name = "zyvor_janus"
 version = "0.2.0"
 description = "Discrete-event GPU cluster scheduler simulator inspired by Zynera"
 readme = "README.md"
-license = { text = "LicenseRef-Zyvor-Production-1.0" }
+license = { text = "LicenseRef-Zyvor-Production-2.0" }
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 3 - Alpha",

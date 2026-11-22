@@ -17,7 +17,7 @@ members = [
 [workspace.package]
 version = "0.2.0"
 edition = "2021"
-license = "LicenseRef-Zyvor-Production-1.0"
+license = "LicenseRef-Zyvor-Production-2.0"
 authors = ["hypersdk-team"]
 
 [workspace.dependencies]

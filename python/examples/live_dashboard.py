@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2026 ZyvorAI Labs Private Limited
-# SPDX-License-Identifier: LicenseRef-Zyvor-Production-1.0
+# SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
 """Run the Zyvor Janus Rich live dashboard."""
 
