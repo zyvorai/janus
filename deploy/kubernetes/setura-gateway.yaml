@@ -1,0 +1,44 @@
+# Optional Setura Gateway API alternative to ingress.yaml. NOT part of the default deploy.
+# Install the controller once:
+#   setura gateway install --image ghcr.io/zyvorai/zyvor-setura-gateway:0.7.0 --namespace setura-system | kubectl apply -f -
+# then apply this file INSTEAD of the Ingress (do not run both for the same host).
+# Mirrors ingress.yaml for zyvor-janus.example.com (replace the host). Gateway API picks the longest matching
+# prefix, so /api/auth goes to the web pod while the rest of /api and /ws go to the API.
+# The 3600s proxy-read/send timeouts become a 3600s backendRequest timeout (long-lived /ws streams).
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: zyvor-janus
+  namespace: zyvor-janus
+  labels: { app.kubernetes.io/name: zyvor-janus }
+spec:
+  gatewayClassName: setura
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: zyvor-janus.example.com
+      allowedRoutes: { namespaces: { from: Same } }
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: zyvor-janus
+  namespace: zyvor-janus
+  labels: { app.kubernetes.io/name: zyvor-janus }
+spec:
+  parentRefs: [{ name: zyvor-janus, sectionName: http }]
+  hostnames: [zyvor-janus.example.com]
+  rules:
+    # Next.js login handlers must stay on the web pod.
+    - matches: [{ path: { type: PathPrefix, value: /api/auth } }]
+      timeouts: { backendRequest: 3600s }
+      backendRefs: [{ name: zyvor-janus-web, port: 3000 }]
+    - matches:
+        - path: { type: PathPrefix, value: /api }
+        - path: { type: PathPrefix, value: /ws }
+      timeouts: { backendRequest: 3600s }
+      backendRefs: [{ name: zyvor-janus-api, port: 8080 }]
+    - matches: [{ path: { type: PathPrefix, value: / } }]
+      timeouts: { backendRequest: 3600s }
+      backendRefs: [{ name: zyvor-janus-web, port: 3000 }]
