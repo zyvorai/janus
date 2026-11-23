@@ -26,6 +26,19 @@ Held back:
 
 Images and CI: web image `node:20` -> `node:24-bookworm-slim`; API image `rust:1-bookworm`/`debian:bookworm-slim` -> `rust:1-trixie`/`debian:trixie-slim` (tags verified on Docker Hub). Actions: checkout v7, setup-python v7, docker/login v4, metadata v6, setup-buildx v4, build-push v7; Python in CI 3.10/3.11 -> 3.14 (package still supports >=3.10). Unverified and unchanged: `dtolnay/rust-toolchain@stable`, `Swatinem/rust-cache@v2`.
 
+### Added
+
+- **Scheduler-quality report** (`SimulationReport.quality`, CLI output, `run --report-output`): queue-wait p50/p90/p99, bounded slowdown, Jain fairness indices (per job and per tenant), 24-point utilisation and fragmentation timelines. See `docs/scheduler_quality.md`.
+- **Seeded failure injection** (`failure:` config section, `run --seed`): job crashes with checkpointed restart and bounded retries; new metrics `failures_injected` and `lost_gpu_seconds`. Job-level crashes only, not a GPU-hardware failure model. See `docs/failure_injection.md`.
+- **`import-trace`**: Microsoft Helios `cluster_log.csv` to workload YAML with explicit field mapping, skip accounting and size caps. See `docs/trace_import.md`.
+- **`compare`**: baseline-vs-candidate policy comparison with paired 95% confidence intervals across seeds; honest single-run mode when there is no failure injection. See `docs/scheduler_quality.md`.
+- `docs/RESEARCH.md`: survey of GPU-cluster trace formats, schedulers and fairness metrics, with ranked ideas and what was rejected.
+
+### Fixed
+
+- Workloads are now validated: NaN/infinite/negative arrival or runtime, duplicate job ids (a second running job with the same id silently overwrote the first), GPU counts above 100,000, more than 2,000,000 jobs, and files over 256 MiB are rejected with a clear error.
+- Arrival handling was O(n^2) in the job count (linear scan of pending arrivals per event); it is now a hash lookup, so 20,000-job workloads run in well under a second.
+
 ### Changed
 - Renamed the project from ZyForgeSim/ForgeSim to **Zyvor Janus**: Rust
   crates (`forgesim-*` -> `zyvor-janus-*`), the CLI binary
