@@ -6,7 +6,7 @@
 use std::path::PathBuf;
 
 use zyvor_janus_config::{
-    build_shadow_run, load_zynera_bundle, run_zynera_bundle, run_simulation, run_trace_file,
+    build_shadow_run, load_zynera_bundle, run_simulation, run_trace_file, run_zynera_bundle,
     trace_diff_to_json, TraceDiffReport,
 };
 use zyvor_janus_model::cluster::Cluster;

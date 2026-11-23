@@ -76,6 +76,9 @@ pub struct Job {
     pub remaining_runtime: Option<f64>,
     #[serde(default, skip_serializing)]
     pub preemption_count: u32,
+    /// Injected crash-and-restart count (failure injection; never from preemption).
+    #[serde(default)]
+    pub failure_count: u32,
     /// Bumped each time this job (re)starts running. Lets the engine tell
     /// a stale `JobComplete` (scheduled before a preemption) apart from
     /// the one that actually matches the job's current run.
@@ -152,6 +155,7 @@ impl Job {
             run_segments: Vec::new(),
             remaining_runtime: None,
             preemption_count: 0,
+            failure_count: 0,
             run_generation: 0,
             gpu_seconds_consumed: 0.0,
             cumulative_wait_secs: 0.0,

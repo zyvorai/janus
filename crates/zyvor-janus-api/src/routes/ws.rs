@@ -93,7 +93,11 @@ async fn relay(mut socket: WebSocket, state: AppState, id: Uuid) {
             };
             for snap in snapshots {
                 let msg = json!({"type": "snapshot", "data": snap});
-                if socket.send(Message::Text(msg.to_string().into())).await.is_err() {
+                if socket
+                    .send(Message::Text(msg.to_string().into()))
+                    .await
+                    .is_err()
+                {
                     return;
                 }
                 tokio::time::sleep(Duration::from_millis(50)).await;

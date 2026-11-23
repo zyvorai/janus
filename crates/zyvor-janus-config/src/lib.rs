@@ -1,16 +1,14 @@
 // Copyright 2026 ZyvorAI Labs Private Limited
 // SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
-mod zynera_bundle;
+mod compare;
 mod mig;
 mod serving_trace;
 mod trace;
+mod trace_import;
+mod zynera_bundle;
 
-pub use zynera_bundle::{
-    load_zynera_bundle, load_gpu_type_registry, load_model_profiles, parse_fabric_ai_job,
-    run_zynera_bundle, run_zynera_bundle_report, FederationRunMeta, ZyneraBundle, GpuTypeRegistry,
-    ModelProfile,
-};
+pub use compare::{compare_policies, ComparisonReport, MetricComparison, MAX_COMPARE_SEEDS};
 pub use mig::{
     load_mig_registry, load_mig_registry_for_hardware, resolve_mig_registry_for_cluster,
 };
@@ -29,6 +27,16 @@ pub use trace::{
     trace_diff_to_json, validate_job_gang_config, GpuRef, OraclePlacement, PlacementDiff,
     SimulatedPlacement, TraceDiffReport, TraceEvent, TraceReplayResult,
 };
+pub use trace_import::{
+    import_helios_csv, workload_to_yaml, ImportOptions, ImportSummary, MAX_IMPORT_BYTES,
+    MAX_IMPORT_JOBS,
+};
+pub use zynera_bundle::{
+    load_gpu_type_registry, load_model_profiles, load_zynera_bundle, parse_fabric_ai_job,
+    run_zynera_bundle, run_zynera_bundle_report, FederationRunMeta, GpuTypeRegistry, ModelProfile,
+    ZyneraBundle,
+};
+pub use zyvor_janus_simulator::FailureConfig;
 
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -37,7 +45,7 @@ use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Gpu, Job, Node};
 use zyvor_janus_scheduler::resource::{GpuSelectionPolicy, ResourceManager};
 use zyvor_janus_scheduler::Scheduler;
-use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ZyneraScheduler, PriorityScheduler};
+use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler};
 use zyvor_janus_simulator::inference::{estimate_inference, InferenceProfile, InferenceRequest};
 use zyvor_janus_simulator::rl::RlSession;
 use zyvor_janus_simulator::snapshot::ClusterSnapshot;
@@ -66,6 +74,9 @@ pub struct SimulationReport {
     /// here because `Cluster` does not otherwise survive past this function.
     #[serde(default = "default_serving_trace")]
     pub serving_trace: ServingTraceFile,
+    /// Scheduler-quality metrics (waits, slowdown, fairness, timelines).
+    #[serde(default)]
+    pub quality: Option<zyvor_janus_metrics::QualityReport>,
 }
 
 fn default_serving_trace() -> ServingTraceFile {
@@ -156,6 +167,9 @@ pub struct SimulationConfig {
     pub mig_profiles_dir: String,
     #[serde(default = "default_profiles_dir")]
     pub profiles_dir: String,
+    /// Optional seeded failure injection (see docs/FAILURE_INJECTION.md).
+    #[serde(default)]
+    pub failure: Option<FailureConfig>,
 }
 
 fn default_profiles_dir() -> String {
@@ -249,8 +263,15 @@ pub fn load_workload_with_profiles(
     model_profiles: &HashMap<String, zynera_bundle::ModelProfile>,
     default_gpu_types: &[String],
 ) -> ConfigResult<Vec<Job>> {
+    let len = fs::metadata(path)?.len();
+    if len > MAX_WORKLOAD_BYTES {
+        return Err(ConfigError::Invalid(format!(
+            "workload file is {len} bytes; the limit is {MAX_WORKLOAD_BYTES}"
+        )));
+    }
     let content = fs::read_to_string(path)?;
     let workload: WorkloadConfig = serde_yaml::from_str(&content)?;
+    validate_workload(&workload)?;
     let default_gpu = default_gpu_types
         .first()
         .cloned()
@@ -293,6 +314,60 @@ pub fn load_workload_with_profiles(
         jobs.push(job);
     }
     Ok(jobs)
+}
+
+/// Workload file size limit (bytes).
+pub const MAX_WORKLOAD_BYTES: u64 = 256 * 1024 * 1024;
+/// Maximum jobs in one workload.
+pub const MAX_WORKLOAD_JOBS: usize = 2_000_000;
+/// Maximum GPUs one job may request.
+pub const MAX_JOB_GPUS: u32 = 100_000;
+
+/// Rejects workloads the engine cannot simulate meaningfully: too many
+/// jobs, duplicate ids (running jobs are keyed by id), and non-finite or
+/// negative times (NaN breaks event ordering; negative runtimes finish
+/// before they start).
+pub fn validate_workload(workload: &WorkloadConfig) -> ConfigResult<()> {
+    if workload.jobs.len() > MAX_WORKLOAD_JOBS {
+        return Err(ConfigError::Invalid(format!(
+            "workload has {} jobs; the limit is {MAX_WORKLOAD_JOBS}",
+            workload.jobs.len()
+        )));
+    }
+    let mut seen = std::collections::HashSet::with_capacity(workload.jobs.len());
+    for j in &workload.jobs {
+        let id = j.request_id.as_deref().unwrap_or(&j.id);
+        if !seen.insert(id) {
+            return Err(ConfigError::Invalid(format!("duplicate job id '{id}'")));
+        }
+        let bad = |what: &str, v: f64| {
+            ConfigError::Invalid(format!(
+                "job '{}': {what} must be a finite number >= 0 (got {v})",
+                j.id
+            ))
+        };
+        if !j.arrival_time.is_finite() || j.arrival_time < 0.0 {
+            return Err(bad("arrival_time", j.arrival_time));
+        }
+        if !j.runtime.is_finite() || j.runtime < 0.0 {
+            return Err(bad("runtime", j.runtime));
+        }
+        if !j.gpu_memory_gb.is_finite() || j.gpu_memory_gb < 0.0 {
+            return Err(bad("gpu_memory_gb", j.gpu_memory_gb));
+        }
+        if let Some(t) = j.gang_timeout_secs {
+            if !t.is_finite() {
+                return Err(bad("gang_timeout_secs", t));
+            }
+        }
+        if j.gpu_count > MAX_JOB_GPUS {
+            return Err(ConfigError::Invalid(format!(
+                "job '{}': gpu_count {} exceeds the limit {MAX_JOB_GPUS}",
+                j.id, j.gpu_count
+            )));
+        }
+    }
+    Ok(())
 }
 
 fn apply_inference_runtime(
@@ -475,12 +550,39 @@ pub fn run_simulation_report_with_scheduler(
     config_path: &Path,
     scheduler_override: Option<&str>,
 ) -> ConfigResult<SimulationReport> {
+    run_simulation_report_with_options(config_path, scheduler_override, None)
+}
+
+/// Like [`run_simulation_report_with_scheduler`], additionally overriding
+/// the failure-injection seed. A seed override without a `failure:` section
+/// in the config is an error (the run would silently ignore it).
+pub fn run_simulation_report_with_options(
+    config_path: &Path,
+    scheduler_override: Option<&str>,
+    seed_override: Option<u64>,
+) -> ConfigResult<SimulationReport> {
     let mut config = load_simulation_config(config_path)?;
     if let Some(sched) = scheduler_override {
         config.scheduler.r#type = sched.to_string();
     }
+    if let Some(seed) = seed_override {
+        match config.failure.as_mut() {
+            Some(f) => f.seed = seed,
+            None => {
+                return Err(ConfigError::Invalid(
+                    "a seed was given but the config has no `failure:` section to seed".into(),
+                ))
+            }
+        }
+    }
+    if let Some(f) = &config.failure {
+        f.validate().map_err(ConfigError::Invalid)?;
+    }
     let scheduler_name = config.scheduler.r#type.clone();
-    let config_hash = hash_config_file(config_path, scheduler_override);
+    let mut config_hash = hash_config_file(config_path, scheduler_override);
+    if let Some(seed) = seed_override {
+        config_hash = format!("{config_hash}-s{seed}");
+    }
 
     let base = config_path.parent().unwrap_or_else(|| Path::new("."));
 
@@ -523,6 +625,7 @@ pub fn run_simulation_report_with_scheduler(
         resource_manager,
         jobs,
         jobs_total,
+        config.failure.clone(),
     )?;
 
     let cost_path = resolve_path(base, "../analytics/cost.yaml");
@@ -646,7 +749,9 @@ fn build_steppable_engine(
     Ok(match scheduler {
         "fifo" => seed(cluster, FifoScheduler, resource_manager, jobs),
         "priority" => seed(cluster, PriorityScheduler, resource_manager, jobs),
-        "preemptive" | "zynera" => seed(cluster, ZyneraScheduler::default(), resource_manager, jobs),
+        "preemptive" | "zynera" => {
+            seed(cluster, ZyneraScheduler::default(), resource_manager, jobs)
+        }
         "bestfit" => seed(cluster, BestFitScheduler, resource_manager, jobs),
         other => {
             return Err(ConfigError::Invalid(format!(
@@ -677,7 +782,12 @@ pub fn shadow_side_report(
         cost,
     ));
     let serving_trace = export_serving_trace_from_cluster(cluster);
+    let quality = Some(zyvor_janus_metrics::QualityReport::from_cluster(
+        cluster,
+        zyvor_janus_metrics::quality::DEFAULT_TIMELINE_BUCKETS,
+    ));
     SimulationReport {
+        quality,
         metrics,
         timeline: JobsTimeline::from_cluster(cluster),
         decisions: cluster.decision_log.clone(),
@@ -773,17 +883,25 @@ fn run_to_completion_with_policy_snapshots(
     resource_manager: ResourceManager,
     jobs: Vec<Job>,
     jobs_total: usize,
+    failure: Option<FailureConfig>,
 ) -> ConfigResult<(Cluster, SimulationMetrics, Vec<ClusterSnapshot>)> {
+    let f = failure;
     Ok(match scheduler {
-        "fifo" => {
-            run_to_completion_snapshots(cluster, FifoScheduler, resource_manager, jobs, jobs_total)
-        }
+        "fifo" => run_to_completion_snapshots(
+            cluster,
+            FifoScheduler,
+            resource_manager,
+            jobs,
+            jobs_total,
+            f,
+        ),
         "priority" => run_to_completion_snapshots(
             cluster,
             PriorityScheduler,
             resource_manager,
             jobs,
             jobs_total,
+            f,
         ),
         "preemptive" | "zynera" => run_to_completion_snapshots(
             cluster,
@@ -791,6 +909,7 @@ fn run_to_completion_with_policy_snapshots(
             resource_manager,
             jobs,
             jobs_total,
+            f,
         ),
         "bestfit" => run_to_completion_snapshots(
             cluster,
@@ -798,6 +917,7 @@ fn run_to_completion_with_policy_snapshots(
             resource_manager,
             jobs,
             jobs_total,
+            f,
         ),
         other => {
             return Err(ConfigError::Invalid(format!(
@@ -820,6 +940,7 @@ pub fn run_to_completion_with_policy(
         resource_manager,
         jobs,
         jobs_total,
+        None,
     )?;
     Ok((cluster, metrics))
 }
@@ -830,9 +951,13 @@ fn run_to_completion_snapshots<S: Scheduler>(
     resource_manager: ResourceManager,
     jobs: Vec<Job>,
     jobs_total: usize,
+    failure: Option<FailureConfig>,
 ) -> (Cluster, SimulationMetrics, Vec<ClusterSnapshot>) {
     let mut engine = SimulationEngine::with_resource_manager(cluster, scheduler, resource_manager)
         .with_replay_capture();
+    if let Some(f) = failure {
+        engine = engine.with_failure_injection(f);
+    }
     engine.submit_jobs(jobs);
     engine.run();
     let snapshots = engine.take_replay_snapshots();

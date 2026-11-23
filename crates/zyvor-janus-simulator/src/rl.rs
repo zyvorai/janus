@@ -318,6 +318,7 @@ impl RlSession {
                 }
                 self.cluster.finish_job(&event.job_id, self.cluster.clock);
             }
+            EventKind::JobFailure => {}
             EventKind::GangTimeout => {
                 let still_waiting = self.cluster.waiting_queue.iter().any(|j| {
                     j.id == event.job_id

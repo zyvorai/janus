@@ -1,6 +1,7 @@
 // Copyright 2026 ZyvorAI Labs Private Limited
 // SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
+use crate::failure::FailureConfig;
 use crate::snapshot::{ClusterSnapshot, DEFAULT_OBS_TOP_K};
 use zyvor_janus_core::decision_log::SchedulerDecision;
 use zyvor_janus_core::events::{Event, EventKind, EventQueue};
@@ -54,7 +55,8 @@ pub struct SimulationEngine<S: Scheduler> {
     pub resource_manager: ResourceManager,
     pub scheduler: S,
     event_queue: EventQueue,
-    pending_arrivals: Vec<Job>,
+    pending_arrivals: std::collections::HashMap<String, std::collections::VecDeque<Job>>,
+    failure: Option<FailureConfig>,
     /// Extra delay applied when restarting a previously preempted job.
     pub preemption_restart_penalty_secs: f64,
     replay_snapshots: Vec<ClusterSnapshot>,
@@ -76,11 +78,18 @@ impl<S: Scheduler> SimulationEngine<S> {
             resource_manager,
             scheduler,
             event_queue: EventQueue::new(),
-            pending_arrivals: Vec::new(),
+            pending_arrivals: std::collections::HashMap::new(),
+            failure: None,
             preemption_restart_penalty_secs: 0.0,
             replay_snapshots: Vec::new(),
             capture_replay: false,
         }
+    }
+
+    /// Enables seeded failure injection (see [`FailureConfig`]).
+    pub fn with_failure_injection(mut self, cfg: FailureConfig) -> Self {
+        self.failure = Some(cfg);
+        self
     }
 
     pub fn with_replay_capture(mut self) -> Self {
@@ -162,7 +171,10 @@ impl<S: Scheduler> SimulationEngine<S> {
                 job_id: job.id.clone(),
                 run_generation: 0,
             });
-            self.pending_arrivals.push(job);
+            self.pending_arrivals
+                .entry(job.id.clone())
+                .or_default()
+                .push_back(job);
         }
     }
 
@@ -171,12 +183,14 @@ impl<S: Scheduler> SimulationEngine<S> {
     }
 
     fn handle_arrival(&mut self, job_id: &str) {
-        let idx = self
+        let queue = self
             .pending_arrivals
-            .iter()
-            .position(|j| j.id == job_id)
+            .get_mut(job_id)
             .expect("arrival job must exist");
-        let mut job = self.pending_arrivals.remove(idx);
+        let mut job = queue.pop_front().expect("arrival job must exist");
+        if queue.is_empty() {
+            self.pending_arrivals.remove(job_id);
+        }
         job.enter_waiting(self.cluster.clock.max(job.arrival_time));
         if job.gang_enabled {
             if let Some(timeout) = job.gang_timeout_secs.filter(|t| *t > 0.0) {
@@ -218,6 +232,45 @@ impl<S: Scheduler> SimulationEngine<S> {
             self.maybe_capture_replay_snapshot();
             self.try_schedule();
         }
+    }
+
+    fn handle_failure(&mut self, job_id: &str, run_generation: u32) {
+        match self.cluster.running_jobs.get(job_id) {
+            Some(job) if job.run_generation == run_generation => {}
+            _ => return,
+        }
+        let Some(cfg) = self.failure.clone() else {
+            return;
+        };
+        let name = self
+            .cluster
+            .running_jobs
+            .get(job_id)
+            .map(|j| j.name.clone())
+            .unwrap_or_default();
+        let clock = self.cluster.clock;
+        if let Some(requeued) =
+            self.cluster
+                .fail_running_job(job_id, clock, cfg.checkpoint_secs, cfg.max_retries)
+        {
+            let (kind, msg) = if requeued {
+                (
+                    "job_failure",
+                    format!("Job '{name}' crashed (injected); requeued"),
+                )
+            } else {
+                (
+                    "job_failure_final",
+                    format!("Job '{name}' crashed (injected); retries exhausted"),
+                )
+            };
+            self.cluster.record_decision(
+                zyvor_janus_core::decision_log::SchedulerDecision::new(clock, kind, msg)
+                    .with_job(job_id, &name),
+            );
+        }
+        self.maybe_capture_replay_snapshot();
+        self.try_schedule();
     }
 
     fn handle_complete(&mut self, job_id: &str, run_generation: u32) {
@@ -277,6 +330,17 @@ impl<S: Scheduler> SimulationEngine<S> {
                     .with_gpus(placement.gpu_ids.clone()),
                 );
                 self.maybe_capture_replay_snapshot();
+                if let Some(cfg) = &self.failure {
+                    let crash_after = cfg.crash_after(&job.id, run_generation);
+                    if crash_after < duration {
+                        self.event_queue.push(Event {
+                            time: placement.start_time + crash_after,
+                            kind: EventKind::JobFailure,
+                            job_id: job.id.clone(),
+                            run_generation,
+                        });
+                    }
+                }
                 self.event_queue.push(Event {
                     time: placement.start_time + duration,
                     kind: EventKind::JobComplete,
@@ -305,6 +369,7 @@ impl<S: Scheduler> SteppableSimulation for SimulationEngine<S> {
         match event.kind {
             EventKind::JobArrival => self.handle_arrival(&event.job_id),
             EventKind::JobComplete => self.handle_complete(&event.job_id, event.run_generation),
+            EventKind::JobFailure => self.handle_failure(&event.job_id, event.run_generation),
             EventKind::GangTimeout => self.handle_gang_timeout(&event.job_id, event.run_generation),
         }
         let new_decisions = self.cluster.decision_log[decisions_before..].to_vec();
@@ -347,7 +412,7 @@ mod tests {
         fn schedule(&mut self, cluster: &mut Cluster, rm: &ResourceManager) -> Vec<Placement> {
             cluster.sort_waiting_by_arrival();
             let mut placements = Vec::new();
-            let waiting: Vec<_> = cluster.waiting_queue.iter().cloned().collect();
+            let waiting: Vec<_> = cluster.waiting_queue.to_vec();
             for job in waiting {
                 if rm.can_place(cluster, &job) {
                     if let Ok(p) = rm.allocate(cluster, &job, cluster.clock) {

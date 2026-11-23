@@ -643,6 +643,10 @@ pub fn run_zynera_bundle_report(
         benchmark: None,
         federation,
         serving_trace,
+        quality: Some(zyvor_janus_metrics::QualityReport::from_cluster(
+            &cluster,
+            zyvor_janus_metrics::quality::DEFAULT_TIMELINE_BUCKETS,
+        )),
     })
 }
 

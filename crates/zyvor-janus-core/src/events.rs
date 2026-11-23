@@ -12,6 +12,8 @@ pub enum EventKind {
     JobArrival,
     JobComplete,
     GangTimeout,
+    /// Injected crash of a running job (failure injection).
+    JobFailure,
 }
 
 #[derive(Debug, Clone)]
