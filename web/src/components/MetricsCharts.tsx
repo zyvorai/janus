@@ -64,7 +64,7 @@ export function MetricsDashboard({ metrics }: { metrics: SimulationMetrics | nul
                 <XAxis dataKey="name" tick={{ fill: chartColors.tick, fontSize: 11 }} />
                 <YAxis domain={[0, 100]} tick={{ fill: chartColors.tick, fontSize: 11 }} unit="%" />
                 <Tooltip
-                  formatter={(value: number) => [`${value.toFixed(1)}%`, "Value"]}
+                  formatter={(value) => [`${Number(value).toFixed(1)}%`, "Value"]}
                   contentStyle={{
                     backgroundColor: "#0b0f14",
                     border: "1px solid rgba(255,255,255,0.06)",

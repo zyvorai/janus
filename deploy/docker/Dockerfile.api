@@ -8,7 +8,7 @@
 #     -e ZYVOR_JANUS_API_KEY=... -e ZYVOR_JANUS_WS_TICKET_SECRET=... \
 #     zyvor-janus-api:0.2.0
 
-FROM rust:1-bookworm AS builder
+FROM rust:1-trixie AS builder
 
 WORKDIR /build
 
@@ -18,7 +18,7 @@ COPY crates crates
 
 RUN cargo build --release -p zyvor-janus-api
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 WORKDIR /app
 

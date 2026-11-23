@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
 use chrono::Utc;
-use hmac::{Hmac, Mac};
+use hmac::{Hmac, KeyInit, Mac};
 use sha2::Sha256;
 use uuid::Uuid;
 

@@ -40,12 +40,12 @@ async fn main() {
             "/api/runs",
             get(routes::runs::list_runs).post(routes::runs::start_run),
         )
-        .route("/api/runs/:id", get(routes::runs::get_run))
-        .route("/api/runs/:id/snapshots", get(routes::runs::get_snapshots))
-        .route("/api/runs/:id/timeline", get(routes::runs::get_timeline))
-        .route("/api/runs/:id/events", get(routes::runs::get_events))
+        .route("/api/runs/{id}", get(routes::runs::get_run))
+        .route("/api/runs/{id}/snapshots", get(routes::runs::get_snapshots))
+        .route("/api/runs/{id}/timeline", get(routes::runs::get_timeline))
+        .route("/api/runs/{id}/events", get(routes::runs::get_events))
         .route(
-            "/api/runs/:id/shadow-events",
+            "/api/runs/{id}/shadow-events",
             get(routes::runs::get_shadow_events),
         )
         .route("/api/compare", axum::routing::post(routes::batch::compare))
@@ -63,12 +63,12 @@ async fn main() {
         )
         .route("/api/what-if", axum::routing::post(routes::batch::what_if))
         .route(
-            "/api/runs/:id/serving-trace",
+            "/api/runs/{id}/serving-trace",
             get(routes::serving_trace::get_serving_trace),
         )
         .route("/api/twins", get(routes::twins::get_twins))
         .route(
-            "/api/runs/:id/ws-ticket",
+            "/api/runs/{id}/ws-ticket",
             axum::routing::post(routes::runs::create_ws_ticket),
         )
         .layer(middleware::from_fn_with_state(
@@ -79,7 +79,7 @@ async fn main() {
     // Deliberately outside the bearer-auth layer -- see routes::ws for why
     // (browsers can't set Authorization on a WS handshake). Ticket-verified
     // per-connection instead.
-    let ws_routes = Router::new().route("/ws/runs/:id", get(routes::ws::ws_run));
+    let ws_routes = Router::new().route("/ws/runs/{id}", get(routes::ws::ws_run));
 
     // The OpenAI shim gets its own bearer-check middleware (see
     // routes::openai_shim::require_shim_api_key), kept independent of the
