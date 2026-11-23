@@ -38,6 +38,8 @@
 | **AIPerf overlay** | Sim-vs-measured AIPerf overlay on the benchmark page |
 | **Rename** | ZyForgeSim/ForgeSim is now **Zyvor Janus**: crates `zyvor-janus-*`, CLI `zyvor-janus`, Python `zyvor_janus`, env vars `ZYVOR_JANUS_*` |
 
+Also new: scheduler-quality metrics (waits, slowdown, Jain fairness, fragmentation), seeded failure injection, a Helios trace importer (`import-trace`) and `compare` with confidence intervals. See [docs/scheduler_quality.md](docs/scheduler_quality.md), [docs/failure_injection.md](docs/failure_injection.md), [docs/trace_import.md](docs/trace_import.md) and [docs/RESEARCH.md](docs/RESEARCH.md).
+
 Full history: [CHANGELOG.md](CHANGELOG.md).
 
 ## Why Janus

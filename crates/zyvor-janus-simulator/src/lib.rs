@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
 pub mod engine;
+pub mod failure;
 pub mod inference;
 pub mod rl;
 pub mod shadow;
 pub mod snapshot;
 
 pub use engine::{SimulationEngine, StepOutcome, SteppableSimulation};
+pub use failure::FailureConfig;
 pub use inference::{estimate_inference, InferenceEstimate, InferenceProfile, InferenceRequest};
 pub use rl::{default_top_k, RlSession, StepResult};
 pub use shadow::{ShadowRun, ShadowSide, ShadowStep};

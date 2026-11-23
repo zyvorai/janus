@@ -7,7 +7,7 @@ import { COOKIE_NAME, verifySessionToken } from "@/lib/auth";
 
 /** Server-side guard for dashboard pages (backup when middleware is bypassed). */
 export async function requireAuth(nextPath = "/"): Promise<void> {
-  const token = cookies().get(COOKIE_NAME)?.value;
+  const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (await verifySessionToken(token)) {
     return;
   }

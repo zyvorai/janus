@@ -160,7 +160,7 @@ fn job_snapshot_to_py(
     py: Python<'_>,
     job: &zyvor_janus_simulator::JobSnapshot,
 ) -> PyResult<Py<PyAny>> {
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
     dict.set_item("id", &job.id)?;
     dict.set_item("name", &job.name)?;
     dict.set_item("arrival_time", job.arrival_time)?;
@@ -175,7 +175,7 @@ fn job_snapshot_to_py(
 }
 
 fn snapshot_to_py(py: Python<'_>, snap: &ClusterSnapshot) -> PyResult<Py<PyAny>> {
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
     dict.set_item("clock", snap.clock)?;
     dict.set_item("free_gpus", snap.free_gpus)?;
     dict.set_item("waiting", snap.waiting)?;
@@ -185,21 +185,21 @@ fn snapshot_to_py(py: Python<'_>, snap: &ClusterSnapshot) -> PyResult<Py<PyAny>>
     dict.set_item("gpu_count", snap.gpu_count)?;
     dict.set_item("features", snap.to_feature_vector())?;
 
-    let queue_jobs = PyList::empty_bound(py);
+    let queue_jobs = PyList::empty(py);
     for job in &snap.queue_jobs {
         queue_jobs.append(job_snapshot_to_py(py, job)?)?;
     }
     dict.set_item("queue_jobs", queue_jobs)?;
 
-    let top_jobs = PyList::empty_bound(py);
+    let top_jobs = PyList::empty(py);
     for job in &snap.top_jobs {
         top_jobs.append(job_snapshot_to_py(py, job)?)?;
     }
     dict.set_item("top_jobs", top_jobs)?;
 
-    let running_jobs = PyList::empty_bound(py);
+    let running_jobs = PyList::empty(py);
     for job in &snap.running_jobs {
-        let j = PyDict::new_bound(py);
+        let j = PyDict::new(py);
         j.set_item("id", &job.id)?;
         j.set_item("name", &job.name)?;
         j.set_item("gpu_count", job.gpu_count)?;
@@ -210,13 +210,13 @@ fn snapshot_to_py(py: Python<'_>, snap: &ClusterSnapshot) -> PyResult<Py<PyAny>>
     }
     dict.set_item("running_jobs", running_jobs)?;
 
-    let nodes = PyList::empty_bound(py);
+    let nodes = PyList::empty(py);
     for node in &snap.nodes {
-        let n = PyDict::new_bound(py);
+        let n = PyDict::new(py);
         n.set_item("id", &node.id)?;
-        let gpus = PyList::empty_bound(py);
+        let gpus = PyList::empty(py);
         for gpu in &node.gpus {
-            let g = PyDict::new_bound(py);
+            let g = PyDict::new(py);
             g.set_item("id", &gpu.id)?;
             g.set_item("node_id", &gpu.node_id)?;
             g.set_item("busy", gpu.busy)?;
@@ -238,7 +238,7 @@ fn step_result_to_py(
     py: Python<'_>,
     result: &zyvor_janus_simulator::StepResult,
 ) -> PyResult<Py<PyAny>> {
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
     dict.set_item("observation", snapshot_to_py(py, &result.observation)?)?;
     dict.set_item("reward", result.reward)?;
     dict.set_item("done", result.done)?;
@@ -251,9 +251,9 @@ fn decisions_to_py(
     py: Python<'_>,
     decisions: &[zyvor_janus_core::SchedulerDecision],
 ) -> PyResult<Py<PyAny>> {
-    let list = PyList::empty_bound(py);
+    let list = PyList::empty(py);
     for d in decisions {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("time", d.time)?;
         dict.set_item("kind", &d.kind)?;
         dict.set_item("job_id", &d.job_id)?;
@@ -281,11 +281,11 @@ fn run_report_from_config(
 ) -> PyResult<Py<PyAny>> {
     let report = run_simulation_report_with_scheduler(std::path::Path::new(config_path), scheduler)
         .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
     dict.set_item("metrics", SimResult::from(report.metrics))?;
     dict.set_item("timeline", report.timeline.to_json_pretty())?;
     dict.set_item("decisions", decisions_to_py(py, &report.decisions)?)?;
-    let snapshots = PyList::empty_bound(py);
+    let snapshots = PyList::empty(py);
     for snap in &report.snapshots {
         snapshots.append(snapshot_to_py(py, snap)?)?;
     }

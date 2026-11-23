@@ -26,18 +26,18 @@ serde_json = "1"
 serde_yaml = "0.9"
 thiserror = "2"
 clap = { version = "4", features = ["derive"] }
-pyo3 = { version = "0.23", features = ["extension-module"] }
-axum = { version = "0.7", features = ["ws"] }
+pyo3 = { version = "0.30", features = ["extension-module"] }
+axum = { version = "0.8", features = ["ws"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "fs"] }
 tower = "0.5"
-tower-http = { version = "0.6", features = ["cors", "trace"] }
+tower-http = { version = "0.7", features = ["cors", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
-rusqlite = { version = "0.32", features = ["bundled"] }
-hmac = "0.12"
-sha2 = "0.10"
+rusqlite = { version = "0.43", features = ["bundled"] }
+hmac = "0.13"
+sha2 = "0.11"
 hex = "0.4"
 async-stream = "0.3"
 futures-core = "0.3"

@@ -10,6 +10,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Dependencies and CI
+
+Rust (`cargo update` plus major bumps, each compile-checked):
+- axum 0.7 -> 0.8 (route paths `/:id` -> `/{id}`; WebSocket `Message::Text` now takes `Utf8Bytes`).
+- tower-http 0.6 -> 0.7, rusqlite 0.32 -> 0.43 (no source changes needed).
+- hmac 0.12 -> 0.13 and sha2 0.10 -> 0.11 (`KeyInit` must be imported for `new_from_slice`; the ws-ticket code already hex-encodes via `hex`, not `{:x}`).
+- pyo3 0.23 -> 0.30 (`PyDict::new_bound`/`PyList::empty_bound` -> `new`/`empty`). Compile-checked with `cargo check` against Python 3.14; the maturin wheel build and Python test suite were NOT run (no pip on the dev host), so CI python.yml is the first full check.
+- There is no `rand` dependency, so no seeding or stream behaviour changed; simulator determinism is untouched.
+
+Web (`web/`, lockfile kept): next 14 -> 16 (`middleware.ts` -> `proxy.ts`, async `cookies()` and `params`), react/react-dom 18 -> 19 with @types, recharts 2 -> 3 (tooltip formatters take `ValueType | undefined`), framer-motion 12 -> 14, zustand 4 -> 5, typescript 5 -> 7, @types/node 20 -> 24. `npm run lint` is now `tsc --noEmit` because `next lint` was removed in Next 16 (there was no ESLint config).
+
+Held back:
+- tailwindcss 3 -> 4: needs a PostCSS plugin and config migration that changes generated CSS; not verifiable without a browser.
+
+Images and CI: web image `node:20` -> `node:24-bookworm-slim`; API image `rust:1-bookworm`/`debian:bookworm-slim` -> `rust:1-trixie`/`debian:trixie-slim` (tags verified on Docker Hub). Actions: checkout v7, setup-python v7, docker/login v4, metadata v6, setup-buildx v4, build-push v7; Python in CI 3.10/3.11 -> 3.14 (package still supports >=3.10). Unverified and unchanged: `dtolnay/rust-toolchain@stable`, `Swatinem/rust-cache@v2`.
+
+### Added
+
+- **Scheduler-quality report** (`SimulationReport.quality`, CLI output, `run --report-output`): queue-wait p50/p90/p99, bounded slowdown, Jain fairness indices (per job and per tenant), 24-point utilisation and fragmentation timelines. See `docs/scheduler_quality.md`.
+- **Seeded failure injection** (`failure:` config section, `run --seed`): job crashes with checkpointed restart and bounded retries; new metrics `failures_injected` and `lost_gpu_seconds`. Job-level crashes only, not a GPU-hardware failure model. See `docs/failure_injection.md`.
+- **`import-trace`**: Microsoft Helios `cluster_log.csv` to workload YAML with explicit field mapping, skip accounting and size caps. See `docs/trace_import.md`.
+- **`compare`**: baseline-vs-candidate policy comparison with paired 95% confidence intervals across seeds; honest single-run mode when there is no failure injection. See `docs/scheduler_quality.md`.
+- `docs/RESEARCH.md`: survey of GPU-cluster trace formats, schedulers and fairness metrics, with ranked ideas and what was rejected.
+
+### Fixed
+
+- Workloads are now validated: NaN/infinite/negative arrival or runtime, duplicate job ids (a second running job with the same id silently overwrote the first), GPU counts above 100,000, more than 2,000,000 jobs, and files over 256 MiB are rejected with a clear error.
+- Arrival handling was O(n^2) in the job count (linear scan of pending arrivals per event); it is now a hash lookup, so 20,000-job workloads run in well under a second.
+
 ### Changed
 - Renamed the project from ZyForgeSim/ForgeSim to **Zyvor Janus**: Rust
   crates (`forgesim-*` -> `zyvor-janus-*`), the CLI binary

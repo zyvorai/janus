@@ -29,7 +29,7 @@ function proceed(request: NextRequest): NextResponse {
   return isBackendPath(request.nextUrl.pathname) ? withBackendAuth(request) : NextResponse.next();
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (!isAuthEnabled()) {
     return proceed(request);
   }

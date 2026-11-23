@@ -16,6 +16,10 @@ pub struct Cluster {
     pub clock: f64,
     pub mig_reconfigs: u32,
     pub total_preemptions: u32,
+    /// Injected job failures (each crash of a running job counts once).
+    pub total_failures: u32,
+    /// GPU-seconds of progress discarded by injected failures.
+    pub lost_gpu_seconds: f64,
     /// Jobs placed without preferred NVLink locality (M5 fallback).
     pub topology_penalties: u32,
     /// Extra simulated runtime seconds from cross-domain placement (M5 phase 2).
@@ -46,6 +50,8 @@ impl Cluster {
             clock: 0.0,
             mig_reconfigs: 0,
             total_preemptions: 0,
+            total_failures: 0,
+            lost_gpu_seconds: 0.0,
             topology_penalties: 0,
             topology_runtime_inflation: 0.0,
             topology: TopologyGraph::default(),
@@ -162,6 +168,54 @@ impl Cluster {
             self.mark_resource_free(resource_id);
         }
         Some(job)
+    }
+
+    /// Crash a running job at `at_time` (failure injection). Progress made
+    /// since the last checkpoint (`checkpoint_secs`; 0 = none) is lost. The
+    /// job is requeued with its remaining work increased accordingly, or
+    /// moved to `Failed` once `max_retries` restarts have been used.
+    /// Returns `true` if the job was requeued, `false` if it failed for good.
+    pub fn fail_running_job(
+        &mut self,
+        job_id: &str,
+        at_time: f64,
+        checkpoint_secs: f64,
+        max_retries: u32,
+    ) -> Option<bool> {
+        let mut job = self.evict_job(job_id)?;
+        let elapsed = job
+            .start_time
+            .map(|s| (at_time - s).max(0.0))
+            .unwrap_or(0.0);
+        let saved = if checkpoint_secs > 0.0 {
+            (elapsed / checkpoint_secs).floor() * checkpoint_secs
+        } else {
+            0.0
+        };
+        let lost = (elapsed - saved).max(0.0);
+        self.total_failures += 1;
+        self.lost_gpu_seconds += lost * job.gpu_count as f64;
+        job.failure_count += 1;
+        if job.failure_count > max_retries {
+            if let Some(start) = job.start_time {
+                job.record_gpu_segment(start, at_time);
+            }
+            job.state = JobState::Failed;
+            job.finish_time = Some(at_time);
+            self.finished_jobs.push(job);
+            return Some(false);
+        }
+        let preemptions = job.preemption_count;
+        job.requeue_after_preemption(at_time);
+        job.preemption_count = preemptions;
+        // requeue subtracted the whole elapsed run; give back the lost part.
+        job.remaining_runtime = Some(job.duration_remaining() + lost);
+        if job.gang_enabled && job.gang_deadline.is_some() {
+            self.note_gang_timeout_rearm(job.id.clone());
+        }
+        self.waiting_queue.push(job);
+        self.queue_max_length = self.queue_max_length.max(self.waiting_queue.len());
+        Some(true)
     }
 
     /// Undo `evict_job`: put a job back exactly as it was running.

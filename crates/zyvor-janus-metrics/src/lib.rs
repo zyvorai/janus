@@ -7,7 +7,9 @@ use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{JobRunSegment, JobState};
 
 pub mod benchmark;
+pub mod quality;
 pub use benchmark::SchedulerBenchmarkReport;
+pub use quality::{bounded_slowdown, jain_index, QualityReport, TimelinePoint};
 pub use zyvor_janus_cost::CostModel;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -139,6 +141,12 @@ pub struct SimulationMetrics {
     pub goodput: f64,
     #[serde(default)]
     pub queue_delay_p99: f64,
+    /// Crashes injected by failure injection (0 when disabled).
+    #[serde(default)]
+    pub failures_injected: u32,
+    /// GPU-seconds of progress lost to injected crashes.
+    #[serde(default)]
+    pub lost_gpu_seconds: f64,
 }
 
 impl SimulationMetrics {
@@ -236,6 +244,8 @@ impl SimulationMetrics {
             tps_mean,
             goodput,
             queue_delay_p99,
+            failures_injected: cluster.total_failures,
+            lost_gpu_seconds: cluster.lost_gpu_seconds,
         }
     }
 

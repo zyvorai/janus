@@ -91,7 +91,7 @@ export async function fetchSnapshots(id: string): Promise<ClusterSnapshot[]> {
  * Mints a short-lived ticket for the `/ws/runs/{id}` upgrade. The Rust API
  * requires it as a query param because browsers cannot set an
  * `Authorization` header on a WebSocket handshake, so the bearer token
- * `web/src/middleware.ts` injects on ordinary `/api/*` calls can't reach
+ * `web/src/proxy.ts` injects on ordinary `/api/*` calls can't reach
  * this route -- goes through apiFetch so it still carries the session
  * cookie and gets the same 401-redirect-to-login handling as everything
  * else.

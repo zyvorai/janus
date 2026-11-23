@@ -1,0 +1,31 @@
+# Seeded failure injection demo: each run of a job crashes after an
+# exponential time (mean job_mtbf_secs) and restarts from its last
+# checkpoint. Same seed + config => identical result.
+cluster:
+  nodes:
+    - id: node-0
+      gpus:
+        - {id: gpu-0, profile: H100_80GB, nvlink_group: 1}
+        - {id: gpu-1, profile: H100_80GB, nvlink_group: 1}
+        - {id: gpu-2, profile: H100_80GB, nvlink_group: 1}
+        - {id: gpu-3, profile: H100_80GB, nvlink_group: 1}
+    - id: node-1
+      gpus:
+        - {id: gpu-4, profile: H100_80GB, nvlink_group: 2}
+        - {id: gpu-5, profile: H100_80GB, nvlink_group: 2}
+        - {id: gpu-6, profile: H100_80GB, nvlink_group: 2}
+        - {id: gpu-7, profile: H100_80GB, nvlink_group: 2}
+
+scheduler:
+  type: fifo
+
+workload:
+  path: ../workloads/failure_demo.yaml
+
+failure:
+  seed: 1
+  job_mtbf_secs: 1500
+  checkpoint_secs: 120
+  max_retries: 3
+
+hardware_profiles_dir: ../hardware

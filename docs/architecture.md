@@ -56,6 +56,12 @@ server, not this planned Rust crate.
    corrupting the job's later, actual completion
 6. Clock advances only to the next event (no polling)
 
+Optional failure injection (`failure:` in the config) adds a fourth event kind,
+`JobFailure`: a seeded, stateless draw per job run kills the job, discards
+progress since the last checkpoint and requeues it (see
+[failure_injection.md](failure_injection.md)). Without it the simulation is
+fully deterministic and uses no random numbers.
+
 ## RL session (M7)
 
 `RlSession` pauses the DES at scheduling decision points. An agent picks a

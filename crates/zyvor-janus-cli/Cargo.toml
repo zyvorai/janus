@@ -12,5 +12,6 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { workspace = true }
+serde_json = { workspace = true }
 zyvor-janus-config = { path = "../zyvor-janus-config" }
 zyvor-janus-metrics = { path = "../zyvor-janus-metrics" }

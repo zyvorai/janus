@@ -249,7 +249,7 @@ export default function BenchmarkPage() {
                           border: "1px solid rgba(255,255,255,0.06)",
                           borderRadius: "8px",
                         }}
-                        formatter={(v: number) => [`${v.toFixed(1)}`, "Score"]}
+                        formatter={(v) => [`${Number(v).toFixed(1)}`, "Score"]}
                       />
                     </RadarChart>
                   </ResponsiveContainer>

@@ -1,0 +1,129 @@
+jobs:
+  - id: fi-00
+    name: fi-job
+    arrival_time: 5
+    runtime: 600
+    gpu_count: 4
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: batch
+  - id: fi-01
+    name: fi-job
+    arrival_time: 21
+    runtime: 300
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: batch
+  - id: fi-02
+    name: fi-job
+    arrival_time: 48
+    runtime: 600
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 5
+    tenant: research
+  - id: fi-03
+    name: fi-job
+    arrival_time: 66
+    runtime: 300
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 10
+    tenant: research
+  - id: fi-04
+    name: fi-job
+    arrival_time: 86
+    runtime: 300
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 10
+    tenant: research
+  - id: fi-05
+    name: fi-job
+    arrival_time: 110
+    runtime: 300
+    gpu_count: 4
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: research
+  - id: fi-06
+    name: fi-job
+    arrival_time: 120
+    runtime: 600
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: prod
+  - id: fi-07
+    name: fi-job
+    arrival_time: 148
+    runtime: 300
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 10
+    tenant: batch
+  - id: fi-08
+    name: fi-job
+    arrival_time: 162
+    runtime: 300
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: prod
+  - id: fi-09
+    name: fi-job
+    arrival_time: 188
+    runtime: 300
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: batch
+  - id: fi-10
+    name: fi-job
+    arrival_time: 207
+    runtime: 1200
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 10
+    tenant: prod
+  - id: fi-11
+    name: fi-job
+    arrival_time: 227
+    runtime: 900
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: research
+  - id: fi-12
+    name: fi-job
+    arrival_time: 243
+    runtime: 300
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 5
+    tenant: batch
+  - id: fi-13
+    name: fi-job
+    arrival_time: 265
+    runtime: 1200
+    gpu_count: 2
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: batch
+  - id: fi-14
+    name: fi-job
+    arrival_time: 281
+    runtime: 1200
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: prod
+  - id: fi-15
+    name: fi-job
+    arrival_time: 307
+    runtime: 1200
+    gpu_count: 1
+    gpu_memory_gb: 40
+    priority: 0
+    tenant: batch

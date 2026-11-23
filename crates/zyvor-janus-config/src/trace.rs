@@ -12,7 +12,7 @@ use zyvor_janus_metrics::SimulationMetrics;
 use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Job, JobState};
 use zyvor_janus_scheduler::Scheduler;
-use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, ZyneraScheduler, PriorityScheduler};
+use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler};
 use zyvor_janus_simulator::SimulationEngine;
 
 use crate::{
