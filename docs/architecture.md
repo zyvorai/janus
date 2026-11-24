@@ -16,7 +16,7 @@ Rust workspace
   ├── zyvor-janus-topology  Synthetic NVLink/PCIe bandwidth-penalty topology model
   ├── zyvor-janus-model     Cluster state, node/GPU/job types, MIG partitioning
   ├── zyvor-janus-scheduler Scheduling policies (fifo, priority, preemptive, zynera,
-  │                         bestfit) + ResourceManager + the Scheduler trait
+  │                         bestfit, easy) + ResourceManager + the Scheduler trait
   ├── zyvor-janus-simulator Discrete-event engine, RL stepping session, inference model
   ├── zyvor-janus-cost      GPU cost model (seed for future multi-provider pricing)
   ├── zyvor-janus-metrics   Makespan, wait, utilization, timeline, benchmark score

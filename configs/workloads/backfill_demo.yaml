@@ -1,0 +1,33 @@
+# EASY backfill demo on a 4-GPU node. `wide` occupies 2 GPUs until t=100, so
+# `head` (4 GPUs) must wait. Under fifo the long 1-GPU job slips in and
+# delays `head` to t=502; under easy only the short job backfills and `head`
+# starts at t=100.
+jobs:
+  - id: wide
+    name: wide
+    arrival_time: 0
+    runtime: 100
+    gpu_count: 2
+    gpu_memory_gb: 40
+    tenant: team-a
+  - id: head
+    name: head
+    arrival_time: 1
+    runtime: 50
+    gpu_count: 4
+    gpu_memory_gb: 40
+    tenant: team-b
+  - id: long-small
+    name: long-small
+    arrival_time: 2
+    runtime: 500
+    gpu_count: 1
+    gpu_memory_gb: 40
+    tenant: team-a
+  - id: short-small
+    name: short-small
+    arrival_time: 3
+    runtime: 40
+    gpu_count: 1
+    gpu_memory_gb: 40
+    tenant: team-b

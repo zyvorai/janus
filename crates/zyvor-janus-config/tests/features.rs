@@ -7,7 +7,7 @@
 use std::path::PathBuf;
 
 use zyvor_janus_config::{
-    compare_policies, import_helios_csv, load_workload, run_simulation_report,
+    compare_policies, import_helios_csv, leaderboard, load_workload, run_simulation_report,
     run_simulation_report_with_options, workload_to_yaml, ImportOptions,
 };
 
@@ -248,4 +248,81 @@ fn many_jobs_complete_in_reasonable_time() {
     engine.run();
     assert_eq!(engine.cluster.finished_jobs.len(), 20_000);
     assert!(start.elapsed().as_secs() < 60);
+}
+
+fn backfill_cfg() -> PathBuf {
+    root().join("configs/clusters/backfill_demo.yaml")
+}
+
+fn start_of(r: &zyvor_janus_config::SimulationReport, id: &str) -> f64 {
+    r.timeline
+        .jobs
+        .iter()
+        .find(|j| j.job_id == id)
+        .and_then(|j| j.start_time)
+        .unwrap_or_else(|| panic!("job {id} never started"))
+}
+
+#[test]
+fn easy_backfill_protects_the_head_job_that_fifo_delays() {
+    let fifo = run_simulation_report_with_options(&backfill_cfg(), Some("fifo"), None).unwrap();
+    let easy = run_simulation_report_with_options(&backfill_cfg(), Some("easy"), None).unwrap();
+    assert_eq!(fifo.metrics.jobs_completed, 4);
+    assert_eq!(easy.metrics.jobs_completed, 4);
+    // fifo lets the 500s job in first, so the 4-GPU head waits for it.
+    assert!(start_of(&fifo, "head") >= 500.0);
+    // easy reserves the head at t=100 (when `wide` ends).
+    assert_eq!(start_of(&easy, "head"), 100.0);
+    // the short job still backfills ahead of the head.
+    assert!(start_of(&easy, "short-small") < 100.0);
+    // and the long job is held until the head is out of the way.
+    assert!(start_of(&easy, "long-small") >= 100.0);
+}
+
+#[test]
+fn easy_is_deterministic() {
+    let a = run_simulation_report_with_options(&backfill_cfg(), Some("easy"), None).unwrap();
+    let b = run_simulation_report_with_options(&backfill_cfg(), Some("easy"), None).unwrap();
+    assert_eq!(a.metrics.to_json_pretty(), b.metrics.to_json_pretty());
+}
+
+#[test]
+fn report_has_fairness_and_chargeback() {
+    let r = run_simulation_report(&root().join("configs/clusters/small_h100.yaml")).unwrap();
+    let q = r.quality.expect("quality");
+    assert!(q.ftf_rho_max >= q.ftf_rho_p90 && q.ftf_rho_p90.is_finite());
+    assert!(q.ftf_worst_tenant.is_some());
+    let c = r.chargeback.expect("chargeback");
+    let tenant_sum: f64 = c.tenants.iter().map(|t| t.cost_usd).sum();
+    assert!((tenant_sum - c.used_cost_usd).abs() < 1e-6);
+    assert!((c.tenants.iter().map(|t| t.share).sum::<f64>() - 1.0).abs() < 1e-9);
+    assert!(c.idle_gpu_hours >= 0.0);
+    assert!(
+        (c.used_gpu_hours + c.idle_gpu_hours - c.capacity_gpu_hours).abs() < 1e-6
+            || c.used_gpu_hours > c.capacity_gpu_hours
+    );
+}
+
+#[test]
+fn leaderboard_ranks_by_requested_metric_and_dedupes() {
+    let names: Vec<String> = ["fifo", "easy", "fifo"].map(String::from).to_vec();
+    let rows = leaderboard(&backfill_cfg(), &names, "mean_wait_time", None).unwrap();
+    assert_eq!(rows.len(), 2);
+    assert_eq!(rows[0].scheduler, "easy");
+    assert_eq!(rows[0].rank, 1);
+    assert_eq!(rows[1].rank, 2);
+    assert!(rows[0].mean_wait_time < rows[1].mean_wait_time);
+    // higher-is-better keys sort descending
+    let rows = leaderboard(&backfill_cfg(), &names, "gpu_utilization", None).unwrap();
+    assert!(rows[0].gpu_utilization >= rows[1].gpu_utilization);
+    assert_eq!(rows[0].scheduler, "fifo");
+}
+
+#[test]
+fn leaderboard_rejects_bad_input() {
+    let one = vec!["fifo".to_string()];
+    assert!(leaderboard(&backfill_cfg(), &one, "nonsense", None).is_err());
+    assert!(leaderboard(&backfill_cfg(), &[], "makespan", None).is_err());
+    let bad = vec!["no-such-scheduler".to_string()];
+    assert!(leaderboard(&backfill_cfg(), &bad, "makespan", None).is_err());
 }

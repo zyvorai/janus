@@ -6,7 +6,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 use zyvor_janus_config::{
-    compare_policies, import_helios_csv, load_cluster_from_config, load_zynera_bundle,
+    compare_policies, import_helios_csv, leaderboard, load_cluster_from_config, load_zynera_bundle,
     run_simulation_report_with_options, run_trace_file, run_zynera_bundle_report,
     trace_diff_to_json, workload_to_yaml, ImportOptions, SimulationReport,
 };
@@ -44,7 +44,7 @@ enum Commands {
         #[arg(long, default_value = "configs/mig")]
         mig_profiles_dir: PathBuf,
         /// Scheduler policy to simulate (with --zynera-bundle; --config uses its own scheduler.type)
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
         scheduler: String,
         /// Write metrics JSON to this path
         #[arg(short, long)]
@@ -91,9 +91,9 @@ enum Commands {
         /// Simulation config YAML (add a `failure:` section to get seed variation)
         #[arg(short, long)]
         config: PathBuf,
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
         baseline: String,
-        #[arg(long, value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
+        #[arg(long, value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
         candidate: String,
         /// Number of seeds (first-seed, first-seed+1, ...)
         #[arg(long, default_value_t = 10)]
@@ -101,6 +101,24 @@ enum Commands {
         #[arg(long, default_value_t = 1)]
         first_seed: u64,
         /// Write the comparison JSON here
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+    },
+    /// Run one config under several schedulers and rank them side by side
+    Leaderboard {
+        /// Simulation config YAML
+        #[arg(short, long)]
+        config: PathBuf,
+        /// Schedulers to run, comma separated
+        #[arg(long, value_delimiter = ',', default_values_t = ["fifo", "priority", "preemptive", "bestfit", "easy"].map(String::from))]
+        schedulers: Vec<String>,
+        /// Ranking metric: makespan, mean_wait_time, wait_p99, slowdown_mean, ftf_rho_max, cost_usd, gpu_utilization, jain_tenant_service
+        #[arg(long, default_value = "mean_wait_time")]
+        sort_by: String,
+        /// Failure-injection seed (config needs a `failure:` section)
+        #[arg(long)]
+        seed: Option<u64>,
+        /// Write the leaderboard JSON here
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
@@ -125,7 +143,7 @@ enum Commands {
         #[arg(long, default_value = "configs/profiles")]
         profiles_dir: PathBuf,
         /// Scheduler policy to simulate
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
         scheduler: String,
         /// Write diff report JSON to this path
         #[arg(short, long)]
@@ -203,6 +221,28 @@ fn print_report(
             q.jain_job_service, q.jain_tenant_service
         );
         println!("  mean fragmentation: {:.3}", q.mean_fragmentation);
+        println!(
+            "  ftf rho mean/p90/max: {:.2} / {:.2} / {:.2} (worst tenant: {})",
+            q.ftf_rho_mean,
+            q.ftf_rho_p90,
+            q.ftf_rho_max,
+            q.ftf_worst_tenant.as_deref().unwrap_or("-")
+        );
+    }
+    if let Some(c) = &report.chargeback {
+        println!(
+            "  gpu-hours used/idle: {:.2} / {:.2} (${:.2} used, ${:.2} idle at ${:.2}/GPU-h)",
+            c.used_gpu_hours, c.idle_gpu_hours, c.used_cost_usd, c.idle_cost_usd, c.gpu_hour_usd
+        );
+        for t in &c.tenants {
+            println!(
+                "    tenant {:<16} {:>8.2} GPU-h  ${:>9.2}  {:>5.1}%",
+                t.tenant,
+                t.gpu_hours,
+                t.cost_usd,
+                t.share * 100.0
+            );
+        }
     }
     if let Some(path) = report_output {
         if let Some(parent) = path.parent() {
@@ -212,6 +252,7 @@ fn print_report(
             "scheduler": report.scheduler,
             "metrics": report.metrics,
             "quality": report.quality,
+            "chargeback": report.chargeback,
         }))
         .unwrap_or_else(|_| "{}".into());
         fs::write(&path, json).unwrap_or_else(|e| {
@@ -416,6 +457,58 @@ fn main() {
                     std::process::exit(1);
                 });
                 println!("  comparison written: {}", out.display());
+            }
+        }
+        Commands::Leaderboard {
+            config,
+            schedulers,
+            sort_by,
+            seed,
+            output,
+        } => {
+            let rows = leaderboard(&config, &schedulers, &sort_by, seed).unwrap_or_else(|e| {
+                eprintln!("error: {e}");
+                std::process::exit(1);
+            });
+            println!("Zyvor Janus leaderboard (sorted by {sort_by})");
+            println!(
+                "  {:<4} {:<11} {:>10} {:>10} {:>10} {:>9} {:>6} {:>7} {:>8} {:>10}",
+                "rank",
+                "scheduler",
+                "makespan",
+                "mean_wait",
+                "wait_p99",
+                "slowdown",
+                "util",
+                "jain",
+                "ftf_max",
+                "cost_usd"
+            );
+            for r in &rows {
+                println!(
+                    "  {:<4} {:<11} {:>10.2} {:>10.2} {:>10.2} {:>9.2} {:>5.1}% {:>7.3} {:>8.2} {:>10.2}",
+                    r.rank,
+                    r.scheduler,
+                    r.makespan,
+                    r.mean_wait_time,
+                    r.wait_p99,
+                    r.slowdown_mean,
+                    r.gpu_utilization * 100.0,
+                    r.jain_tenant_service,
+                    r.ftf_rho_max,
+                    r.cost_usd
+                );
+            }
+            if let Some(out) = output {
+                if let Some(parent) = out.parent() {
+                    let _ = fs::create_dir_all(parent);
+                }
+                let json = serde_json::to_string_pretty(&rows).unwrap_or_else(|_| "[]".into());
+                fs::write(&out, json).unwrap_or_else(|e| {
+                    eprintln!("failed to write output: {e}");
+                    std::process::exit(1);
+                });
+                println!("  leaderboard written: {}", out.display());
             }
         }
         Commands::Replay {

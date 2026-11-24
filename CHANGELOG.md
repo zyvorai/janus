@@ -21,13 +21,15 @@ Rust (`cargo update` plus major bumps, each compile-checked):
 
 Web (`web/`, lockfile kept): next 14 -> 16 (`middleware.ts` -> `proxy.ts`, async `cookies()` and `params`), react/react-dom 18 -> 19 with @types, recharts 2 -> 3 (tooltip formatters take `ValueType | undefined`), framer-motion 12 -> 14, zustand 4 -> 5, typescript 5 -> 7, @types/node 20 -> 24. `npm run lint` is now `tsc --noEmit` because `next lint` was removed in Next 16 (there was no ESLint config).
 
-Held back:
-- tailwindcss 3 -> 4: needs a PostCSS plugin and config migration that changes generated CSS; not verifiable without a browser.
-
 Images and CI: web image `node:20` -> `node:24-bookworm-slim`; API image `rust:1-bookworm`/`debian:bookworm-slim` -> `rust:1-trixie`/`debian:trixie-slim` (tags verified on Docker Hub). Actions: checkout v7, setup-python v7, docker/login v4, metadata v6, setup-buildx v4, build-push v7; Python in CI 3.10/3.11 -> 3.14 (package still supports >=3.10). Unverified and unchanged: `dtolnay/rust-toolchain@stable`, `Swatinem/rust-cache@v2`.
 
 ### Added
 
+- **`easy` scheduler** (EASY backfill): the first blocked job gets a reservation; later jobs backfill only if they cannot delay it. Available everywhere a scheduler name is accepted (config, `compare`, `leaderboard`, trace replay, web selector). Demo: `configs/clusters/backfill_demo.yaml`.
+- **Finish-time fairness** (`QualityReport.ftf_rho_*`, simplified Themis rho) and a `compare` row for `ftf_rho_max`.
+- **Chargeback** (`SimulationReport.chargeback`): per-tenant GPU-hours and cost, idle-capacity cost, crash waste; printed by `run` and written by `--report-output`.
+- **`leaderboard`** CLI command: run one config under many schedulers and rank them by a chosen metric.
+- Web: tailwindcss 3 -> 4 (`@tailwindcss/postcss`, `@config` for the existing theme, v3 default-border-colour shim, bare `rounded` -> `rounded-sm`). `next build` and `tsc` pass; not visually checked in a browser.
 - **Scheduler-quality report** (`SimulationReport.quality`, CLI output, `run --report-output`): queue-wait p50/p90/p99, bounded slowdown, Jain fairness indices (per job and per tenant), 24-point utilisation and fragmentation timelines. See `docs/scheduler_quality.md`.
 - **Seeded failure injection** (`failure:` config section, `run --seed`): job crashes with checkpointed restart and bounded retries; new metrics `failures_injected` and `lost_gpu_seconds`. Job-level crashes only, not a GPU-hardware failure model. See `docs/failure_injection.md`.
 - **`import-trace`**: Microsoft Helios `cluster_log.csv` to workload YAML with explicit field mapping, skip accounting and size caps. See `docs/trace_import.md`.

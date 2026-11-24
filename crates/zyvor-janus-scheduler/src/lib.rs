@@ -3,6 +3,7 @@
 
 mod bestfit;
 mod common;
+mod easy;
 mod fifo;
 mod preemptive;
 mod priority;
@@ -10,6 +11,7 @@ pub mod resource;
 mod zynera;
 
 pub use bestfit::BestFitScheduler;
+pub use easy::EasyBackfillScheduler;
 pub use fifo::FifoScheduler;
 pub use preemptive::PreemptivePriorityScheduler;
 pub use priority::PriorityScheduler;
