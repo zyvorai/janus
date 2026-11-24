@@ -59,6 +59,24 @@ pub struct QualityReport {
     /// are grouped under "(none)"). 1.0 when fewer than two tenants.
     pub jain_tenant_service: f64,
     pub mean_fragmentation: f64,
+    /// Finish-time fairness, simplified from Themis (NSDI 2020): per job,
+    /// rho = (finish - arrival) / (runtime * N) where N is the time-averaged
+    /// number of tenants with at least one job in the system during the
+    /// job's lifetime (min 1). rho <= 1 means the job finished no later than
+    /// an equal 1/N tenant share would predict; larger is worse. This
+    /// assumes runtime scales as 1/share, which gang jobs do not, so treat it
+    /// as a relative fairness signal between policies, not an absolute SLO.
+    #[serde(default)]
+    pub ftf_rho_mean: f64,
+    #[serde(default)]
+    pub ftf_rho_p90: f64,
+    #[serde(default)]
+    pub ftf_rho_max: f64,
+    /// Worst per-tenant mean rho and the tenant that suffered it.
+    #[serde(default)]
+    pub ftf_worst_tenant: Option<String>,
+    #[serde(default)]
+    pub ftf_worst_tenant_rho: f64,
     pub utilization_timeline: Vec<TimelinePoint>,
 }
 
@@ -124,6 +142,8 @@ impl QualityReport {
         }
         let tenant_means: Vec<f64> = per_tenant.values().map(|(s, n)| s / *n as f64).collect();
 
+        let ftf = finish_time_fairness(&finished);
+
         let utilization_timeline = timeline(cluster, buckets.clamp(1, MAX_TIMELINE_BUCKETS));
         let mean_fragmentation = if utilization_timeline.is_empty() {
             0.0
@@ -148,8 +168,121 @@ impl QualityReport {
             jain_job_service: jain_index(&service),
             jain_tenant_service: jain_index(&tenant_means),
             mean_fragmentation,
+            ftf_rho_mean: ftf.mean,
+            ftf_rho_p90: ftf.p90,
+            ftf_rho_max: ftf.max,
+            ftf_worst_tenant: ftf.worst_tenant,
+            ftf_worst_tenant_rho: ftf.worst_tenant_rho,
             utilization_timeline,
         }
+    }
+}
+
+#[derive(Default)]
+struct Ftf {
+    mean: f64,
+    p90: f64,
+    max: f64,
+    worst_tenant: Option<String>,
+    worst_tenant_rho: f64,
+}
+
+/// Piecewise-constant count of active tenants over time, as breakpoints
+/// `(time, count_from_here, integral_up_to_here)`.
+fn active_tenant_profile(jobs: &[&zyvor_janus_model::models::Job]) -> Vec<(f64, f64, f64)> {
+    // Union of each tenant's [arrival, finish] intervals.
+    let mut by_tenant: BTreeMap<&str, Vec<(f64, f64)>> = BTreeMap::new();
+    for j in jobs {
+        let f = j.finish_time.unwrap_or(j.arrival_time);
+        by_tenant
+            .entry(j.tenant.as_deref().unwrap_or("(none)"))
+            .or_default()
+            .push((j.arrival_time, f.max(j.arrival_time)));
+    }
+    let mut events: Vec<(f64, i32)> = Vec::new();
+    for ivs in by_tenant.values_mut() {
+        ivs.sort_by(|a, b| a.0.total_cmp(&b.0));
+        let mut cur: Option<(f64, f64)> = None;
+        for (s, e) in ivs.iter().copied() {
+            match cur {
+                Some((cs, ce)) if s <= ce => cur = Some((cs, ce.max(e))),
+                Some((cs, ce)) => {
+                    events.push((cs, 1));
+                    events.push((ce, -1));
+                    cur = Some((s, e));
+                }
+                None => cur = Some((s, e)),
+            }
+        }
+        if let Some((cs, ce)) = cur {
+            events.push((cs, 1));
+            events.push((ce, -1));
+        }
+    }
+    events.sort_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
+    let mut profile: Vec<(f64, f64, f64)> = Vec::new();
+    let (mut count, mut integral, mut last_t) = (0i32, 0.0f64, 0.0f64);
+    for (t, d) in events {
+        if let Some(prev) = profile.last() {
+            integral = prev.2 + prev.1 * (t - last_t);
+        }
+        count += d;
+        last_t = t;
+        profile.push((t, count as f64, integral));
+    }
+    profile
+}
+
+fn integral_at(profile: &[(f64, f64, f64)], t: f64) -> f64 {
+    let idx = profile.partition_point(|p| p.0 <= t);
+    if idx == 0 {
+        return 0.0;
+    }
+    let (pt, c, i) = profile[idx - 1];
+    i + c * (t - pt)
+}
+
+fn finish_time_fairness(finished: &[&zyvor_janus_model::models::Job]) -> Ftf {
+    if finished.is_empty() {
+        return Ftf::default();
+    }
+    let profile = active_tenant_profile(finished);
+    let mut rhos: Vec<f64> = Vec::with_capacity(finished.len());
+    let mut per_tenant: BTreeMap<&str, (f64, usize)> = BTreeMap::new();
+    for j in finished {
+        let finish = j.finish_time.unwrap_or(j.arrival_time);
+        let span = finish - j.arrival_time;
+        let n = if span > 0.0 {
+            ((integral_at(&profile, finish) - integral_at(&profile, j.arrival_time)) / span)
+                .max(1.0)
+        } else {
+            1.0
+        };
+        let ideal = j.runtime.max(SLOWDOWN_TAU_SECS) * n;
+        let rho = (span.max(0.0) / ideal).max(0.0);
+        rhos.push(rho);
+        let e = per_tenant
+            .entry(j.tenant.as_deref().unwrap_or("(none)"))
+            .or_insert((0.0, 0));
+        e.0 += rho;
+        e.1 += 1;
+    }
+    let mean = rhos.iter().sum::<f64>() / rhos.len() as f64;
+    let max = rhos.iter().copied().fold(0.0_f64, f64::max);
+    let p90 = percentile(&mut rhos, 0.90);
+    let mut worst: Option<(&str, f64)> = None;
+    for (t, (sum, n)) in &per_tenant {
+        let m = sum / *n as f64;
+        if worst.is_none_or(|(_, w)| m > w) {
+            worst = Some((t, m));
+        }
+    }
+    Ftf {
+        mean,
+        p90,
+        max,
+        worst_tenant: worst.map(|(t, _)| t.to_string()),
+        worst_tenant_rho: worst.map(|(_, w)| w).unwrap_or(0.0),
     }
 }
 
@@ -293,6 +426,48 @@ mod tests {
             end: finish,
         });
         j
+    }
+
+    #[test]
+    fn ftf_alone_is_one_and_contention_raises_it() {
+        // One tenant: N=1, job ran immediately -> rho == 1.
+        let mut c = two_node_cluster();
+        c.finished_jobs
+            .push(finished("a", "t1", 0.0, 100.0, 100.0, 0.0, &["g0"]));
+        c.clock = 100.0;
+        let q = QualityReport::from_cluster(&c, 4);
+        assert!((q.ftf_rho_max - 1.0).abs() < 1e-9);
+
+        // Two tenants overlapping the whole time: N=2 for both. Job a ran
+        // immediately (rho = 100/(100*2) = 0.5); job b waited 200s
+        // (rho = 300/(100*2) = 1.5).
+        let mut c = two_node_cluster();
+        c.finished_jobs
+            .push(finished("a", "t1", 0.0, 100.0, 100.0, 0.0, &["g0"]));
+        c.finished_jobs
+            .push(finished("b", "t2", 0.0, 100.0, 300.0, 200.0, &["g1"]));
+        c.clock = 300.0;
+        let q = QualityReport::from_cluster(&c, 4);
+        // t1 is active for [0,100], t2 for [0,300]: N is 2 over a's life but
+        // (100*2 + 200*1)/300 = 1.333 over b's.
+        assert!((q.ftf_rho_max - 300.0 / (100.0 * (400.0 / 300.0))).abs() < 1e-9);
+        assert_eq!(q.ftf_worst_tenant.as_deref(), Some("t2"));
+        assert!(q.ftf_rho_mean < q.ftf_rho_max);
+    }
+
+    #[test]
+    fn ftf_is_zero_for_empty_and_finite_for_degenerate_jobs() {
+        let q = QualityReport::from_cluster(&Cluster::new(vec![]), 4);
+        assert_eq!(q.ftf_rho_max, 0.0);
+        assert!(q.ftf_worst_tenant.is_none());
+        let mut c = two_node_cluster();
+        // zero-length job (finish == arrival)
+        let mut z = finished("z", "t", 5.0, 0.0, 5.0, 0.0, &["g0"]);
+        z.run_segments.clear();
+        c.finished_jobs.push(z);
+        c.clock = 5.0;
+        let q = QualityReport::from_cluster(&c, 4);
+        assert!(q.ftf_rho_max.is_finite());
     }
 
     #[test]

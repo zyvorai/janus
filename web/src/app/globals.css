@@ -2,9 +2,20 @@
 @import "../styles/qa-console.css";
 @import "../styles/qa-login.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+/* Tailwind v4 changed the default border colour to currentColor; keep the
+   v3 behaviour (gray-200) for bare border utilities. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 /* Zyvor Janus app shell — QA topbar-only (no sidebar) */
 .app-shell {

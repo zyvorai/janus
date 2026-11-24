@@ -75,6 +75,7 @@ fn metric_table() -> Vec<(&'static str, bool, Extractor)> {
         ("slowdown_p99", true, |r| q(r).slowdown_p99),
         ("gpu_utilization", false, |r| r.metrics.gpu_utilization),
         ("jain_tenant_service", false, |r| q(r).jain_tenant_service),
+        ("ftf_rho_max", true, |r| q(r).ftf_rho_max),
         ("mean_fragmentation", true, |r| q(r).mean_fragmentation),
         ("jobs_failed", true, |r| r.metrics.jobs_failed as f64),
     ]
@@ -181,6 +182,108 @@ pub(crate) fn summarize(
         ci95_half_width: half,
         verdict: verdict.into(),
     }
+}
+
+/// One scheduler's row in a [`leaderboard`].
+#[derive(Debug, Clone, Serialize, PartialEq)]
+pub struct LeaderboardRow {
+    pub rank: usize,
+    pub scheduler: String,
+    pub makespan: f64,
+    pub mean_wait_time: f64,
+    pub wait_p99: f64,
+    pub slowdown_mean: f64,
+    pub gpu_utilization: f64,
+    pub jain_tenant_service: f64,
+    pub ftf_rho_max: f64,
+    pub cost_usd: f64,
+    pub jobs_failed: usize,
+    pub preemptions: u32,
+}
+
+/// Metrics a leaderboard can be sorted by; the bool is "lower is better".
+pub const LEADERBOARD_SORT_KEYS: [(&str, bool); 8] = [
+    ("makespan", true),
+    ("mean_wait_time", true),
+    ("wait_p99", true),
+    ("slowdown_mean", true),
+    ("ftf_rho_max", true),
+    ("cost_usd", true),
+    ("gpu_utilization", false),
+    ("jain_tenant_service", false),
+];
+
+fn sort_value(r: &LeaderboardRow, key: &str) -> f64 {
+    match key {
+        "makespan" => r.makespan,
+        "mean_wait_time" => r.mean_wait_time,
+        "wait_p99" => r.wait_p99,
+        "slowdown_mean" => r.slowdown_mean,
+        "ftf_rho_max" => r.ftf_rho_max,
+        "cost_usd" => r.cost_usd,
+        "gpu_utilization" => r.gpu_utilization,
+        _ => r.jain_tenant_service,
+    }
+}
+
+/// Runs `config_path` once per scheduler (same seed) and ranks them by
+/// `sort_by`. Ties break on scheduler name so output is deterministic.
+pub fn leaderboard(
+    config_path: &Path,
+    schedulers: &[String],
+    sort_by: &str,
+    seed: Option<u64>,
+) -> ConfigResult<Vec<LeaderboardRow>> {
+    let Some(&(_, lower_is_better)) = LEADERBOARD_SORT_KEYS.iter().find(|(k, _)| *k == sort_by)
+    else {
+        return Err(ConfigError::Invalid(format!(
+            "unknown sort key '{sort_by}'; expected one of {}",
+            LEADERBOARD_SORT_KEYS
+                .iter()
+                .map(|(k, _)| *k)
+                .collect::<Vec<_>>()
+                .join(", ")
+        )));
+    };
+    let mut names: Vec<&str> = Vec::new();
+    for s in schedulers {
+        if !names.contains(&s.as_str()) {
+            names.push(s.as_str());
+        }
+    }
+    if names.is_empty() {
+        return Err(ConfigError::Invalid(
+            "provide at least one scheduler".into(),
+        ));
+    }
+    let mut rows = Vec::with_capacity(names.len());
+    for name in names {
+        let r = run_simulation_report_with_options(config_path, Some(name), seed)?;
+        let quality = r.quality.clone().unwrap_or_default();
+        rows.push(LeaderboardRow {
+            rank: 0,
+            scheduler: name.to_string(),
+            makespan: r.metrics.makespan,
+            mean_wait_time: r.metrics.mean_wait_time,
+            wait_p99: quality.wait_p99,
+            slowdown_mean: quality.slowdown_mean,
+            gpu_utilization: r.metrics.gpu_utilization,
+            jain_tenant_service: quality.jain_tenant_service,
+            ftf_rho_max: quality.ftf_rho_max,
+            cost_usd: r.chargeback.map(|c| c.used_cost_usd).unwrap_or(0.0),
+            jobs_failed: r.metrics.jobs_failed as usize,
+            preemptions: r.metrics.preemptions as u32,
+        });
+    }
+    rows.sort_by(|a, b| {
+        let (x, y) = (sort_value(a, sort_by), sort_value(b, sort_by));
+        let o = x.total_cmp(&y);
+        (if lower_is_better { o } else { o.reverse() }).then_with(|| a.scheduler.cmp(&b.scheduler))
+    });
+    for (i, r) in rows.iter_mut().enumerate() {
+        r.rank = i + 1;
+    }
+    Ok(rows)
 }
 
 #[cfg(test)]

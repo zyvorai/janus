@@ -20,7 +20,7 @@
 
 **A discrete-event simulator for Kubernetes-native GPU scheduling.** Zyvor Janus models clusters, MIG, topology, tenants, quotas, gang scheduling, and AI workloads — so you can develop schedulers, run RL research, and evaluate performance without physical GPUs. It is the digital twin of [Zynera](https://zyvor.dev/zynera), Zyvor's production GPU/Kubernetes control plane.
 
-**0 GPUs required** · **14 hardware profiles** · **4 scheduler policies** · **Gymnasium + PPO** · **Zyvor Production Licence**
+**0 GPUs required** · **14 hardware profiles** · **6 scheduler policies** · **Gymnasium + PPO** · **Zyvor Production Licence**
 
 📖 **[Docs](docs/)** · [zyvor.dev/zynera](https://zyvor.dev/zynera) · [Blog](https://zyvor.dev/blog)
 
@@ -36,6 +36,8 @@
 | **Shadow race** | Pick a "Shadow vs" scheduler on Launch simulation and watch a live head-to-head race, then a full metrics comparison with a computed winner |
 | **Twin library** | A `/twins` page in the web dashboard to browse calibrated GPU/model twins (`GET /api/twins`) |
 | **AIPerf overlay** | Sim-vs-measured AIPerf overlay on the benchmark page |
+| **EASY backfill + leaderboard** | New `easy` scheduler (reservation-protected backfill) and `zyvor-janus leaderboard` to rank every policy on one config |
+| **Fairness and chargeback** | Themis-style finish-time-fairness rho and per-tenant GPU-hour/cost chargeback in every run report |
 | **Rename** | ZyForgeSim/ForgeSim is now **Zyvor Janus**: crates `zyvor-janus-*`, CLI `zyvor-janus`, Python `zyvor_janus`, env vars `ZYVOR_JANUS_*` |
 
 Also new: scheduler-quality metrics (waits, slowdown, Jain fairness, fragmentation), seeded failure injection, a Helios trace importer (`import-trace`) and `compare` with confidence intervals. See [docs/scheduler_quality.md](docs/scheduler_quality.md), [docs/failure_injection.md](docs/failure_injection.md), [docs/trace_import.md](docs/trace_import.md) and [docs/RESEARCH.md](docs/RESEARCH.md).
@@ -48,7 +50,7 @@ Full history: [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | Testing a scheduler change means booking scarce GPUs | Full discrete-event simulation of cluster placement, MIG slicing, NVLink/PCIe topology penalties and gang scheduling, with no GPUs |
 | You can't tell how a policy would have done on production load | Import real `FabricAIJob` / `FabricGpuNode` / `FabricQuota` CRDs and replay production scheduler traces for oracle-vs-live diffing |
-| Comparing policies means rewriting harnesses | `fifo`, `priority`, `preemptive`, `bestfit` and Zynera's own policy, swappable with one CLI flag |
+| Comparing policies means rewriting harnesses | `fifo`, `priority`, `preemptive`, `bestfit` and Zynera's own policy, swappable with one CLI flag, plus `easy` (reservation-protected backfill) and a `leaderboard` command |
 | RL scheduling research has no realistic environment | A Gymnasium environment and a PPO baseline |
 | Results live in log files nobody reads | Rich terminal dashboard, Next.js web UI (runs, benchmark, what-if), and an OpenAI-compatible inference shim for calibrated LLM serving metrics |
 | A mixed fleet is hard to reason about | Shipped profiles for NVIDIA, AMD, Intel Gaudi and Apple M-series |
@@ -105,7 +107,7 @@ cargo run -p zyvor-janus-cli -- run \
 </details>
 
 <details>
-<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · zynera</summary>
+<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · zynera · easy</summary>
 
 ```bash
 cargo run -p zyvor-janus-cli -- run --config configs/clusters/priority_scheduler.yaml

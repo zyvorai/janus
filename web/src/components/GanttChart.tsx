@@ -68,7 +68,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
     return (
       <div
         key={`${job.job_id}-seg-${idx}`}
-        className="absolute top-1 h-4 rounded gantt-bar-grow"
+        className="absolute top-1 h-4 rounded-sm gantt-bar-grow"
         style={{
           left: `${left}%`,
           width: `${Math.max(width, 0.5)}%`,
@@ -91,7 +91,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
       return (
         <div
           key={`${job.job_id}-failed`}
-          className="absolute top-1 h-4 rounded border border-dashed gantt-bar-grow"
+          className="absolute top-1 h-4 rounded-sm border border-dashed gantt-bar-grow"
           style={{
             left: `${left}%`,
             width: `${Math.max(width, 1)}%`,
@@ -121,7 +121,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
         <Fragment key={job.job_id}>
           {showWait ? (
             <div
-              className="absolute top-1 h-4 rounded gantt-bar-grow"
+              className="absolute top-1 h-4 rounded-sm gantt-bar-grow"
               style={{
                 left: `${waitLeft}%`,
                 width: `${waitWidth}%`,
@@ -143,7 +143,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
       return (
         <div
           key={`${job.job_id}-unschedulable`}
-          className="absolute top-1 h-4 rounded border border-dashed gantt-bar-grow"
+          className="absolute top-1 h-4 rounded-sm border border-dashed gantt-bar-grow"
           style={{
             left: `${left}%`,
             width: `${Math.max(width, 1)}%`,
@@ -167,7 +167,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
       <Fragment key={job.job_id}>
         {waitWidth > 0 ? (
           <div
-            className="absolute top-1 h-4 rounded gantt-bar-grow"
+            className="absolute top-1 h-4 rounded-sm gantt-bar-grow"
             style={{
               left: `${waitLeft}%`,
               width: `${waitWidth}%`,
@@ -178,7 +178,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
           />
         ) : null}
         <div
-          className="absolute top-1 h-4 rounded gantt-bar-grow"
+          className="absolute top-1 h-4 rounded-sm gantt-bar-grow"
           style={{
             left: `${runLeft}%`,
             width: `${Math.max(runWidth, 0.5)}%`,
@@ -223,7 +223,7 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
                 {row.key}
               </div>
               <div
-                className="relative h-6 flex-1 rounded"
+                className="relative h-6 flex-1 rounded-sm"
                 style={{ backgroundColor: ganttColors.track }}
               >
                 {jobsOnGpu.map((job) => renderJobBar(job, row.gpuId, row.nodeId))}
@@ -234,21 +234,21 @@ export function GanttChart({ timeline }: { timeline: JobsTimeline | null }) {
       </div>
       <div className="mt-3 flex flex-wrap gap-4 text-xs text-hs-muted">
         <span className="inline-flex items-center gap-1">
-          <span className="h-2 w-4 rounded" style={{ backgroundColor: `${ganttColors.wait}B3` }} /> wait
+          <span className="h-2 w-4 rounded-sm" style={{ backgroundColor: `${ganttColors.wait}B3` }} /> wait
         </span>
         <span className="inline-flex items-center gap-1">
-          <span className="h-2 w-4 rounded" style={{ backgroundColor: `${ganttColors.run}CC` }} /> run
+          <span className="h-2 w-4 rounded-sm" style={{ backgroundColor: `${ganttColors.run}CC` }} /> run
         </span>
         <span className="inline-flex items-center gap-1">
           <span
-            className="h-2 w-4 rounded border border-dashed"
+            className="h-2 w-4 rounded-sm border border-dashed"
             style={{ borderColor: ganttColors.wait, backgroundColor: `${ganttColors.wait}66` }}
           />{" "}
           unschedulable
         </span>
         <span className="inline-flex items-center gap-1">
           <span
-            className="h-2 w-4 rounded border border-dashed"
+            className="h-2 w-4 rounded-sm border border-dashed"
             style={{ borderColor: ganttColors.failed, backgroundColor: `${ganttColors.failed}80` }}
           />{" "}
           failed

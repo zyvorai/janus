@@ -8,7 +8,10 @@ mod trace;
 mod trace_import;
 mod zynera_bundle;
 
-pub use compare::{compare_policies, ComparisonReport, MetricComparison, MAX_COMPARE_SEEDS};
+pub use compare::{
+    compare_policies, leaderboard, ComparisonReport, LeaderboardRow, MetricComparison,
+    LEADERBOARD_SORT_KEYS, MAX_COMPARE_SEEDS,
+};
 pub use mig::{
     load_mig_registry, load_mig_registry_for_hardware, resolve_mig_registry_for_cluster,
 };
@@ -45,7 +48,9 @@ use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Gpu, Job, Node};
 use zyvor_janus_scheduler::resource::{GpuSelectionPolicy, ResourceManager};
 use zyvor_janus_scheduler::Scheduler;
-use zyvor_janus_scheduler::{BestFitScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler};
+use zyvor_janus_scheduler::{
+    BestFitScheduler, EasyBackfillScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler,
+};
 use zyvor_janus_simulator::inference::{estimate_inference, InferenceProfile, InferenceRequest};
 use zyvor_janus_simulator::rl::RlSession;
 use zyvor_janus_simulator::snapshot::ClusterSnapshot;
@@ -77,6 +82,9 @@ pub struct SimulationReport {
     /// Scheduler-quality metrics (waits, slowdown, fairness, timelines).
     #[serde(default)]
     pub quality: Option<zyvor_janus_metrics::QualityReport>,
+    /// Per-tenant GPU-hour chargeback and idle-capacity cost.
+    #[serde(default)]
+    pub chargeback: Option<zyvor_janus_metrics::ChargebackReport>,
 }
 
 fn default_serving_trace() -> ServingTraceFile {
@@ -753,6 +761,7 @@ fn build_steppable_engine(
             seed(cluster, ZyneraScheduler::default(), resource_manager, jobs)
         }
         "bestfit" => seed(cluster, BestFitScheduler, resource_manager, jobs),
+        "easy" => seed(cluster, EasyBackfillScheduler, resource_manager, jobs),
         other => {
             return Err(ConfigError::Invalid(format!(
                 "unsupported scheduler type '{other}'"
@@ -786,7 +795,11 @@ pub fn shadow_side_report(
         cluster,
         zyvor_janus_metrics::quality::DEFAULT_TIMELINE_BUCKETS,
     ));
+    let chargeback = Some(zyvor_janus_metrics::ChargebackReport::from_cluster(
+        cluster, cost,
+    ));
     SimulationReport {
+        chargeback,
         quality,
         metrics,
         timeline: JobsTimeline::from_cluster(cluster),
@@ -914,6 +927,14 @@ fn run_to_completion_with_policy_snapshots(
         "bestfit" => run_to_completion_snapshots(
             cluster,
             BestFitScheduler,
+            resource_manager,
+            jobs,
+            jobs_total,
+            f,
+        ),
+        "easy" => run_to_completion_snapshots(
+            cluster,
+            EasyBackfillScheduler,
             resource_manager,
             jobs,
             jobs_total,
