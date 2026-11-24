@@ -9,9 +9,11 @@ use zyvor_janus_model::models::{JobRunSegment, JobState};
 pub mod benchmark;
 pub mod chargeback;
 pub mod quality;
+pub mod slo;
 pub use benchmark::SchedulerBenchmarkReport;
 pub use chargeback::{ChargebackReport, TenantCharge};
 pub use quality::{bounded_slowdown, jain_index, QualityReport, TimelinePoint};
+pub use slo::{SloReport, SloSpec, TenantSlo};
 pub use zyvor_janus_cost::CostModel;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -295,6 +295,17 @@ fn run_report_from_config(
     if let Some(benchmark) = &report.benchmark {
         dict.set_item("benchmark", benchmark.to_json_pretty())?;
     }
+    // JSON strings (like `benchmark`); decode with json.loads.
+    let to_json = |v: &serde_json::Value| v.to_string();
+    if let Some(q) = &report.quality {
+        dict.set_item("quality", to_json(&serde_json::json!(q)))?;
+    }
+    if let Some(c) = &report.chargeback {
+        dict.set_item("chargeback", to_json(&serde_json::json!(c)))?;
+    }
+    if let Some(s) = &report.slo {
+        dict.set_item("slo", to_json(&serde_json::json!(s)))?;
+    }
     Ok(dict.into())
 }
 

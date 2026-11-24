@@ -7,8 +7,9 @@
 use std::path::PathBuf;
 
 use zyvor_janus_config::{
-    compare_policies, import_helios_csv, leaderboard, load_workload, run_simulation_report,
-    run_simulation_report_with_options, workload_to_yaml, ImportOptions,
+    compare_policies, generate_workload, generated_workload_to_yaml, import_helios_csv,
+    leaderboard, load_sweep, load_workload, run_simulation_report,
+    run_simulation_report_with_options, workload_to_yaml, GenerateSpec, ImportOptions,
 };
 
 fn root() -> PathBuf {
@@ -325,4 +326,171 @@ fn leaderboard_rejects_bad_input() {
     assert!(leaderboard(&backfill_cfg(), &[], "makespan", None).is_err());
     let bad = vec!["no-such-scheduler".to_string()];
     assert!(leaderboard(&backfill_cfg(), &bad, "makespan", None).is_err());
+}
+
+/// Writes a config + workload into a temp dir. `gpus` H100s on one node.
+fn temp_config(name: &str, gpus: usize, workload_yaml: &str, extra: &str) -> PathBuf {
+    let d = tmp(name);
+    let gpu_list: String = (0..gpus)
+        .map(|i| format!("        - id: gpu-{i}\n          profile: H100_80GB\n"))
+        .collect();
+    std::fs::write(d.join("w.yaml"), workload_yaml).unwrap();
+    let cfg = format!(
+        "cluster:\n  nodes:\n    - id: node-0\n      gpus:\n{gpu_list}scheduler:\n  type: fifo\nworkload:\n  path: w.yaml\nhardware_profiles_dir: {}\nmig_profiles_dir: {}\nprofiles_dir: {}\n{extra}",
+        root().join("configs/hardware").display(),
+        root().join("configs/mig").display(),
+        root().join("configs/profiles").display()
+    );
+    let p = d.join("c.yaml");
+    std::fs::write(&p, cfg).unwrap();
+    p
+}
+
+fn job(id: &str, arrival: f64, runtime: f64, gpus: u32, tenant: &str) -> String {
+    format!(
+        "  - id: {id}\n    name: {id}\n    arrival_time: {arrival}\n    runtime: {runtime}\n    gpu_count: {gpus}\n    gpu_memory_gb: 40\n    tenant: {tenant}\n"
+    )
+}
+
+#[test]
+fn sjf_runs_the_short_job_first_and_lowers_mean_jct() {
+    let w = format!(
+        "jobs:\n{}{}{}",
+        job("first", 0.0, 100.0, 1, "a"),
+        job("long", 1.0, 500.0, 1, "a"),
+        job("short", 2.0, 10.0, 1, "a")
+    );
+    let cfg = temp_config("sjf", 1, &w, "");
+    let fifo = run_simulation_report_with_options(&cfg, Some("fifo"), None).unwrap();
+    let sjf = run_simulation_report_with_options(&cfg, Some("sjf"), None).unwrap();
+    assert_eq!(start_of(&fifo, "long"), 100.0);
+    assert_eq!(start_of(&sjf, "short"), 100.0);
+    assert_eq!(start_of(&sjf, "long"), 110.0);
+    let (qf, qs) = (fifo.quality.unwrap(), sjf.quality.unwrap());
+    assert!(
+        qs.jct_mean < qf.jct_mean,
+        "{} vs {}",
+        qs.jct_mean,
+        qf.jct_mean
+    );
+}
+
+#[test]
+fn fairshare_serves_the_small_tenant_before_the_flooding_tenant() {
+    let w = format!(
+        "jobs:\n{}{}{}{}{}",
+        job("a0", 0.0, 100.0, 1, "a"),
+        job("a1", 0.0, 100.0, 1, "a"),
+        job("a2", 0.5, 100.0, 1, "a"),
+        job("a3", 0.5, 100.0, 1, "a"),
+        job("b0", 1.0, 100.0, 1, "b"),
+    );
+    let cfg = temp_config("fairshare", 2, &w, "");
+    let fifo = run_simulation_report_with_options(&cfg, Some("fifo"), None).unwrap();
+    let fair = run_simulation_report_with_options(&cfg, Some("fairshare"), None).unwrap();
+    assert_eq!(fair.metrics.jobs_completed, 5);
+    assert_eq!(start_of(&fifo, "b0"), 200.0);
+    assert_eq!(start_of(&fair, "b0"), 100.0);
+}
+
+#[test]
+fn jct_metrics_and_slo_report_match_hand_computed_values() {
+    let r = run_simulation_report_with_options(&backfill_cfg(), Some("easy"), None).unwrap();
+    let q = r.quality.unwrap();
+    assert_eq!(q.jct_mean, 234.25);
+    assert_eq!(q.jct_p99, 648.0);
+    assert!(q.jct_p50 <= q.jct_p90 && q.jct_p90 <= q.jct_p99);
+    // backfill_demo.yaml sets slo.max_wait_secs = 60.
+    let slo = r.slo.expect("config has an slo section");
+    assert_eq!((slo.jobs_total, slo.jobs_met), (4, 2));
+    assert_eq!(slo.attainment, 0.5);
+    assert_eq!(slo.worst_tenant.as_deref(), Some("team-a"));
+}
+
+#[test]
+fn no_slo_section_means_no_slo_report_and_bad_slo_is_rejected() {
+    let w = format!("jobs:\n{}", job("only", 0.0, 10.0, 1, "a"));
+    let cfg = temp_config("noslo", 1, &w, "");
+    assert!(run_simulation_report(&cfg).unwrap().slo.is_none());
+    let bad = temp_config("badslo", 1, &w, "slo:\n  max_slowdown: 0.5\n");
+    let e = run_simulation_report(&bad).unwrap_err().to_string();
+    assert!(e.contains("max_slowdown"), "{e}");
+    let empty = temp_config("emptyslo", 1, &w, "slo: {}\n");
+    assert!(run_simulation_report(&empty).is_err());
+}
+
+#[test]
+fn leaderboard_can_rank_by_slo_attainment_and_jct() {
+    let names: Vec<String> = ["fifo", "easy"].map(String::from).to_vec();
+    // With a 60 s wait SLO fifo meets 3 of 4 (it starts the small jobs at once
+    // and only delays `head`); easy protects `head` but makes `long-small` wait.
+    let rows = leaderboard(&backfill_cfg(), &names, "slo_attainment", None).unwrap();
+    assert_eq!(rows[0].scheduler, "fifo");
+    assert_eq!(rows[0].slo_attainment, Some(0.75));
+    assert_eq!(rows[1].slo_attainment, Some(0.5));
+    let rows = leaderboard(&backfill_cfg(), &names, "jct_mean", None).unwrap();
+    assert_eq!(rows[0].scheduler, "easy");
+    assert!(rows[0].jct_mean < rows[1].jct_mean);
+}
+
+#[test]
+fn load_sweep_shows_latency_growing_with_load_and_finds_sustainable_load() {
+    let names: Vec<String> = ["fifo", "easy"].map(String::from).to_vec();
+    let rep = load_sweep(&backfill_cfg(), &names, &[1.0, 0.01, 1.0], 50.0, None).unwrap();
+    assert_eq!(rep.loads, vec![0.01, 1.0]);
+    assert_eq!(rep.rows.len(), 4);
+    let row = |s: &str, l: f64| {
+        rep.rows
+            .iter()
+            .find(|r| r.scheduler == s && r.load == l)
+            .unwrap()
+            .clone()
+    };
+    for s in ["fifo", "easy"] {
+        // At load 0.01 arrivals are 100x apart: nothing queues.
+        assert_eq!(row(s, 0.01).wait_p90, 0.0, "{s}");
+        assert!(row(s, 1.0).wait_p90 > 50.0, "{s}");
+    }
+    for s in &rep.sustainable {
+        assert_eq!(s.sustainable_load, Some(0.01));
+    }
+    assert_eq!(row("easy", 1.0).slo_attainment, Some(0.5));
+    let again = load_sweep(&backfill_cfg(), &names, &[1.0, 0.01], 50.0, None).unwrap();
+    assert_eq!(rep, again, "sweep is deterministic");
+}
+
+#[test]
+fn load_sweep_with_nothing_sustainable_reports_none_and_rejects_bad_input() {
+    let names = vec!["fifo".to_string()];
+    let rep = load_sweep(&backfill_cfg(), &names, &[1.0], 10.0, None).unwrap();
+    assert_eq!(rep.sustainable[0].sustainable_load, None);
+    for loads in [vec![], vec![0.0], vec![-1.0], vec![f64::NAN], vec![1e9]] {
+        assert!(load_sweep(&backfill_cfg(), &names, &loads, 10.0, None).is_err());
+    }
+    assert!(load_sweep(&backfill_cfg(), &[], &[1.0], 10.0, None).is_err());
+    assert!(load_sweep(&backfill_cfg(), &names, &[1.0], f64::NAN, None).is_err());
+    assert!(load_sweep(&backfill_cfg(), &["nope".to_string()], &[1.0], 10.0, None).is_err());
+}
+
+#[test]
+fn generated_workload_round_trips_through_the_simulator() {
+    let spec = GenerateSpec {
+        jobs: 300,
+        seed: 11,
+        arrival_rate_per_sec: 0.05,
+        median_runtime_secs: 120.0,
+        gpu_mix: vec![(1, 0.8), (2, 0.2)],
+        tenants: 3,
+        ..Default::default()
+    };
+    let w = generate_workload(&spec).unwrap();
+    let yaml = generated_workload_to_yaml(&w).unwrap();
+    let cfg = temp_config("generated", 4, &yaml, "");
+    let jobs = load_workload(&tmp("generated").join("w.yaml")).unwrap();
+    assert_eq!(jobs.len(), 300);
+    for sched in ["fifo", "sjf", "fairshare", "easy"] {
+        let r = run_simulation_report_with_options(&cfg, Some(sched), None).unwrap();
+        assert_eq!(r.metrics.jobs_completed, 300, "{sched}");
+        assert!(r.quality.unwrap().jct_mean > 0.0);
+    }
 }

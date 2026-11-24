@@ -50,3 +50,15 @@ against a fetched page; treat it as a lead, not a citation.
 - **Hardware failure model**: marking GPUs unavailable touches the resource manager, MIG slicing and topology; without real MTBF/MTTR data it would add fidelity-looking detail that is not calibrated. Job-level crashes are documented as exactly that.
 - **Finish-time fairness rho**: reporting a number named "rho" without Themis's fair-share definition would overstate fidelity.
 - **Random-number crate**: the workspace has no `rand`; the simulator is fully deterministic. Failure draws use a stateless splitmix64 hash of `(seed, job id, run generation)` so results never depend on event order and no external RNG stream can drift between crate versions.
+
+## Round 3 (2026-11): sources read and what came of them
+
+| Source | What it says | Janus |
+|---|---|---|
+| Gavel simulator [R] <https://github.com/stanford-futuredata/gavel> | Trace generator: Poisson arrivals at a swept rate lambda, multi-GPU jobs from a predefined distribution, fixed-duration option, static (all-at-once) and continuous traces; policies named `max_min_fairness*` (LAS variants). Page does not describe the duration distribution or list every policy. | **Built** as `generate-workload` (log-normal durations are our assumption, not Gavel's) and `load-sweep`. |
+| Pollux (OSDI'21) [R via search summary] <https://www.usenix.org/conference/osdi21/presentation/qiao> | Goodput-co-adaptive scheduler; evaluated with a Microsoft-trace-derived workload and a simulator sweeping workload intensity; reports avg JCT and finish-time fairness. | Metric adopted (JCT). Co-adaptive batch-size tuning is not modelled. |
+| Tiresias (NSDI'19) [R abstract page] <https://www.usenix.org/conference/nsdi19/presentation/gu> | 2D-LAS and 2D-Gittins, plus relaxed consolidation; the abstract does not give queue thresholds. | Oracle `sjf` added as the duration-aware reference; LAS not built (needs preemption + attained-service accounting). |
+| Kueue ClusterQueue [R] <https://kueue.sigs.k8s.io/docs/concepts/cluster_queue/> | Cohorts, `nominalQuota`, `borrowingLimit`, `lendingLimit`; `StrictFIFO` (head blocks) vs `BestEffortFIFO` (default); `reclaimWithinCohort`. | Not built (borrowing/cohorts); `fifo` vs `easy` already covers strict vs backfilling queues. |
+| Volcano plugins [R] <https://volcano.sh/en/docs/plugins/> | DRF favours tasks using fewer resources; gang checks `minavailable`. The page does not define dominant share. | Single-resource DRF built as `fairshare` (our reading, from memory of DRF [U]). |
+| Slurm backfill [R] <https://slurm.schedmd.com/sched_config.html> | Backfill starts lower-priority jobs only if they do not delay higher-priority ones; `bf_window`, `bf_resolution`, `bf_max_job_test`. Multifactor priority was not on the page. | `easy` (round 2). |
+| Alibaba PAI 2020 (re-read) [R] | `plan_gpu` in percent; ~9% of instances carry a workload tag; no request or duration distributions on the page. | Motivates the `--gpu-mix` knob; importer still not built. |

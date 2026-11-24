@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: LicenseRef-Zyvor-Production-2.0
 
 mod compare;
+mod generate;
 mod mig;
 mod serving_trace;
+mod sweep;
 mod trace;
 mod trace_import;
 mod zynera_bundle;
@@ -11,6 +13,10 @@ mod zynera_bundle;
 pub use compare::{
     compare_policies, leaderboard, ComparisonReport, LeaderboardRow, MetricComparison,
     LEADERBOARD_SORT_KEYS, MAX_COMPARE_SEEDS,
+};
+pub use generate::{
+    generate_workload, generated_workload_to_yaml, parse_gpu_mix, GenerateSpec, MAX_GENERATED_JOBS,
+    MAX_GENERATED_TENANTS,
 };
 pub use mig::{
     load_mig_registry, load_mig_registry_for_hardware, resolve_mig_registry_for_cluster,
@@ -24,6 +30,10 @@ use std::collections::HashMap;
 use std::fs;
 use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
+pub use sweep::{
+    load_sweep, SustainableLoad, SweepReport, SweepRow, MAX_LOAD_FACTOR, MAX_SWEEP_LOADS,
+    MAX_SWEEP_SCHEDULERS,
+};
 pub use trace::{
     compare_schedules, jobs_from_trace, load_cluster_from_config, load_trace,
     oracle_placements_from_trace, parse_trace_line, run_trace_file, run_trace_replay,
@@ -49,7 +59,8 @@ use zyvor_janus_model::models::{Gpu, Job, Node};
 use zyvor_janus_scheduler::resource::{GpuSelectionPolicy, ResourceManager};
 use zyvor_janus_scheduler::Scheduler;
 use zyvor_janus_scheduler::{
-    BestFitScheduler, EasyBackfillScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler,
+    BestFitScheduler, EasyBackfillScheduler, FairShareScheduler, FifoScheduler, PriorityScheduler,
+    SjfScheduler, ZyneraScheduler,
 };
 use zyvor_janus_simulator::inference::{estimate_inference, InferenceProfile, InferenceRequest};
 use zyvor_janus_simulator::rl::RlSession;
@@ -85,6 +96,9 @@ pub struct SimulationReport {
     /// Per-tenant GPU-hour chargeback and idle-capacity cost.
     #[serde(default)]
     pub chargeback: Option<zyvor_janus_metrics::ChargebackReport>,
+    /// SLO attainment, present when the config has an `slo:` section.
+    #[serde(default)]
+    pub slo: Option<zyvor_janus_metrics::SloReport>,
 }
 
 fn default_serving_trace() -> ServingTraceFile {
@@ -178,6 +192,9 @@ pub struct SimulationConfig {
     /// Optional seeded failure injection (see docs/FAILURE_INJECTION.md).
     #[serde(default)]
     pub failure: Option<FailureConfig>,
+    /// Optional SLO limits; adds `slo` to the report (wait / slowdown / JCT).
+    #[serde(default)]
+    pub slo: Option<zyvor_janus_metrics::SloSpec>,
 }
 
 fn default_profiles_dir() -> String {
@@ -569,6 +586,18 @@ pub fn run_simulation_report_with_options(
     scheduler_override: Option<&str>,
     seed_override: Option<u64>,
 ) -> ConfigResult<SimulationReport> {
+    run_report_scaled(config_path, scheduler_override, seed_override, None)
+}
+
+/// Core of [`run_simulation_report_with_options`]. `arrival_multiplier`
+/// (finite, > 0) multiplies every job arrival time before the run; used by
+/// the load sweep (multiplier = 1 / load factor).
+pub(crate) fn run_report_scaled(
+    config_path: &Path,
+    scheduler_override: Option<&str>,
+    seed_override: Option<u64>,
+    arrival_multiplier: Option<f64>,
+) -> ConfigResult<SimulationReport> {
     let mut config = load_simulation_config(config_path)?;
     if let Some(sched) = scheduler_override {
         config.scheduler.r#type = sched.to_string();
@@ -585,6 +614,9 @@ pub fn run_simulation_report_with_options(
     }
     if let Some(f) = &config.failure {
         f.validate().map_err(ConfigError::Invalid)?;
+    }
+    if let Some(slo) = &config.slo {
+        slo.validate().map_err(ConfigError::Invalid)?;
     }
     let scheduler_name = config.scheduler.r#type.clone();
     let mut config_hash = hash_config_file(config_path, scheduler_override);
@@ -609,7 +641,12 @@ pub fn run_simulation_report_with_options(
     let model_profiles = load_model_profiles(&profiles_dir)?;
 
     let workload_path = resolve_path(base, &config.workload.path);
-    let jobs = load_workload_with_profiles(&workload_path, &model_profiles, &hardware_names)?;
+    let mut jobs = load_workload_with_profiles(&workload_path, &model_profiles, &hardware_names)?;
+    if let Some(m) = arrival_multiplier {
+        for j in &mut jobs {
+            j.arrival_time *= m;
+        }
+    }
     let jobs_total = jobs.len();
     let any_mig_capable = cluster.all_gpus().any(|g| g.mig_capable);
     let any_mig_job = jobs.iter().any(|j| j.is_mig_job());
@@ -639,14 +676,19 @@ pub fn run_simulation_report_with_options(
     let cost_path = resolve_path(base, "../analytics/cost.yaml");
     let cost = load_cost_model(&cost_path).unwrap_or_default();
 
-    Ok(shadow_side_report(
+    let mut report = shadow_side_report(
         &cluster,
         snapshots,
         scheduler_name,
         config_hash,
         jobs_total,
         &cost,
-    ))
+    );
+    report.slo = config
+        .slo
+        .as_ref()
+        .map(|spec| zyvor_janus_metrics::SloReport::from_cluster(&cluster, spec));
+    Ok(report)
 }
 
 /// Loads `config_path` once and builds a [`zyvor_janus_simulator::ShadowRun`]
@@ -762,6 +804,8 @@ fn build_steppable_engine(
         }
         "bestfit" => seed(cluster, BestFitScheduler, resource_manager, jobs),
         "easy" => seed(cluster, EasyBackfillScheduler, resource_manager, jobs),
+        "sjf" => seed(cluster, SjfScheduler, resource_manager, jobs),
+        "fairshare" => seed(cluster, FairShareScheduler, resource_manager, jobs),
         other => {
             return Err(ConfigError::Invalid(format!(
                 "unsupported scheduler type '{other}'"
@@ -810,6 +854,7 @@ pub fn shadow_side_report(
         benchmark,
         federation: None,
         serving_trace,
+        slo: None,
     }
 }
 
@@ -935,6 +980,22 @@ fn run_to_completion_with_policy_snapshots(
         "easy" => run_to_completion_snapshots(
             cluster,
             EasyBackfillScheduler,
+            resource_manager,
+            jobs,
+            jobs_total,
+            f,
+        ),
+        "sjf" => run_to_completion_snapshots(
+            cluster,
+            SjfScheduler,
+            resource_manager,
+            jobs,
+            jobs_total,
+            f,
+        ),
+        "fairshare" => run_to_completion_snapshots(
+            cluster,
+            FairShareScheduler,
             resource_manager,
             jobs,
             jobs_total,

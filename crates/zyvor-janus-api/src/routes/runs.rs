@@ -73,7 +73,7 @@ pub async fn start_run(
     State(state): State<AppState>,
     Json(body): Json<StartRunRequest>,
 ) -> Result<impl IntoResponse, ApiError> {
-    let config_path = state.inner.config_dir.join(&body.config);
+    let config_path = state.config_path(&body.config)?;
     if !config_path.exists() {
         return Err(ApiError::not_found(format!(
             "unknown config: {}",
@@ -310,6 +310,9 @@ pub async fn get_run(
         "decision_count": run.report.as_ref().map(|r| r.decisions.len()).unwrap_or(0),
         "config_hash": run.report.as_ref().map(|r| &r.config_hash),
         "benchmark": run.report.as_ref().and_then(|r| r.benchmark.as_ref()),
+        "quality": run.report.as_ref().and_then(|r| r.quality.as_ref()),
+        "chargeback": run.report.as_ref().and_then(|r| r.chargeback.as_ref()),
+        "slo": run.report.as_ref().and_then(|r| r.slo.as_ref()),
         "shadow_scheduler": run
             .requested_shadow_scheduler
             .clone()

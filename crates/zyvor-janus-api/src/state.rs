@@ -66,6 +66,27 @@ impl AppState {
             .ok()
             .and_then(|v| v.parse().ok())
             .unwrap_or(120);
+        Self::new(
+            repo_root,
+            config_dir,
+            runs_dir,
+            profiles_dir,
+            api_key,
+            ws_ticket_secret,
+            shim_rate_limit_per_min,
+        )
+    }
+
+    /// Explicit constructor (also used by the handler tests).
+    pub fn new(
+        repo_root: PathBuf,
+        config_dir: PathBuf,
+        runs_dir: PathBuf,
+        profiles_dir: PathBuf,
+        api_key: String,
+        ws_ticket_secret: String,
+        shim_rate_limit_per_min: u32,
+    ) -> Self {
         let model_profiles = ProfileRegistry::load(&profiles_dir);
 
         Self {
@@ -82,5 +103,17 @@ impl AppState {
                 shadow_streams: Arc::new(RwLock::new(HashMap::new())),
             }),
         }
+    }
+
+    /// Resolves a config file name inside `config_dir`. Names with path
+    /// separators or `..` are rejected so a request cannot read files
+    /// outside the config directory.
+    pub fn config_path(&self, name: &str) -> Result<PathBuf, crate::error::ApiError> {
+        if name.is_empty() || name.contains(['/', '\\']) || name.contains("..") {
+            return Err(crate::error::ApiError::bad_request(format!(
+                "invalid config name: {name}"
+            )));
+        }
+        Ok(self.inner.config_dir.join(name))
     }
 }

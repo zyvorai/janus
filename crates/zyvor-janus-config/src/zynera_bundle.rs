@@ -643,6 +643,7 @@ pub fn run_zynera_bundle_report(
         benchmark: None,
         federation,
         serving_trace,
+        slo: None,
         chargeback: Some(zyvor_janus_metrics::ChargebackReport::from_cluster(
             &cluster,
             &zyvor_janus_metrics::CostModel::default(),

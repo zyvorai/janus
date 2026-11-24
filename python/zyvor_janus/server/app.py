@@ -65,6 +65,9 @@ class RunRecord:
     config_hash: str | None = None
     resolved_scheduler: str | None = None
     benchmark: dict[str, Any] | None = None
+    quality: dict[str, Any] | None = None
+    chargeback: dict[str, Any] | None = None
+    slo: dict[str, Any] | None = None
 
 
 RUNS: dict[str, RunRecord] = {}
@@ -95,7 +98,13 @@ def _run_simulation_sync(config_name: str, scheduler: str | None = None) -> dict
     if isinstance(benchmark, str):
         benchmark = json.loads(benchmark)
 
+    extras = {
+        key: json.loads(report[key]) if isinstance(report.get(key), str) else None
+        for key in ("quality", "chargeback", "slo")
+    }
+
     return {
+        **extras,
         "metrics": metrics,
         "timeline": timeline,
         "decisions": decisions,
@@ -165,6 +174,9 @@ async def _execute_run(run_id: str) -> None:
         run.config_hash = result["config_hash"]
         run.resolved_scheduler = result["resolved_scheduler"]
         run.benchmark = result.get("benchmark")
+        run.quality = result.get("quality")
+        run.chargeback = result.get("chargeback")
+        run.slo = result.get("slo")
         run.status = RunStatus.completed
         run.finished_at = datetime.now(timezone.utc).isoformat()
         (run_dir / "metrics.json").write_text(json.dumps(run.metrics, indent=2))
@@ -209,6 +221,9 @@ def get_run(run_id: str) -> dict[str, Any]:
         "decision_count": len(run.decisions),
         "config_hash": run.config_hash,
         "benchmark": run.benchmark,
+        "quality": run.quality,
+        "chargeback": run.chargeback,
+        "slo": run.slo,
     }
 
 

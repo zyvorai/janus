@@ -13,7 +13,8 @@ use zyvor_janus_model::cluster::Cluster;
 use zyvor_janus_model::models::{Job, JobState};
 use zyvor_janus_scheduler::Scheduler;
 use zyvor_janus_scheduler::{
-    BestFitScheduler, EasyBackfillScheduler, FifoScheduler, PriorityScheduler, ZyneraScheduler,
+    BestFitScheduler, EasyBackfillScheduler, FairShareScheduler, FifoScheduler, PriorityScheduler,
+    SjfScheduler, ZyneraScheduler,
 };
 use zyvor_janus_simulator::SimulationEngine;
 
@@ -397,6 +398,8 @@ pub fn run_trace_replay(
         ),
         "bestfit" => run_and_finish(cluster, BestFitScheduler, scheduler, jobs, jobs_total),
         "easy" => run_and_finish(cluster, EasyBackfillScheduler, scheduler, jobs, jobs_total),
+        "sjf" => run_and_finish(cluster, SjfScheduler, scheduler, jobs, jobs_total),
+        "fairshare" => run_and_finish(cluster, FairShareScheduler, scheduler, jobs, jobs_total),
         other => {
             return Err(ConfigError::Invalid(format!(
                 "unsupported scheduler type '{other}' for trace replay"

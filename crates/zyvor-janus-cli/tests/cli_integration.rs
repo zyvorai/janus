@@ -311,3 +311,152 @@ fn cli_compare_easy_against_fifo_and_report_has_chargeback() {
     assert!(v["chargeback"]["tenants"].as_array().unwrap().len() >= 2);
     assert!(v["quality"]["ftf_rho_max"].is_number());
 }
+
+#[test]
+fn cli_generate_workload_is_seeded_and_runnable() {
+    let a = repo_root().join("outputs/test_gen_a.yaml");
+    let b = repo_root().join("outputs/test_gen_b.yaml");
+    let gen = |out: &PathBuf, seed: &str| {
+        let o = zyvor_janus()
+            .args([
+                "generate-workload",
+                "--jobs",
+                "40",
+                "--seed",
+                seed,
+                "--rate",
+                "0.2",
+                "--median-runtime",
+                "90",
+                "--tenants",
+                "3",
+                "--gpu-mix",
+                "1:0.7,2:0.3",
+                "--output",
+                out.to_str().expect("utf8 path"),
+            ])
+            .output()
+            .expect("spawn zyvor-janus generate-workload");
+        assert!(
+            o.status.success(),
+            "stderr: {}",
+            String::from_utf8_lossy(&o.stderr)
+        );
+        std::fs::read_to_string(out).unwrap()
+    };
+    let (x, y, z) = (gen(&a, "5"), gen(&a, "5"), gen(&b, "6"));
+    assert_eq!(x, y);
+    assert_ne!(x, z);
+    assert_eq!(x.matches("- id: gen-").count(), 40);
+    assert!(x.contains("tenant: tenant-"));
+}
+
+#[test]
+fn cli_generate_workload_rejects_bad_arguments() {
+    let out = repo_root().join("outputs/test_gen_bad.yaml");
+    for args in [
+        vec!["--jobs", "0"],
+        vec!["--rate", "0"],
+        vec!["--gpu-mix", "garbage"],
+        vec!["--sigma", "99"],
+    ] {
+        let o = zyvor_janus()
+            .arg("generate-workload")
+            .args(&args)
+            .args(["--output", out.to_str().expect("utf8 path")])
+            .output()
+            .expect("spawn zyvor-janus generate-workload");
+        assert!(!o.status.success(), "{args:?}");
+        assert!(String::from_utf8_lossy(&o.stderr).contains("error"));
+    }
+}
+
+#[test]
+fn cli_load_sweep_prints_table_and_writes_json() {
+    let config = repo_root().join("configs/clusters/backfill_demo.yaml");
+    let out = repo_root().join("outputs/test_sweep_cli.json");
+    let o = zyvor_janus()
+        .args([
+            "load-sweep",
+            "--config",
+            config.to_str().expect("utf8 path"),
+            "--schedulers",
+            "fifo,easy,sjf,fairshare",
+            "--loads",
+            "0.01,1",
+            "--max-wait-p90",
+            "50",
+            "--output",
+            out.to_str().expect("utf8 path"),
+        ])
+        .output()
+        .expect("spawn zyvor-janus load-sweep");
+    assert!(
+        o.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&o.stderr)
+    );
+    let stdout = String::from_utf8_lossy(&o.stdout);
+    assert!(stdout.contains("sustainable load easy"), "{stdout}");
+    let v: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&out).unwrap()).unwrap();
+    assert_eq!(v["rows"].as_array().unwrap().len(), 8);
+    assert_eq!(v["sustainable"][1]["scheduler"], "easy");
+    assert_eq!(v["sustainable"][1]["sustainable_load"], 0.01);
+}
+
+#[test]
+fn cli_load_sweep_rejects_bad_loads() {
+    let config = repo_root().join("configs/clusters/backfill_demo.yaml");
+    let o = zyvor_janus()
+        .args([
+            "load-sweep",
+            "--config",
+            config.to_str().expect("utf8 path"),
+            "--loads",
+            "0",
+        ])
+        .output()
+        .expect("spawn zyvor-janus load-sweep");
+    assert!(!o.status.success());
+    assert!(String::from_utf8_lossy(&o.stderr).contains("load factor"));
+}
+
+#[test]
+fn cli_run_prints_jct_and_slo_and_accepts_new_schedulers() {
+    let config = repo_root().join("configs/clusters/backfill_demo.yaml");
+    let o = zyvor_janus()
+        .args([
+            "leaderboard",
+            "--config",
+            config.to_str().expect("utf8 path"),
+        ])
+        .args([
+            "--schedulers",
+            "sjf,fairshare,easy",
+            "--sort-by",
+            "slo_attainment",
+        ])
+        .output()
+        .expect("spawn zyvor-janus leaderboard");
+    assert!(
+        o.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&o.stderr)
+    );
+    let stdout = String::from_utf8_lossy(&o.stdout);
+    assert!(stdout.contains("sjf") && stdout.contains("fairshare"));
+    assert!(stdout.contains("50.0%"), "slo column:\n{stdout}");
+
+    let o = zyvor_janus()
+        .args(["run", "--config", config.to_str().expect("utf8 path")])
+        .output()
+        .expect("spawn zyvor-janus run");
+    assert!(o.status.success());
+    let stdout = String::from_utf8_lossy(&o.stdout);
+    assert!(stdout.contains("jct mean/p50/p90/p99"), "{stdout}");
+    assert!(
+        stdout.contains("slo attainment:    50.0% (2/4 jobs"),
+        "{stdout}"
+    );
+}

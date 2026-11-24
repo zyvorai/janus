@@ -8,8 +8,13 @@ from __future__ import annotations
 import unittest
 from unittest.mock import MagicMock, patch
 
+import importlib
+
 try:
-    from zyvor_janus.server import app as server_app
+    # `zyvor_janus.server` re-exports the FastAPI `app` object under the same
+    # name as the `app` submodule, so a `from ... import app` yields the
+    # object, not the module. Import the module explicitly.
+    server_app = importlib.import_module("zyvor_janus.server.app")
 
     HAS_SERVER = True
 except ImportError:
@@ -39,6 +44,25 @@ class TestServerScheduler(unittest.TestCase):
         self.assertEqual(args[1], "preemptive")
         self.assertEqual(len(result["snapshots"]), 1)
         self.assertEqual(result["resolved_scheduler"], "preemptive")
+
+    @patch("zyvor_janus._zyvor_janus.run_report_from_config")
+    def test_quality_chargeback_and_slo_are_passed_through(self, mock_run) -> None:
+        mock_metrics = MagicMock()
+        mock_metrics.to_json.return_value = "{}"
+        mock_run.return_value = {
+            "metrics": mock_metrics,
+            "timeline": "{}",
+            "decisions": [],
+            "snapshots": [],
+            "config_hash": "abc",
+            "scheduler": "sjf",
+            "quality": '{"jct_mean": 12.5}',
+            "slo": '{"attainment": 0.5}',
+        }
+        result = server_app._run_simulation_sync("preemption_preemptive.yaml", "sjf")
+        self.assertEqual(result["quality"]["jct_mean"], 12.5)
+        self.assertEqual(result["slo"]["attainment"], 0.5)
+        self.assertIsNone(result["chargeback"])
 
 
 if __name__ == "__main__":

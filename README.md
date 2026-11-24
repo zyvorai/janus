@@ -50,7 +50,7 @@ Full history: [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | Testing a scheduler change means booking scarce GPUs | Full discrete-event simulation of cluster placement, MIG slicing, NVLink/PCIe topology penalties and gang scheduling, with no GPUs |
 | You can't tell how a policy would have done on production load | Import real `FabricAIJob` / `FabricGpuNode` / `FabricQuota` CRDs and replay production scheduler traces for oracle-vs-live diffing |
-| Comparing policies means rewriting harnesses | `fifo`, `priority`, `preemptive`, `bestfit` and Zynera's own policy, swappable with one CLI flag, plus `easy` (reservation-protected backfill) and a `leaderboard` command |
+| Comparing policies means rewriting harnesses | `fifo`, `priority`, `preemptive`, `bestfit` and Zynera's own policy, swappable with one CLI flag, plus `easy` (reservation-protected backfill), `sjf`, `fairshare`, a `leaderboard` command, `generate-workload` and `load-sweep` ([docs/workload_and_load.md](docs/workload_and_load.md)) |
 | RL scheduling research has no realistic environment | A Gymnasium environment and a PPO baseline |
 | Results live in log files nobody reads | Rich terminal dashboard, Next.js web UI (runs, benchmark, what-if), and an OpenAI-compatible inference shim for calibrated LLM serving metrics |
 | A mixed fleet is hard to reason about | Shipped profiles for NVIDIA, AMD, Intel Gaudi and Apple M-series |
@@ -107,7 +107,7 @@ cargo run -p zyvor-janus-cli -- run \
 </details>
 
 <details>
-<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · zynera · easy</summary>
+<summary><b>▸ Scheduler policies</b> — fifo · priority · preemptive · bestfit · zynera · easy · sjf · fairshare</summary>
 
 ```bash
 cargo run -p zyvor-janus-cli -- run --config configs/clusters/priority_scheduler.yaml
@@ -219,7 +219,7 @@ See [docs/milestones.md](docs/milestones.md). **M1–M8 complete**, including to
 
 **Benchmark platform (MVP shipped):** [docs/benchmark_platform.md](docs/benchmark_platform.md) — inference model, serving traces, score vector, `/benchmark` + `/what-if` UI, OpenAI shim, AIPerf adapter, twin store API, CI golden script.
 
-Schedulers: `fifo`, `priority`, `preemptive`, `zynera` (alias for preemptive), `bestfit`.
+Schedulers: `fifo`, `priority`, `preemptive`, `zynera` (alias for preemptive), `bestfit`, `easy`, `sjf`, `fairshare`.
 
 Janus is a simulator: the OpenAI-compatible shim returns analytical timing, and dual-node preemption is a placement migrate, not live CUDA migration.
 
