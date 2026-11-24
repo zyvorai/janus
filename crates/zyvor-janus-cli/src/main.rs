@@ -6,9 +6,10 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 use zyvor_janus_config::{
-    compare_policies, import_helios_csv, leaderboard, load_cluster_from_config, load_zynera_bundle,
+    compare_policies, generate_workload, generated_workload_to_yaml, import_helios_csv,
+    leaderboard, load_cluster_from_config, load_sweep, load_zynera_bundle, parse_gpu_mix,
     run_simulation_report_with_options, run_trace_file, run_zynera_bundle_report,
-    trace_diff_to_json, workload_to_yaml, ImportOptions, SimulationReport,
+    trace_diff_to_json, workload_to_yaml, GenerateSpec, ImportOptions, SimulationReport,
 };
 
 #[derive(Parser)]
@@ -44,7 +45,7 @@ enum Commands {
         #[arg(long, default_value = "configs/mig")]
         mig_profiles_dir: PathBuf,
         /// Scheduler policy to simulate (with --zynera-bundle; --config uses its own scheduler.type)
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy", "sjf", "fairshare"])]
         scheduler: String,
         /// Write metrics JSON to this path
         #[arg(short, long)]
@@ -91,9 +92,9 @@ enum Commands {
         /// Simulation config YAML (add a `failure:` section to get seed variation)
         #[arg(short, long)]
         config: PathBuf,
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy", "sjf", "fairshare"])]
         baseline: String,
-        #[arg(long, value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
+        #[arg(long, value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy", "sjf", "fairshare"])]
         candidate: String,
         /// Number of seeds (first-seed, first-seed+1, ...)
         #[arg(long, default_value_t = 10)]
@@ -110,15 +111,67 @@ enum Commands {
         #[arg(short, long)]
         config: PathBuf,
         /// Schedulers to run, comma separated
-        #[arg(long, value_delimiter = ',', default_values_t = ["fifo", "priority", "preemptive", "bestfit", "easy"].map(String::from))]
+        #[arg(long, value_delimiter = ',', default_values_t = ["fifo", "priority", "preemptive", "bestfit", "easy", "sjf", "fairshare"].map(String::from))]
         schedulers: Vec<String>,
-        /// Ranking metric: makespan, mean_wait_time, wait_p99, slowdown_mean, ftf_rho_max, cost_usd, gpu_utilization, jain_tenant_service
+        /// Ranking metric: jct_mean, slo_attainment, makespan, mean_wait_time, wait_p99, slowdown_mean, ftf_rho_max, cost_usd, gpu_utilization, jain_tenant_service
         #[arg(long, default_value = "mean_wait_time")]
         sort_by: String,
         /// Failure-injection seed (config needs a `failure:` section)
         #[arg(long)]
         seed: Option<u64>,
         /// Write the leaderboard JSON here
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+    },
+    /// Generate a seeded synthetic workload (Poisson arrivals, log-normal runtimes)
+    GenerateWorkload {
+        /// Number of jobs
+        #[arg(long, default_value_t = 100)]
+        jobs: usize,
+        #[arg(long, default_value_t = 0)]
+        seed: u64,
+        /// Poisson arrival rate (jobs per simulated second)
+        #[arg(long, default_value_t = 0.1)]
+        rate: f64,
+        /// Median runtime in seconds
+        #[arg(long, default_value_t = 600.0)]
+        median_runtime: f64,
+        /// Log-normal sigma of runtimes (0 = constant)
+        #[arg(long, default_value_t = 1.0)]
+        sigma: f64,
+        #[arg(long, default_value_t = 86400.0)]
+        max_runtime: f64,
+        /// GPU-size mix as SIZE:WEIGHT,... (default 1:0.7,2:0.15,4:0.1,8:0.05)
+        #[arg(long)]
+        gpu_mix: Option<String>,
+        /// Number of tenants (0 = none)
+        #[arg(long, default_value_t = 0)]
+        tenants: usize,
+        /// Zipf exponent for tenant popularity (0 = uniform)
+        #[arg(long, default_value_t = 0.0)]
+        tenant_skew: f64,
+        /// Distinct priority levels
+        #[arg(long, default_value_t = 1)]
+        priority_levels: u32,
+        /// Output workload YAML
+        #[arg(short, long)]
+        output: PathBuf,
+    },
+    /// Replay a config at several offered loads and report latency-vs-load per scheduler
+    LoadSweep {
+        #[arg(short, long)]
+        config: PathBuf,
+        #[arg(long, value_delimiter = ',', default_values_t = ["fifo", "easy", "sjf"].map(String::from))]
+        schedulers: Vec<String>,
+        /// Load factors (arrival-rate multipliers), comma separated
+        #[arg(long, value_delimiter = ',', default_values_t = [0.5, 1.0, 2.0, 4.0])]
+        loads: Vec<f64>,
+        /// A load is sustainable while wait p90 stays within this many seconds
+        #[arg(long, default_value_t = 600.0)]
+        max_wait_p90: f64,
+        #[arg(long)]
+        seed: Option<u64>,
+        /// Write the sweep JSON here
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
@@ -143,7 +196,7 @@ enum Commands {
         #[arg(long, default_value = "configs/profiles")]
         profiles_dir: PathBuf,
         /// Scheduler policy to simulate
-        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy"])]
+        #[arg(long, default_value = "fifo", value_parser = ["fifo", "priority", "preemptive", "zynera", "bestfit", "easy", "sjf", "fairshare"])]
         scheduler: String,
         /// Write diff report JSON to this path
         #[arg(short, long)]
@@ -229,6 +282,21 @@ fn print_report(
             q.ftf_worst_tenant.as_deref().unwrap_or("-")
         );
     }
+    if let Some(q) = &report.quality {
+        println!(
+            "  jct mean/p50/p90/p99: {:.2} / {:.2} / {:.2} / {:.2}",
+            q.jct_mean, q.jct_p50, q.jct_p90, q.jct_p99
+        );
+    }
+    if let Some(s) = &report.slo {
+        println!(
+            "  slo attainment:    {:.1}% ({}/{} jobs; worst tenant: {})",
+            s.attainment * 100.0,
+            s.jobs_met,
+            s.jobs_total,
+            s.worst_tenant.as_deref().unwrap_or("-")
+        );
+    }
     if let Some(c) = &report.chargeback {
         println!(
             "  gpu-hours used/idle: {:.2} / {:.2} (${:.2} used, ${:.2} idle at ${:.2}/GPU-h)",
@@ -253,6 +321,7 @@ fn print_report(
             "metrics": report.metrics,
             "quality": report.quality,
             "chargeback": report.chargeback,
+            "slo": report.slo,
         }))
         .unwrap_or_else(|_| "{}".into());
         fs::write(&path, json).unwrap_or_else(|e| {
@@ -472,31 +541,37 @@ fn main() {
             });
             println!("Zyvor Janus leaderboard (sorted by {sort_by})");
             println!(
-                "  {:<4} {:<11} {:>10} {:>10} {:>10} {:>9} {:>6} {:>7} {:>8} {:>10}",
+                "  {:<4} {:<11} {:>10} {:>10} {:>10} {:>10} {:>9} {:>6} {:>7} {:>8} {:>10} {:>7}",
                 "rank",
                 "scheduler",
                 "makespan",
                 "mean_wait",
                 "wait_p99",
+                "jct_mean",
                 "slowdown",
                 "util",
                 "jain",
                 "ftf_max",
-                "cost_usd"
+                "cost_usd",
+                "slo"
             );
             for r in &rows {
                 println!(
-                    "  {:<4} {:<11} {:>10.2} {:>10.2} {:>10.2} {:>9.2} {:>5.1}% {:>7.3} {:>8.2} {:>10.2}",
+                    "  {:<4} {:<11} {:>10.2} {:>10.2} {:>10.2} {:>10.2} {:>9.2} {:>5.1}% {:>7.3} {:>8.2} {:>10.2} {:>7}",
                     r.rank,
                     r.scheduler,
                     r.makespan,
                     r.mean_wait_time,
                     r.wait_p99,
+                    r.jct_mean,
                     r.slowdown_mean,
                     r.gpu_utilization * 100.0,
                     r.jain_tenant_service,
                     r.ftf_rho_max,
-                    r.cost_usd
+                    r.cost_usd,
+                    r.slo_attainment
+                        .map(|a| format!("{:.1}%", a * 100.0))
+                        .unwrap_or_else(|| "-".into())
                 );
             }
             if let Some(out) = output {
@@ -509,6 +584,106 @@ fn main() {
                     std::process::exit(1);
                 });
                 println!("  leaderboard written: {}", out.display());
+            }
+        }
+        Commands::GenerateWorkload {
+            jobs,
+            seed,
+            rate,
+            median_runtime,
+            sigma,
+            max_runtime,
+            gpu_mix,
+            tenants,
+            tenant_skew,
+            priority_levels,
+            output,
+        } => {
+            let fail = |e: zyvor_janus_config::ConfigError| -> ! {
+                eprintln!("error: {e}");
+                std::process::exit(1);
+            };
+            let mut spec = GenerateSpec {
+                jobs,
+                seed,
+                arrival_rate_per_sec: rate,
+                median_runtime_secs: median_runtime,
+                runtime_sigma: sigma,
+                max_runtime_secs: max_runtime,
+                tenants,
+                tenant_skew,
+                priority_levels,
+                ..Default::default()
+            };
+            if let Some(mix) = gpu_mix {
+                spec.gpu_mix = parse_gpu_mix(&mix).unwrap_or_else(|e| fail(e));
+            }
+            let w = generate_workload(&spec).unwrap_or_else(|e| fail(e));
+            let yaml = generated_workload_to_yaml(&w).unwrap_or_else(|e| fail(e));
+            if let Some(parent) = output.parent() {
+                let _ = fs::create_dir_all(parent);
+            }
+            fs::write(&output, yaml).unwrap_or_else(|e| {
+                eprintln!("failed to write output: {e}");
+                std::process::exit(1);
+            });
+            println!(
+                "Generated {} jobs (seed {seed}, rate {rate}/s, median runtime {median_runtime}s) -> {}",
+                w.jobs.len(),
+                output.display()
+            );
+        }
+        Commands::LoadSweep {
+            config,
+            schedulers,
+            loads,
+            max_wait_p90,
+            seed,
+            output,
+        } => {
+            let report = load_sweep(&config, &schedulers, &loads, max_wait_p90, seed)
+                .unwrap_or_else(|e| {
+                    eprintln!("error: {e}");
+                    std::process::exit(1);
+                });
+            println!("Zyvor Janus load sweep (sustainable while wait p90 <= {max_wait_p90}s)");
+            println!(
+                "  {:<11} {:>6} {:>10} {:>10} {:>10} {:>6} {:>7}",
+                "scheduler", "load", "jct_mean", "jct_p99", "wait_p90", "util", "slo"
+            );
+            for r in &report.rows {
+                println!(
+                    "  {:<11} {:>6.2} {:>10.2} {:>10.2} {:>10.2} {:>5.1}% {:>7}",
+                    r.scheduler,
+                    r.load,
+                    r.jct_mean,
+                    r.jct_p99,
+                    r.wait_p90,
+                    r.gpu_utilization * 100.0,
+                    r.slo_attainment
+                        .map(|a| format!("{:.1}%", a * 100.0))
+                        .unwrap_or_else(|| "-".into())
+                );
+            }
+            for s in &report.sustainable {
+                match s.sustainable_load {
+                    Some(l) => println!("  sustainable load {:<11} {l}", s.scheduler),
+                    None => println!(
+                        "  sustainable load {:<11} none (broke at lowest load)",
+                        s.scheduler
+                    ),
+                }
+            }
+            if let Some(out) = output {
+                if let Some(parent) = out.parent() {
+                    let _ = fs::create_dir_all(parent);
+                }
+                let json = serde_json::to_string_pretty(&report).unwrap_or_else(|_| "{}".into());
+                fs::write(&out, json).unwrap_or_else(|e| {
+                    eprintln!("failed to write output: {e}");
+                    std::process::exit(1);
+                });
+                println!("  sweep written: {}", out.display());
             }
         }
         Commands::Replay {

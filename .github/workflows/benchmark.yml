@@ -23,5 +23,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.14"
+      - name: Install PyYAML
+        run: pip install pyyaml
       - name: Python unit tests
         run: PYTHONPATH=python python3 -m unittest discover -s python/tests -v

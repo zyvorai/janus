@@ -38,5 +38,40 @@ class TestSchedulingMetrics(unittest.TestCase):
         self.assertIn("queue_max_length", payload)
 
 
+BACKFILL_CONFIG = ROOT / "configs/clusters/backfill_demo.yaml"
+
+
+@unittest.skipUnless(BACKFILL_CONFIG.exists(), "backfill config missing")
+class TestRound3Reports(unittest.TestCase):
+    def _report(self, scheduler: str) -> dict:
+        try:
+            from zyvor_janus import _zyvor_janus
+        except ImportError:
+            self.skipTest("zyvor_janus extension not built")
+        return _zyvor_janus.run_report_from_config(str(BACKFILL_CONFIG), scheduler)
+
+    def test_report_exposes_quality_chargeback_and_slo(self) -> None:
+        import json
+
+        report = self._report("easy")
+        quality = json.loads(report["quality"])
+        self.assertEqual(quality["jct_mean"], 234.25)
+        self.assertEqual(quality["jobs_considered"], 4)
+        slo = json.loads(report["slo"])
+        self.assertEqual((slo["jobs_total"], slo["jobs_met"]), (4, 2))
+        self.assertEqual(slo["attainment"], 0.5)
+        self.assertIn("tenants", json.loads(report["chargeback"]))
+
+    def test_new_schedulers_run_through_the_bindings(self) -> None:
+        for name in ("sjf", "fairshare", "easy"):
+            report = self._report(name)
+            self.assertEqual(report["scheduler"], name)
+            self.assertEqual(report["metrics"].jobs_completed, 4)
+
+    def test_unknown_scheduler_is_an_error(self) -> None:
+        with self.assertRaises(RuntimeError):
+            self._report("no-such-scheduler")
+
+
 if __name__ == "__main__":
     unittest.main()

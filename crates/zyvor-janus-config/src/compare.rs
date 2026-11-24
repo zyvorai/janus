@@ -192,6 +192,8 @@ pub struct LeaderboardRow {
     pub makespan: f64,
     pub mean_wait_time: f64,
     pub wait_p99: f64,
+    pub jct_mean: f64,
+    pub jct_p99: f64,
     pub slowdown_mean: f64,
     pub gpu_utilization: f64,
     pub jain_tenant_service: f64,
@@ -199,10 +201,14 @@ pub struct LeaderboardRow {
     pub cost_usd: f64,
     pub jobs_failed: usize,
     pub preemptions: u32,
+    /// SLO attainment (0..1); `None` unless the config has an `slo:` section.
+    pub slo_attainment: Option<f64>,
 }
 
 /// Metrics a leaderboard can be sorted by; the bool is "lower is better".
-pub const LEADERBOARD_SORT_KEYS: [(&str, bool); 8] = [
+pub const LEADERBOARD_SORT_KEYS: [(&str, bool); 10] = [
+    ("jct_mean", true),
+    ("slo_attainment", false),
     ("makespan", true),
     ("mean_wait_time", true),
     ("wait_p99", true),
@@ -218,6 +224,8 @@ fn sort_value(r: &LeaderboardRow, key: &str) -> f64 {
         "makespan" => r.makespan,
         "mean_wait_time" => r.mean_wait_time,
         "wait_p99" => r.wait_p99,
+        "jct_mean" => r.jct_mean,
+        "slo_attainment" => r.slo_attainment.unwrap_or(0.0),
         "slowdown_mean" => r.slowdown_mean,
         "ftf_rho_max" => r.ftf_rho_max,
         "cost_usd" => r.cost_usd,
@@ -266,6 +274,8 @@ pub fn leaderboard(
             makespan: r.metrics.makespan,
             mean_wait_time: r.metrics.mean_wait_time,
             wait_p99: quality.wait_p99,
+            jct_mean: quality.jct_mean,
+            jct_p99: quality.jct_p99,
             slowdown_mean: quality.slowdown_mean,
             gpu_utilization: r.metrics.gpu_utilization,
             jain_tenant_service: quality.jain_tenant_service,
@@ -273,6 +283,7 @@ pub fn leaderboard(
             cost_usd: r.chargeback.map(|c| c.used_cost_usd).unwrap_or(0.0),
             jobs_failed: r.metrics.jobs_failed as usize,
             preemptions: r.metrics.preemptions as u32,
+            slo_attainment: r.slo.as_ref().map(|s| s.attainment),
         });
     }
     rows.sort_by(|a, b| {

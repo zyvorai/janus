@@ -10,6 +10,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Round 3
+
+Added (sources in `docs/RESEARCH.md`, usage in `docs/workload_and_load.md`):
+- **`sjf` scheduler** (oracle shortest-job-first) and **`fairshare` scheduler** (tenant max-min over GPUs held, single-resource DRF). Accepted everywhere a scheduler name is, including the web selector.
+- **JCT metrics**: `QualityReport.jct_mean/p50/p90/p99`; `leaderboard` rows gain `jct_mean`, `jct_p99`, `slo_attainment`, and `--sort-by` accepts `jct_mean` and `slo_attainment`.
+- **SLO attainment**: optional `slo:` config section (`max_wait_secs`, `max_slowdown`, `max_jct_secs`) -> `SimulationReport.slo` with per-tenant attainment; printed by `run`, written by `--report-output`.
+- **`generate-workload`** CLI + `POST /api/workloads/generate`: seeded Poisson arrivals, log-normal runtimes, GPU-size mix, Zipf tenants, priority levels. Deterministic (stateless hash draws, no RNG crate).
+- **`load-sweep`** CLI + `POST /api/load-sweep`: latency-vs-offered-load per scheduler and a configurable "sustainable load".
+- `configs/clusters/backfill_demo.yaml` now carries an `slo:` section (`max_wait_secs: 60`).
+
+Fixed:
+- API: `GET /api/runs/{id}` and `POST /api/benchmark/run` dropped `quality`, `chargeback` (and now `slo`) from their responses; they are returned now.
+- API: config names containing `/`, `\` or `..` could escape `configs/clusters` through `config_dir.join(name)`; they are now rejected with 400.
+- CI "Benchmark Gates / python-benchmark" was red: the job does not install PyYAML, so `test_kubectl_list_export_is_unwrapped` ran on the minimal fallback YAML parser, which cannot read a `- key:` list with nested keys. The workflow now installs `pyyaml` (the `python.yml` job already did, which is why it was green).
+
+Dependencies (round 3 audit, no changes needed): `cargo upgrade --incompatible --dry-run` and `cargo update` found nothing newer for any Rust crate. In `web/` every dependency is at its latest version except `@types/node` (24 installed, 26 published; held at 24 to match the `node:24` image) and three minor bumps already allowed by the caret ranges (lucide-react, reactflow, recharts).
+
+Tests: first API handler tests (`zyvor-janus-api`, `app.rs`; router extracted into `app::build_app`), plus config, CLI and unit tests for every item above.
+
 ### Dependencies and CI
 
 Rust (`cargo update` plus major bumps, each compile-checked):

@@ -49,6 +49,16 @@ pub struct QualityReport {
     pub wait_p90: f64,
     pub wait_p99: f64,
     pub wait_max: f64,
+    /// Job completion time = finish - arrival (waiting + running + any
+    /// restart losses), the headline metric of Tiresias, Gavel and Pollux.
+    #[serde(default)]
+    pub jct_mean: f64,
+    #[serde(default)]
+    pub jct_p50: f64,
+    #[serde(default)]
+    pub jct_p90: f64,
+    #[serde(default)]
+    pub jct_p99: f64,
     pub slowdown_mean: f64,
     pub slowdown_p99: f64,
     pub slowdown_max: f64,
@@ -119,6 +129,19 @@ impl QualityReport {
         let wait_p90 = percentile(&mut waits, 0.90);
         let wait_p99 = percentile(&mut waits, 0.99);
 
+        let mut jcts: Vec<f64> = finished
+            .iter()
+            .map(|j| (j.finish_time.unwrap_or(0.0) - j.arrival_time).max(0.0))
+            .collect();
+        let jct_mean = if jcts.is_empty() {
+            0.0
+        } else {
+            jcts.iter().sum::<f64>() / jcts.len() as f64
+        };
+        let jct_p50 = percentile(&mut jcts, 0.50);
+        let jct_p90 = percentile(&mut jcts, 0.90);
+        let jct_p99 = percentile(&mut jcts, 0.99);
+
         let slowdowns: Vec<f64> = finished
             .iter()
             .map(|j| bounded_slowdown(j.arrival_time, j.finish_time.unwrap_or(0.0), j.runtime))
@@ -162,6 +185,10 @@ impl QualityReport {
             wait_p90,
             wait_p99,
             wait_max,
+            jct_mean,
+            jct_p50,
+            jct_p90,
+            jct_p99,
             slowdown_mean,
             slowdown_p99,
             slowdown_max,

@@ -43,7 +43,7 @@ pub async fn compare(
 
     let mut results = Vec::with_capacity(body.configs.len());
     for config in &body.configs {
-        let config_path = state.inner.config_dir.join(config);
+        let config_path = state.config_path(config)?;
         if !config_path.exists() {
             return Err(ApiError::not_found(format!("unknown config: {config}")));
         }
@@ -110,7 +110,7 @@ pub async fn benchmark_run(
     State(state): State<AppState>,
     Json(body): Json<BenchmarkRunRequest>,
 ) -> Result<impl IntoResponse, ApiError> {
-    let config_path = state.inner.config_dir.join(&body.config);
+    let config_path = state.config_path(&body.config)?;
     if !config_path.exists() {
         return Err(ApiError::not_found(format!(
             "unknown config: {}",
@@ -136,6 +136,9 @@ pub async fn benchmark_run(
         "run_id": id,
         "metrics": report.metrics,
         "benchmark": report.benchmark,
+        "quality": report.quality,
+        "chargeback": report.chargeback,
+        "slo": report.slo,
     })))
 }
 
@@ -174,7 +177,7 @@ pub async fn what_if(
 
     for config in &configs {
         for scheduler in &body.schedulers {
-            let config_path = state.inner.config_dir.join(config);
+            let config_path = state.config_path(config)?;
             if !config_path.exists() {
                 return Err(ApiError::not_found(format!("unknown config: {config}")));
             }

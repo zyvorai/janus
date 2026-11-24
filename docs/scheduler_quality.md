@@ -70,13 +70,13 @@ systems backfill is less exact than here.
 
 ```bash
 zyvor-janus leaderboard --config configs/clusters/backfill_demo.yaml \
-  [--schedulers fifo,priority,preemptive,bestfit,easy] \
+  [--schedulers fifo,priority,preemptive,bestfit,easy,sjf,fairshare] \
   [--sort-by mean_wait_time] [--seed N] [--output lb.json]
 ```
 
 Runs the config once per scheduler and ranks them. Sort keys: `makespan`,
-`mean_wait_time`, `wait_p99`, `slowdown_mean`, `ftf_rho_max`, `cost_usd`
-(lower is better) and `gpu_utilization`, `jain_tenant_service` (higher is
+`mean_wait_time`, `wait_p99`, `jct_mean`, `slowdown_mean`, `ftf_rho_max`, `cost_usd`
+(lower is better) and `gpu_utilization`, `jain_tenant_service`, `slo_attainment` (higher is
 better). Ties break on scheduler name. `compare` additionally reports
 `ftf_rho_max`.
 
